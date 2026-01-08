@@ -36,7 +36,7 @@ const handleLogin = () => {
     localStorage.setItem('usuario_logeado', JSON.stringify(usuarioValido))
 
     // REDIRECCIÓN VUE (Equivalente a window.location.replace)
-    router.replace('/scanner')
+    router.replace('/home')
   } else {
     errorMsg.value = "Usuario o contraseña incorrectos"
     showError.value = true
