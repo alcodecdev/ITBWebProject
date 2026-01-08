@@ -4,19 +4,18 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-// --- ESTADO (Variables reactivas) ---
+
 const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
 const usuarios = ref([])
 
-// Al cargar el componente, leemos los usuarios de LocalStorage
+//leemos los usuarios de LocalStorage
 onMounted(() => {
   usuarios.value = JSON.parse(localStorage.getItem("usuarios")) || []
 })
 
-// --- LÓGICA (Métodos) ---
 const handleLogin = () => {
   showError.value = false
 
@@ -56,35 +55,39 @@ const handleLogin = () => {
         </div>
 
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
-          <form id="loginForm">
+          <form @submit.prevent="handleLogin">
+
             <div class="mb-4">
               <label for="inputName" class="form-label fw-bold text-light small">Usuario</label>
-              <input type="text"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     id="inputName"
-                     placeholder="Nombre de usuario"
-                     autocomplete="username">
+              <input
+                  v-model="username"
+                  type="text"
+                  class="form-control form-control-lg bg-light text-dark border-secondary"
+                  id="inputName"
+                  placeholder="Nombre de usuario"
+                  autocomplete="username"
+              >
             </div>
 
             <div class="mb-5">
               <label for="inputPassword1" class="form-label fw-bold text-light small">Contraseña</label>
-              <input type="password"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     id="inputPassword1"
-                     placeholder="Contraseña"
-                     autocomplete="current-password">
+              <input
+                  v-model="password"
+                  type="password"
+                  class="form-control form-control-lg bg-light text-dark border-secondary"
+                  id="inputPassword1"
+                  placeholder="Contraseña"
+                  autocomplete="current-password"
+              >
             </div>
 
-            <button type="submit"
-                    class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm"
-                    id="btnLogin">
-              Iniciar Sesion
+            <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+              Iniciar Sesión
             </button>
           </form>
 
-          <div class="alert alert-danger mt-4 py-2 text-center small fw-bold"
-               style="display: none"
-               id="msgError">
+          <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
+            {{ errorMsg }}
           </div>
         </div>
 
