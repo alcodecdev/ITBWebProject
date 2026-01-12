@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
 
@@ -52,6 +53,10 @@ const handleLogin = () => {
         <div class="text-center mb-5">
           <h1 class="display-3 fw-bolder text-light">ITB</h1>
           <p class="h5 text-secondary text-uppercase tracking-wider">Gestion de envio</p>
+        </div>
+
+        <div class="mb-5">
+          <CampoFormulario v-model:id="username" label="Hola" placeholder="Introduce el usuario"/>
         </div>
 
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
