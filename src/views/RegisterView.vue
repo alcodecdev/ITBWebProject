@@ -1,0 +1,119 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const email = ref('')
+const username = ref('')
+const password = ref('')
+const errorMsg = ref('')
+const showError = ref(false)
+
+const handleRegister = () => {
+  showError.value = false
+  errorMsg.value = ""
+
+  //Validaciones básicas
+  if (!username.value.trim() || !password.value.trim() || !email.value.trim()) {
+    errorMsg.value = "Todos los campos son obligatorios"
+    showError.value = true
+    return
+  }
+
+  // Validación de Email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email.value)) {
+    errorMsg.value = "El formato del email no es válido"
+    showError.value = true
+    return
+  }
+
+  //Obtener usuarios de LocalStorage
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
+
+  //Comprobar si el usuario ya existe (Opcional pero recomendado)
+  if (usuarios.find(u => u.nombre === username.value.trim())) {
+    errorMsg.value = "El nombre de usuario ya está en uso"
+    showError.value = true
+    return
+  }
+
+  //Crear y guardar el usuario
+  const nuevoUsuario = {
+    nombre: username.value.trim(),
+    email: email.value.trim(),
+    password: password.value.trim()
+  }
+
+  usuarios.push(nuevoUsuario)
+  localStorage.setItem("usuarios", JSON.stringify(usuarios))
+
+  //Finalizar
+  alert("Usuario registrado correctamente")
+
+  // En Vue usamos router.replace para navegar
+  router.replace('/login')
+}
+</script>
+
+<template>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+        <div class="text-start mb-4">
+          <h1 class="display-3 fw-bolder text-light mb-0">ITB Register</h1>
+          <p class="h5 text-secondary text-uppercase">Take control</p>
+        </div>
+
+        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
+          <form @submit.prevent="handleRegister">
+
+            <div class="mb-4">
+              <label class="form-label fw-bold text-light small">Email</label>
+              <input v-model="email"
+                     type="email"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold text-light small">Usuario</label>
+              <input v-model="username"
+                     type="text"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="Nombre de usuario">
+            </div>
+
+            <div class="mb-5">
+              <label class="form-label fw-bold text-light small">Contraseña</label>
+              <input v-model="password"
+                     type="password"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="Mínimo 8 caracteres">
+            </div>
+
+            <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+              Crear cuenta
+            </button>
+          </form>
+
+          <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
+            {{ errorMsg }}
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <p class="text-secondary">
+            ¿Ya estás registrado?
+            <router-link to="/login" class="text-light text-decoration-none fw-bold border-bottom border-light">
+              Inicia sesión aquí
+            </router-link>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
