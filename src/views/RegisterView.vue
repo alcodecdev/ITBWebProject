@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TitleAndSubtitle from "@/components/titleAndSubtitle.vue";
+import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
 
@@ -71,29 +72,7 @@ const handleRegister = () => {
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
           <form @submit.prevent="handleRegister">
 
-            <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Email</label>
-              <input v-model="email"
-                     type="email"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="ejemplo@correo.com">
-            </div>
-
-            <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Usuario</label>
-              <input v-model="username"
-                     type="text"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Nombre de usuario">
-            </div>
-
-            <div class="mb-5">
-              <label class="form-label fw-bold text-light small">Contraseña</label>
-              <input v-model="password"
-                     type="password"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Mínimo 8 caracteres">
-            </div>
+           <campo-formulario label="Email" type="text" label-class=""></campo-formulario>
 
             <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
               Crear cuenta

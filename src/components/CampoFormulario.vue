@@ -14,11 +14,6 @@ const props = defineProps({
     type: String,
     default: 'Nombre de usuario'
   },
-  // Configuración de IDs y tipos
-  id: {
-    type: String,
-    default: 'inputName'
-  },
   type: {
     type: String,
     default: 'text'
@@ -44,13 +39,11 @@ const emit = defineEmits(['update:modelValue']);
       {{ label }}
     </label>
     <input
-        :id="id"
         :type="type"
         :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
         :class="inputClass"
         :placeholder="placeholder"
-        autocomplete="username"
     >
   </div>
 </template>
