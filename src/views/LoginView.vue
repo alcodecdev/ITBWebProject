@@ -46,6 +46,7 @@ const handleLogin = () => {
 </script>
 
 <template>
+  <div class="min-vh-100 d-flex align-items-center justify-content-center w-100">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
@@ -103,6 +104,7 @@ const handleLogin = () => {
 
       </div>
     </div>
+  </div>
   </div>
 </template>
 
