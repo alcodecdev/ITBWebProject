@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import CampoFormulario from "@/components/CampoFormulario.vue";
+import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 
 const router = useRouter()
 
@@ -27,7 +28,7 @@ const handleLogin = () => {
     return
   }
 
-  // Buscar usuario válido (Tu misma lógica pero con .value)
+  // Buscar usuario válido
   const usuarioValido = usuarios.value.find(
       u => u.nombre === username.value.trim() && u.password === password.value.trim()
   )
@@ -51,10 +52,13 @@ const handleLogin = () => {
     <div class="row justify-content-center">
       <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
-        <div class="text-center mb-5">
-          <h1 class="display-3 fw-bolder text-success">ITB</h1>
-          <p class="h5 text-success text-uppercase tracking-wider">Gestion de envio</p>
-        </div>
+        <TitleAndSubtitle
+            divClass="text-center mb-5"
+            title="GTR"
+            subtitle="Gestion de envio"
+            titleClass="display-3 fw-bolder text-success"
+            subtitleClass="h5 text-success text-uppercase tracking-wider"
+        />
 
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
           <form @submit.prevent="handleLogin">

@@ -7,7 +7,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Nombre de usuario'
+    default: 'Campo de formulario'
   },
   type: {
     type: String,
@@ -21,6 +21,9 @@ const props = defineProps({
   inputClass: {
     type: String,
     default: 'form-control form-control-lg bg-light text-dark border-secondary'
+  },
+  divClass: {
+    type: String,
   }
 });
 
@@ -29,7 +32,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div>
+  <div :class="divClass">
     <label :for="id" :class="labelClass">
       {{ label }}
     </label>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 
 const router = useRouter()
 
@@ -62,10 +63,13 @@ const handleRegister = () => {
     <div class="row justify-content-center">
       <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
-        <div class="text-start mb-4">
-          <h1 class="display-3 fw-bolder text-success mb-0">ITB Register</h1>
-          <p class="h5 text-success text-uppercase">Take control</p>
-        </div>
+        <TitleAndSubtitle
+            divClass="text-start mb-4"
+            title="GTR Register"
+            subtitle="Take control"
+            titleClass="display-3 fw-bolder text-success mb-0"
+            subtitleClass="h5 text-success text-uppercase"
+        />
 
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-23 shadow">
           <form @submit.prevent="handleRegister">
