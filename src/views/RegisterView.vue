@@ -63,11 +63,11 @@ const handleRegister = () => {
       <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
         <div class="text-start mb-4">
-          <h1 class="display-3 fw-bolder text-light mb-0">ITB Register</h1>
-          <p class="h5 text-secondary text-uppercase">Take control</p>
+          <h1 class="display-3 fw-bolder text-success mb-0">ITB Register</h1>
+          <p class="h5 text-success text-uppercase">Take control</p>
         </div>
 
-        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
+        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-23 shadow">
           <form @submit.prevent="handleRegister">
 
             <div class="mb-4">
@@ -105,9 +105,9 @@ const handleRegister = () => {
         </div>
 
         <div class="text-center mt-4">
-          <p class="text-secondary">
+          <p class="text-light-emphasis">
             ¿Ya estás registrado?
-            <router-link to="/login" class="text-light text-decoration-none fw-bold border-bottom border-light">
+            <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
               Inicia sesión aquí
             </router-link>
           </p>

@@ -14,7 +14,7 @@ const props = defineProps({
     type: String,
     default: 'Nombre de usuario'
   },
-  // Configuración de IDs y tipos
+  //Configuracion de IDs y tipos
   id: {
     type: String,
     default: 'inputName'
@@ -23,7 +23,7 @@ const props = defineProps({
     type: String,
     default: 'text'
   },
-  // Props para clases CSS (personalización total)
+  // Props para clases boostrap
   labelClass: {
     type: String,
     default: 'form-label fw-bold text-light small'
