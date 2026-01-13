@@ -1,8 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import TitleAndSubtitle from "@/components/titleAndSubtitle.vue";
-import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
 
@@ -65,14 +63,36 @@ const handleRegister = () => {
       <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
         <div class="text-start mb-4">
-         <title-and-subtitle title="GTR Register" subtitle="Take control" title-class="display-3 fw-bolder text-success mb-0" subtitle-class="h5 text-success text-uppercase">
-         </title-and-subtitle>
+          <h1 class="display-3 fw-bolder text-success mb-0">ITB Register</h1>
+          <p class="h5 text-success text-uppercase">Take control</p>
         </div>
 
-        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
+        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-23 shadow">
           <form @submit.prevent="handleRegister">
 
-           <campo-formulario label="Email" type="text" label-class=""></campo-formulario>
+            <div class="mb-4">
+              <label class="form-label fw-bold text-light small">Email</label>
+              <input v-model="email"
+                     type="email"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold text-light small">Usuario</label>
+              <input v-model="username"
+                     type="text"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="Nombre de usuario">
+            </div>
+
+            <div class="mb-5">
+              <label class="form-label fw-bold text-light small">Contraseña</label>
+              <input v-model="password"
+                     type="password"
+                     class="form-control form-control-lg bg-light text-dark border-secondary"
+                     placeholder="Mínimo 8 caracteres">
+            </div>
 
             <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
               Crear cuenta
@@ -85,9 +105,9 @@ const handleRegister = () => {
         </div>
 
         <div class="text-center mt-4">
-          <p class="text-secondary">
+          <p class="text-light-emphasis">
             ¿Ya estás registrado?
-            <router-link to="/login" class="text-light text-decoration-none fw-bold border-bottom border-light">
+            <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
               Inicia sesión aquí
             </router-link>
           </p>

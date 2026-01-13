@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
 
@@ -50,11 +51,11 @@ const handleLogin = () => {
       <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
         <div class="text-center mb-5">
-          <h1 class="display-3 fw-bolder text-light">ITB</h1>
-          <p class="h5 text-secondary text-uppercase tracking-wider">Gestion de envio</p>
+          <h1 class="display-3 fw-bolder text-success">ITB</h1>
+          <p class="h5 text-success text-uppercase tracking-wider">Gestion de envio</p>
         </div>
 
-        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-black bg-opacity-25 shadow">
+        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
           <form @submit.prevent="handleLogin">
 
             <div class="mb-4">
@@ -92,9 +93,9 @@ const handleLogin = () => {
         </div>
 
         <div class="text-center mt-5">
-          <p class="text-secondary">
+          <p class="text-light-emphasis">
             ¿No estas registrado?
-            <router-link to="/register" class="text-light text-decoration-none fw-bold border-bottom border-light">
+            <router-link to="/register" class="text-dark text-decoration-none fw-bold border-bottom border-light">
               Registrate aquí
             </router-link>
           </p>
@@ -104,3 +105,11 @@ const handleLogin = () => {
     </div>
   </div>
 </template>
+
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa !important;
+}
+</style>
