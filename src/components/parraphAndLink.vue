@@ -12,13 +12,21 @@ const props = defineProps({
   },
   linkText:{
     type: String
+  },
+  linkDirection:{
+    type: String
   }
 })
 </script>s
 
 <template>
+  <p :class="parraphStyle">
+    {{parraphValue}}
+  </p>
 
-  <p :class="parraphStyle"> <a href={{linkDirection}}> </a>  </p>
+  <router-link :to="linkDirection" :class="linkStyle">
+    {{ linkText }}
+  </router-link>
 
 
 </template>

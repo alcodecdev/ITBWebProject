@@ -30,7 +30,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div>s
+  <div>
     <label :class="labelClass">
       {{ label }}
     </label>

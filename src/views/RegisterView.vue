@@ -95,13 +95,14 @@ const handleRegister = () => {
         </div>
 
         <div class="text-center mt-4">
-          <parraph-and-link parraph-style="text-light-emphasis" parraph-value="¿Ya estás registrado?" link-text="Inicia sesión aquí"></parraph-and-link>
-
-            <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-            </router-link>
-          </p>
-        </div>s
-
+          <parraph-and-link
+              parraph-style="text-light-emphasis"
+              parraph-value="¿Ya estás registrado?"
+              link-text="Inicia sesión aquí"
+              link-style="text-dark text-decoration-none fw-bold border-bottom border-light"
+              link-direction="/login">
+          </parraph-and-link>
+        </div>
       </div>
     </div>
   </div>
