@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+import CampoFormulario from "@/components/CampoFormulario.vue";
+import ParraphAndLink from "@/components/parraphAndLink.vue";
 
 const router = useRouter()
 
@@ -63,39 +64,24 @@ const handleRegister = () => {
     <div class="row justify-content-center">
       <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
-        <TitleAndSubtitle
-            divClass="text-start mb-4"
-            title="GTR Register"
-            subtitle="Take control"
-            titleClass="display-3 fw-bolder text-success mb-0"
-            subtitleClass="h5 text-success text-uppercase"
-        />
+        <div class="text-start mb-4">
+          <h1 class="display-3 fw-bolder text-success mb-0">ITB Register</h1>
+          <p class="h5 text-success text-uppercase">Take control</p>
+        </div>
 
         <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-23 shadow">
           <form @submit.prevent="handleRegister">
 
             <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Email</label>
-              <input v-model="email"
-                     type="email"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="ejemplo@correo.com">
+            <campo-formulario type="text" v-model="email" placeholder="ejemplo@gmail.com"  label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
             <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Usuario</label>
-              <input v-model="username"
-                     type="text"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Nombre de usuario">
+              <campo-formulario type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
-            <div class="mb-5">
-              <label class="form-label fw-bold text-light small">Contraseña</label>
-              <input v-model="password"
-                     type="password"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Mínimo 8 caracteres">
+            <div class="mb-4">
+              <campo-formulario type="text" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
             <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
@@ -109,14 +95,14 @@ const handleRegister = () => {
         </div>
 
         <div class="text-center mt-4">
-          <p class="text-light-emphasis">
-            ¿Ya estás registrado?
-            <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-              Inicia sesión aquí
-            </router-link>
-          </p>
+          <parraph-and-link
+              parraph-style="text-light-emphasis"
+              parraph-value="¿Ya estás registrado?"
+              link-text="Inicia sesión aquí"
+              link-style="text-dark text-decoration-none fw-bold border-bottom border-light"
+              link-direction="/login">
+          </parraph-and-link>
         </div>
-
       </div>
     </div>
   </div>

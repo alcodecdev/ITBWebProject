@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps({
+  // El valor del campo (v-model)
   // Textos
   label: {
     type: String,
@@ -7,7 +8,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Campo de formulario'
+    default: 'Nombre de usuario'
   },
   type: {
     type: String,
@@ -21,9 +22,6 @@ const props = defineProps({
   inputClass: {
     type: String,
     default: 'form-control form-control-lg bg-light text-dark border-secondary'
-  },
-  divClass: {
-    type: String,
   }
 });
 
@@ -32,8 +30,8 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div :class="divClass">
-    <label :for="id" :class="labelClass">
+  <div>
+    <label :class="labelClass">
       {{ label }}
     </label>
     <input
