@@ -1,7 +1,10 @@
 <script setup>
-defineProps(['total'])
 defineEmits(['onVaciar'])
 defineProps({
+  total:{
+    type: Number,
+    default: 0
+  },
   divClasePadre: {
     type: String,
     default: 'row justify-content-center mb-5'

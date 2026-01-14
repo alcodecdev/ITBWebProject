@@ -1,21 +1,20 @@
 <script setup>
-
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import Navbar from "@/components/layout/Navbar.vue" // Tu componente de barra
+import Navbar from "@/components/layout/Navbar.vue"
 import SpinnerAnimation from "@/components/SpinnerAnimation.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import BarraAgregar from "@/components/BarraAgregar.vue";
+import Contador from "@/components/Contador.vue";
+import Button from "@/components/Button.vue";
 
 const router = useRouter()
 const storageKey = 'listaPorc'
 
-// Estado reactivo
 const lista = ref([])
 const idInput = ref('')
 const errorMsg = ref('')
 
-// Cargar datos al iniciar
 onMounted(() => {
   const guardado = localStorage.getItem(storageKey)
   if (guardado) {
@@ -23,7 +22,6 @@ onMounted(() => {
   }
 })
 
-// Propiedad computada para el total (reemplaza a actualizarInterfazContador)
 const totalAnimales = computed(() => lista.value.length)
 
 const agregarAnimal = () => {
@@ -35,16 +33,14 @@ const agregarAnimal = () => {
     return
   }
 
+  // Seguimos validando duplicados internamente para que el conteo sea real
   if (lista.value.includes(valor)) {
     errorMsg.value = "Esta ID ya ha sido escaneada"
     return
   }
 
-  // Guardar
   lista.value.push(valor)
   localStorage.setItem(storageKey, JSON.stringify(lista.value))
-
-  // Limpiar
   idInput.value = ""
 }
 
@@ -55,15 +51,14 @@ const vaciarLista = () => {
   }
 }
 
-const finalizarEscaneo = (e) => {
+// ESTA ES LA FUNCIÓN QUE LLAMA EL BOTÓN
+const goToForm = () => {
   if (totalAnimales.value === 0) {
-    e.preventDefault()
     errorMsg.value = "Escanea al menos un animal para continuar."
   } else {
-    router.push('/formulario-envio')
+    router.push('/form')
   }
 }
-
 </script>
 
 <template>
@@ -84,18 +79,24 @@ const finalizarEscaneo = (e) => {
         subtitleClass="text-success small text-uppercase tracking-widest"
     />
 
-    <BarraAgregar />
+    <BarraAgregar
+        v-model="idInput"
+        :error="errorMsg"
+        @onAgregar="agregarAnimal"
+    />
 
-    <div class="row justify-content-center mb-4">
+    <Contador
+        :total="totalAnimales"
+        @onVaciar="vaciarLista"
+    />
 
-    </div>
-
-    <div class="fixed-bottom p-3 bg-light bg-opacity-90">
-      <div class="container d-grid">
+    <div class="fixed-bottom p-3 bg-light">
+      <div class="container">
         <Button
+            type="submit"
             @click="goToForm"
             nombreSpan="FINALIZAR Y ENVIAR FORMULARIO"
-            clase="btn btn-success btn-lg fw-bold py-3 shadow"/>
+            clase="btn btn-success btn-lg w-100 fw-bold py-3 fs-4 text-uppercase shadow"/>
       </div>
     </div>
   </div>
