@@ -24,6 +24,10 @@ const props = defineProps({
   },
   divClass: {
     type: String,
+  },
+  divErrorClass:{
+    type: String,
+    default: 'class="text-danger small fw-bold'
   }
 });
 
@@ -42,6 +46,7 @@ const emit = defineEmits(['update:modelValue']);
         :class="inputClass"
         :placeholder="placeholder"
     >
+    <div :class="divErrorClass"></div>
   </div>
 </template>
 
