@@ -3,14 +3,16 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div class="bg-dark text-white min-vh-100 d-flex align-items-center">
-    <div class="container">
-      <div class="row justify-content-center w-100 m-0">
+  <div class="app-container">
         <RouterView />
-      </div>
-    </div>
   </div>
 </template>
 
 <style>
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa !important;
+  min-vh-100: 100vh;
+}
 </style>

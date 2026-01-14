@@ -1,10 +1,6 @@
 <script setup>
 const props = defineProps({
   // El valor del campo (v-model)
-  modelValue: {
-    type: String,
-    default: ''
-  },
   // Textos
   label: {
     type: String,
@@ -13,11 +9,6 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Nombre de usuario'
-  },
-  // Configuración de IDs y tipos
-  id: {
-    type: String,
-    default: 'inputName'
   },
   type: {
     type: String,
@@ -40,17 +31,14 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div>
-    <label :for="id" :class="labelClass">
+    <label :class="labelClass">
       {{ label }}
     </label>
     <input
-        :id="id"
         :type="type"
-        :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
         :class="inputClass"
         :placeholder="placeholder"
-        autocomplete="username"
     >
   </div>
 </template>
