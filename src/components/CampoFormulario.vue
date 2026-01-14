@@ -22,6 +22,16 @@ const props = defineProps({
   inputClass: {
     type: String,
     default: 'form-control form-control-lg bg-light text-dark border-secondary'
+  },
+  divError:{
+    type: String,
+    default: ''
+  },
+  divClass: {
+    type: String
+  },
+  divErrorClass: {
+    type: String
   }
 });
 
@@ -30,7 +40,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div>
+  <div :class="divClass">
     <label :class="labelClass">
       {{ label }}
     </label>
@@ -40,6 +50,7 @@ const emit = defineEmits(['update:modelValue']);
         :class="inputClass"
         :placeholder="placeholder"
     >
+    <div :class="divErrorClass">{{divError}}</div>
   </div>
 </template>
 
