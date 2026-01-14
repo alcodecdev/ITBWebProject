@@ -1,10 +1,6 @@
 <script setup>
 const props = defineProps({
   // El valor del campo (v-model)
-  modelValue: {
-    type: String,
-    default: ''
-  },
   // Textos
   label: {
     type: String,
@@ -35,12 +31,11 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div>
-    <label :for="id" :class="labelClass">
+    <label :class="labelClass">
       {{ label }}
     </label>
     <input
         :type="type"
-        :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
         :class="inputClass"
         :placeholder="placeholder"

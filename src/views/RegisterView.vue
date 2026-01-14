@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import CampoFormulario from "@/components/CampoFormulario.vue";
+import ParraphAndLink from "@/components/parraphAndLink.vue";
 
 const router = useRouter()
 
@@ -71,27 +73,15 @@ const handleRegister = () => {
           <form @submit.prevent="handleRegister">
 
             <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Email</label>
-              <input v-model="email"
-                     type="email"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="ejemplo@correo.com">
+            <campo-formulario type="text" v-model="email" placeholder="ejemplo@gmail.com"  label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
             <div class="mb-4">
-              <label class="form-label fw-bold text-light small">Usuario</label>
-              <input v-model="username"
-                     type="text"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Nombre de usuario">
+              <campo-formulario type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
-            <div class="mb-5">
-              <label class="form-label fw-bold text-light small">Contraseña</label>
-              <input v-model="password"
-                     type="password"
-                     class="form-control form-control-lg bg-light text-dark border-secondary"
-                     placeholder="Mínimo 8 caracteres">
+            <div class="mb-4">
+              <campo-formulario type="text" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
             </div>
 
             <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
@@ -105,10 +95,9 @@ const handleRegister = () => {
         </div>
 
         <div class="text-center mt-4">
-          <p class="text-light-emphasis">
-            ¿Ya estás registrado?
+          <parraph-and-link parraph-style="text-light-emphasis" parraph-value="¿Ya estás registrado?" link-text="Inicia sesión aquí"></parraph-and-link>
+
             <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-              Inicia sesión aquí
             </router-link>
           </p>
         </div>
