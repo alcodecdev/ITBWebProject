@@ -34,9 +34,14 @@ defineProps({
   buttonName:{
     type:String,
     default:"Agregar",
+  },
+  error:{
+    type:String
   }
 
 })
+// Avisamos al padre cuando hay cambios o clics
+defineEmits(['update:modelValue', 'onAgregar'])
 </script>
 
 <template>
@@ -46,12 +51,14 @@ defineProps({
         <input :type="inputType"
                :class="inputClass"
                :placeholder="inputPlaceholder"
+               @input="$emit('update:modelValue', $event.target.value)"
+               @keyup.enter="$emit('onAgregar')"
                autofocus>
-        <button :class="buttonClass">
+        <button type="button" :class="buttonClass" @click="$emit('onAgregar')">
           {{ buttonName }}
         </button>
       </div>
-      <p></p>
+      <p :class="divClassParrafo" v-if="error">{{error}}</p>
     </div>
   </div>
 </template>
