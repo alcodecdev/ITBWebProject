@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import CampoFormulario from "@/components/CampoFormulario.vue";
-import ParraphAndLink from "@/components/parraphAndLink.vue";
+import ParraphAndLink from "@/components/ParraphAndLink.vue";
 
 const router = useRouter()
 
