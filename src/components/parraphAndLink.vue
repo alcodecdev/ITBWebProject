@@ -14,7 +14,7 @@ const props = defineProps({
     type: String
   }
 })
-</script>
+</script>s
 
 <template>
 

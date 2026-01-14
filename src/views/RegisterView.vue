@@ -100,7 +100,7 @@ const handleRegister = () => {
             <router-link to="/login" class="text-dark text-decoration-none fw-bold border-bottom border-light">
             </router-link>
           </p>
-        </div>
+        </div>s
 
       </div>
     </div>
