@@ -97,6 +97,7 @@ const handleRegister = () => {
             </div>
           </div>
 
+
           <div class="text-center mt-4">
             <parraph-and-link
                 parraph-style="text-light-emphasis"
