@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie' // Importamos la librería
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 
 const router = useRouter()
-
 
 const username = ref('')
 const password = ref('')
@@ -14,31 +14,30 @@ const errorMsg = ref('')
 const showError = ref(false)
 const usuarios = ref([])
 
-//leemos los usuarios de LocalStorage
 onMounted(() => {
+  // Seguimos leyendo usuarios de LocalStorage
   usuarios.value = JSON.parse(localStorage.getItem("usuarios")) || []
 })
 
 const handleLogin = () => {
   showError.value = false
 
-  // Validaciones
   if (!username.value.trim() || !password.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  // Buscar usuario válido
   const usuarioValido = usuarios.value.find(
       u => u.nombre === username.value.trim() && u.password === password.value.trim()
   )
 
   if (usuarioValido) {
-    // Guardamos la sesión (opcional para el router)
-    localStorage.setItem('usuario_logeado', JSON.stringify(usuarioValido))
+    // GUARDAR SESIÓN CON COOKIES
+    // 'expires: 1' significa que la cookie expirará en 1 día
+    // Convertimos el objeto a String porque las cookies solo guardan texto
+    Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1 })
 
-    // REDIRECCIÓN VUE (Equivalente a window.location.replace)
     router.replace('/home')
   } else {
     errorMsg.value = "Usuario o contraseña incorrectos"

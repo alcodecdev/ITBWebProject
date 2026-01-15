@@ -4,15 +4,21 @@ import { useRouter } from 'vue-router'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import Footer from "@/components/layout/Footer.vue";
+import Cookies from 'js-cookie' // Importación correcta
 
 const router = useRouter()
 const nombreOperario = ref('')
 
+// 1. Verificación de Seguridad
+// Lo ideal es hacerlo dentro de onMounted para asegurar que el router está listo
 onMounted(() => {
-  const guardado = JSON.parse(localStorage.getItem('usuario_logeado'))
-  if (guardado) {
-    nombreOperario.value = guardado.nombre // Recuerda que es un objeto, accede a .nombre
+  const userCookie = Cookies.get('usuario_logeado')
+
+  if (userCookie) {
+    const usuario = JSON.parse(userCookie)
+    nombreOperario.value = usuario.nombre
   } else {
+    // Si no hay cookie, al login
     router.push('/login')
   }
 })
@@ -21,8 +27,9 @@ const goToScanner = () => {
   router.push('/scanner')
 }
 
+//Logout corregido para Cookies
 const handleLogout = () => {
-  localStorage.removeItem('usuario_logeado')
+  Cookies.remove('usuario_logeado') // Borramos la cookie, no el localStorage
   router.replace('/login')
 }
 </script>
