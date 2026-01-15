@@ -8,15 +8,26 @@ const router = useRouter()
 const nombreOperario = ref('')
 
 onMounted(() => {
-  const guardado = JSON.parse(localStorage.getItem('usuario_logeado'))
-  if (guardado) {
-    nombreOperario.value = guardado.nombre // Recuerda que es un objeto, accede a .nombre
-  } else {
-    router.push('/login')
+  const data = localStorage.getItem('usuario_logeado')
+
+  // Si NO hay datos, al login
+  if (!data) {
+    router.replace('/login')
+    return
+  }
+
+  try {
+    const usuario = JSON.parse(data)
+    nombreOperario.value = usuario.nombre || usuario.nif || 'Operari'
+    // IMPORTANTE: Aquí NO ponemos ningún router.push/replace
+  } catch (e) {
+    router.replace('/login')
   }
 })
 
+// Esta es la función que se activa al pulsar el botón
 const goToScanner = () => {
+  console.log("Botón pulsado: Navegando a scanner...")
   router.push('/scanner')
 }
 
