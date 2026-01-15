@@ -1,11 +1,45 @@
 <script setup>
-
-import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie' // Importamos la librería
+import Navbar from "@/components/layout/Navbar.vue"
+import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue"
+import Button from "@/components/Button.vue"
 import CampoFormulario from "@/components/CampoFormulario.vue";
-import Navbar from "@/components/layout/Navbar.vue";
-import Button from "@/components/Button.vue";
-</script>
 
+const router = useRouter()
+const nombreOperario = ref('')
+
+// Referencias para los campos del formulario
+const destino = ref('')
+const observaciones = ref('')
+const errorMsg = ref('')
+
+onMounted(() => {
+  // 1. VALIDACIÓN DE SEGURIDAD CON COOKIES
+  const userCookie = Cookies.get('usuario_logeado')
+
+  if (userCookie) {
+    const usuario = JSON.parse(userCookie)
+    nombreOperario.value = usuario.nombre
+  } else {
+    // Si no hay cookie, redirigimos al login inmediatamente
+    router.replace('/login')
+  }
+})
+
+const handleSubmit = () => {
+  if (!destino.value.trim()) {
+    errorMsg.value = "El campo destino es obligatorio"
+    return
+  }
+  // Aquí iría tu lógica de envío (API)
+
+  // Limpiar lista de escaneo tras envío exitoso si es necesario
+  localStorage.removeItem('listaPorc')
+  router.push('/home')
+}
+</script>
 <template>
   <navbar></navbar>
   <div class="container">
@@ -20,7 +54,7 @@ import Button from "@/components/Button.vue";
         ></title-and-subtitle>
       </div>
 
-      <form id="formEnvio" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-success bg-opacity-22 shadow">
+      <form id="formEnvio" @submit.prevent="handleSubmit" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-success bg-opacity-22 shadow">
         <campo-formulario
             type="text"
             label="NIF"
@@ -209,22 +243,17 @@ import Button from "@/components/Button.vue";
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
 
             <Button
+                @click="router.back()"
                 type="button"
                 clase="btn btn-outline-danger btn-lg flex-grow-1 fw-bold bg-danger text-light"
                 nombreSpan="CANCELAR"
-            >
-              <router-link to="/scanner" class="text-decoration-none color-inherit" style="color: inherit;">
-              </router-link>
-            </Button>
+            />
 
             <Button
                 type="submit"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
                 nombreSpan="REGISTRAR TRAMESA"
-            >
-              <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
-              </router-link>
-            </Button>
+            />
 
 
 
