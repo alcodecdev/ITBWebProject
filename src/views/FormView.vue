@@ -269,7 +269,7 @@ const handleSubmit = () => {
                   class="p-3 bg-black bg-opacity-25 rounded-3 border border-light border-opacity-50 h-100 d-flex flex-column justify-content-center">
                 <label class="form-label fw-bold text-light small text-uppercase mb-0">Número de animals:</label>
                 <div class="text-white fw-bolder display-5">{{ totalAnimals }}</div>
-                <div v-if="errores.animals" class="yellow-error mt-1">⚠️ {{ errores.animals }}</div>
+                <div v-if="errores.animals" class="yellow-error mt-1">{{ errores.animals }}</div>
               </div>
             </div>
 
