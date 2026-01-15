@@ -5,6 +5,7 @@ import Cookies from 'js-cookie' // Importamos la librería
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
+import Button from "@/components/Button.vue";
 
 const router = useRouter()
 
@@ -65,35 +66,32 @@ const handleLogin = () => {
           <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
             <form @submit.prevent="handleLogin">
 
-              <div class="mb-4">
-                <label for="inputName" class="form-label fw-bold text-light small">Usuario</label>
-                <input
-                    v-model="username"
-                    type="text"
-                    class="form-control form-control-lg bg-light text-dark border-secondary"
-                    id="inputName"
-                    placeholder="Nombre de usuario"
-                    autocomplete="username"
-                >
-              </div>
+              <CampoFormulario
+                  v-model="username"
+                  type="text"
+                  divClass="mb-4"
+                  inputClass="form-control-lg bg-light text-dark border-secondary"
+                  labelClass="form-label fw-bold text-light small"
+                  label="Usuario"
+                  placeholder="Nombre de usuario"
+              />
 
+              <CampoFormulario
+                  v-model="password"
+                  type="password"
+                  divClass="mb-5"
+                  inputClass="form-control-lg bg-light text-dark border-secondary"
+                  labelClass="form-label fw-bold text-light small"
+                  label="Contraseña"
+                  placeholder="Contraseña"
+              />
 
+              <Button
+                  type="submit"
+                  clase="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm"
+                  nombreSpan="Iniciar Sesión"
+              />
 
-              <div class="mb-5">
-                <label for="inputPassword1" class="form-label fw-bold text-light small">Contraseña</label>
-                <input
-                    v-model="password"
-                    type="password"
-                    class="form-control form-control-lg bg-light text-dark border-secondary"
-                    id="inputPassword1"
-                    placeholder="Contraseña"
-                    autocomplete="current-password"
-                >
-              </div>
-
-              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
-                Iniciar Sesión
-              </button>
             </form>
 
             <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
