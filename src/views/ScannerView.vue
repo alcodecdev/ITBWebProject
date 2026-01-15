@@ -17,15 +17,14 @@ const idInput = ref('')
 const errorMsg = ref('')
 
 onMounted(() => {
-  // VALIDACION DE SEGURIDAD CON COOKIES
+  // 1. VALIDACIÓN DE SEGURIDAD CON COOKIES
   const userCookie = Cookies.get('usuario_logeado')
   if (!userCookie) {
     router.replace('/login')
-    // Salimos para no ejecutar el resto
-    return
+    return // Salimos para no ejecutar el resto
   }
 
-  //Carga de datos del scanner
+  // 2. Carga de datos del scanner (LocalStorage está bien aquí)
   const guardado = localStorage.getItem(storageKey)
   if (guardado) {
     lista.value = JSON.parse(guardado)
@@ -39,7 +38,7 @@ const agregarAnimal = () => {
   errorMsg.value = ""
 
   if (valor === "") {
-    errorMsg.value = "La ID no puede estar vacia"
+    errorMsg.value = "La ID no puede estar vacía"
     return
   }
 
@@ -70,45 +69,45 @@ const goToForm = () => {
 </script>
 
 <template>
-<div class="bg-light text-white min-vh-100">
+  <div class="bg-light text-white min-vh-100">
 
-  <Navbar />
+    <Navbar />
 
 
-  <div class="container text-center">
+    <div class="container text-center">
 
-    <SpinnerAnimation />
+      <SpinnerAnimation />
 
-    <TitleAndSubtitle
-        divClass="mb-4"
-        titleH2Class="fw-bold text-success"
-        titleH2="ESCANEO"
-        subtitle="Lector Activo"
-        subtitleClass="text-success small text-uppercase tracking-widest"
-    />
+      <TitleAndSubtitle
+          divClass="mb-4"
+          titleH2Class="fw-bold text-success"
+          titleH2="ESCANEO"
+          subtitle="Lector Activo"
+          subtitleClass="text-success small text-uppercase tracking-widest"
+      />
 
-    <BarraAgregar
-        v-model="idInput"
-        :error="errorMsg"
-        @onAgregar="agregarAnimal"
-    />
+      <BarraAgregar
+          v-model="idInput"
+          :error="errorMsg"
+          @onAgregar="agregarAnimal"
+      />
 
-    <Contador
-        :total="totalAnimales"
-        @onVaciar="vaciarLista"
-    />
+      <Contador
+          :total="totalAnimales"
+          @onVaciar="vaciarLista"
+      />
 
-    <div class="fixed-bottom p-3 bg-light">
-      <div class="container">
-        <Button
-            type="submit"
-            @click="goToForm"
-            nombreSpan="FINALIZAR Y ENVIAR FORMULARIO"
-            clase="btn btn-success btn-lg w-100 fw-bold py-3 fs-4 text-uppercase shadow"/>
+      <div class="fixed-bottom p-3 bg-light">
+        <div class="container">
+          <Button
+              type="submit"
+              @click="goToForm"
+              nombreSpan="FINALIZAR Y ENVIAR FORMULARIO"
+              clase="btn btn-success btn-lg w-100 fw-bold py-3 fs-4 text-uppercase shadow"/>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>

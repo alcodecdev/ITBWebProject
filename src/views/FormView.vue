@@ -254,7 +254,7 @@ const handleSubmit = () => {
 
             <campo-formulario
                 v-model="formData.nif"
-nif                :error="errores.nif"
+                nif                :error="errores.nif"
                 div-class="col-md-6"
                 label="NIF CONDUCTOR:"/>
 
