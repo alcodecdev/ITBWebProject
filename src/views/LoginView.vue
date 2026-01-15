@@ -32,17 +32,18 @@ const handleLogin = () => {
       u => u.nombre === username.value.trim() && u.password === password.value.trim()
   )
 
-  if (usuarioValido) {
     // GUARDAR SESIÓN CON COOKIES
     // 'expires: 1' significa que la cookie expirará en 1 día
     // Convertimos el objeto a String porque las cookies solo guardan texto
-    Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1 })
+    if (usuarioValido) {
+      Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1, sameSite:"lax" });
 
-    router.replace('/home')
-  } else {
-    errorMsg.value = "Usuario o contraseña incorrectos"
-    showError.value = true
-  }
+      router.push('/home').then(() => {
+        console.log("Navegación completada");
+      }).catch(err => {
+        console.error("Error en la navegación:", err);
+      });
+    }
 }
 </script>
 
