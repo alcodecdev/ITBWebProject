@@ -1,13 +1,13 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import Cookies from 'js-cookie' // Importamos la librería para gestionar la sesión
 
 const router = useRouter()
 
+// Definimos props por si en alguna página el botón de "Volver" debe ir a un sitio específico
 const props = defineProps({
   rutaVolver: {
     type: String,
-    default: ''
+    default: '' // Si está vacío, usaremos router.back()
   }
 })
 
@@ -15,19 +15,15 @@ const irAtras = () => {
   if (props.rutaVolver) {
     router.push(props.rutaVolver)
   } else {
-    router.back()
+    router.back() // Vuelve a la pestaña anterior del historial
   }
 }
 
 const handleLogout = () => {
-  // 1. Borramos la cookie de sesión (Esencial)
-  Cookies.remove('usuario_logeado')
-
-  // 2. Limpiamos cualquier rastro sobrante en localStorage por seguridad
+  // Limpiamos sesión
   localStorage.removeItem('usuario_logeado')
   localStorage.removeItem('isAuth')
-
-  // 3. Redirección limpia al login
+  // Al login
   router.replace('/login')
 }
 </script>
@@ -57,16 +53,8 @@ const handleLogout = () => {
 </template>
 
 <style scoped>
-/* Tu estilo para mantener la altura mínima */
-nav {
+/* Aseguramos que el centro siempre esté alineado aunque los botones tengan distintos tamaños */
+.navbar {
   min-height: 70px;
-}
-
-/* Evitamos que el botón de salir sea demasiado grande en móviles muy pequeños */
-@media (max-width: 375px) {
-  .btn {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
-  }
 }
 </style>
