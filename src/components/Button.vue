@@ -5,6 +5,7 @@ defineProps({
   clase: String,
   claseSpan: String,
   nombreSpan: String,
+  idButton: String
 })
 </script>
 

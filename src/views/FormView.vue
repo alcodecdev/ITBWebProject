@@ -1,10 +1,18 @@
 <script setup>
 
+import {onMounted} from "vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
+import '../App/appFormEnvioPorc.js'
+import {inicializarFormEnvioPorc} from "@/App/appFormEnvioPorc.js";
+
+onMounted(() => {
+  inicializarFormEnvioPorc();
+});
 </script>
+
 
 <template>
   <navbar></navbar>
@@ -209,6 +217,7 @@ import Button from "@/components/Button.vue";
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
 
             <Button
+                idButton="cancelar"
                 type="button"
                 clase="btn btn-outline-danger btn-lg flex-grow-1 fw-bold bg-danger text-light"
                 nombreSpan="CANCELAR"
@@ -218,6 +227,7 @@ import Button from "@/components/Button.vue";
             </Button>
 
             <Button
+                idButton="enviar"
                 type="submit"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
                 nombreSpan="REGISTRAR TRAMESA"
