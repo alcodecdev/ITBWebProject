@@ -1,6 +1,7 @@
 <script setup>
 
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+import CampoFormulario from "@/components/CampoFormulario.vue";
 </script>
 
 <template>
@@ -15,6 +16,20 @@ import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
             divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
         ></title-and-subtitle>
       </div>
+
+      <form id="formEnvio" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-success bg-opacity-22 shadow">
+        <campo-formulario
+        type="text"
+        label="NIF"
+        placeholder="12345678X"
+        label-class="form-label fw-bold text-light  small"
+        input-class="form-control bg-light text-dark border-secondary"
+        div-error-class="text-danger small fw-bold"
+        divClass="col-md-6"
+        ></campo-formulario>
+
+      </form>
+
     </div>
   </div>
 
