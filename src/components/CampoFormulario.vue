@@ -1,7 +1,6 @@
 <script setup>
 const props = defineProps({
-  // El valor del campo (v-model)
-  // Textos
+// Textos
   label: {
     type: String,
     default: 'Usuario'

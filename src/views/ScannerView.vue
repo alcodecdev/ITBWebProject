@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie' // Importamos la librería
 import Navbar from "@/components/layout/Navbar.vue"
 import SpinnerAnimation from "@/components/SpinnerAnimation.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
@@ -16,6 +17,15 @@ const idInput = ref('')
 const errorMsg = ref('')
 
 onMounted(() => {
+  // VALIDACION DE SEGURIDAD CON COOKIES
+  const userCookie = Cookies.get('usuario_logeado')
+  if (!userCookie) {
+    router.replace('/login')
+    // Salimos para no ejecutar el resto
+    return
+  }
+
+  //Carga de datos del scanner
   const guardado = localStorage.getItem(storageKey)
   if (guardado) {
     lista.value = JSON.parse(guardado)
@@ -29,11 +39,10 @@ const agregarAnimal = () => {
   errorMsg.value = ""
 
   if (valor === "") {
-    errorMsg.value = "La ID no puede estar vacía"
+    errorMsg.value = "La ID no puede estar vacia"
     return
   }
 
-  // Seguimos validando duplicados internamente para que el conteo sea real
   if (lista.value.includes(valor)) {
     errorMsg.value = "Esta ID ya ha sido escaneada"
     return
@@ -51,7 +60,6 @@ const vaciarLista = () => {
   }
 }
 
-// ESTA ES LA FUNCIÓN QUE LLAMA EL BOTÓN
 const goToForm = () => {
   if (totalAnimales.value === 0) {
     errorMsg.value = "Escanea al menos un animal para continuar."
