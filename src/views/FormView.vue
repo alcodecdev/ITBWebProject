@@ -109,6 +109,7 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
+
         ></campo-formulario>
 
         <campo-formulario
