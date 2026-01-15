@@ -17,14 +17,15 @@ const idInput = ref('')
 const errorMsg = ref('')
 
 onMounted(() => {
-  // 1. VALIDACIÓN DE SEGURIDAD CON COOKIES
+  // VALIDACION DE SEGURIDAD CON COOKIES
   const userCookie = Cookies.get('usuario_logeado')
   if (!userCookie) {
     router.replace('/login')
-    return // Salimos para no ejecutar el resto
+    // Salimos para no ejecutar el resto
+    return
   }
 
-  // 2. Carga de datos del scanner (LocalStorage está bien aquí)
+  //Carga de datos del scanner
   const guardado = localStorage.getItem(storageKey)
   if (guardado) {
     lista.value = JSON.parse(guardado)
@@ -38,7 +39,7 @@ const agregarAnimal = () => {
   errorMsg.value = ""
 
   if (valor === "") {
-    errorMsg.value = "La ID no puede estar vacía"
+    errorMsg.value = "La ID no puede estar vacia"
     return
   }
 

@@ -17,14 +17,14 @@ const handleRegister = () => {
   showError.value = false
   errorMsg.value = ""
 
-  //Validaciones básicas
+  //Validaciones basicas
   if (!username.value.trim() || !password.value.trim() || !email.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  // Validación de Email
+  // Validacion de Email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value)) {
     errorMsg.value = "El formato del email no es válido"
@@ -35,7 +35,7 @@ const handleRegister = () => {
   //Obtener usuarios de LocalStorage
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
 
-  //Comprobar si el usuario ya existe (Opcional pero recomendado)
+  //Comprobar si el usuario ya existe
   if (usuarios.find(u => u.nombre === username.value.trim())) {
     errorMsg.value = "El nombre de usuario ya está en uso"
     showError.value = true
