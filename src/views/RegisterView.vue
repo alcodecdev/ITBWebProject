@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { auth, db } from "@/firebase" // Importamos la conexión
+import { createUserWithEmailAndPassword } from "firebase/auth" // Herramienta de Auth
+import { doc, setDoc } from "firebase/firestore" // Herramienta de Base de Datos
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import ParraphAndLink from "@/components/ParraphAndLink.vue";
 import Footer from "@/components/layout/Footer.vue";
@@ -13,18 +16,17 @@ const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
 
-const handleRegister = () => {
+const handleRegister = async () => { // Añadimos async
   showError.value = false
   errorMsg.value = ""
 
-  //Validaciones básicas
+  // 1. Validaciones básicas de UI
   if (!username.value.trim() || !password.value.trim() || !email.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  // Validación de Email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value)) {
     errorMsg.value = "El formato del email no es válido"
@@ -32,31 +34,40 @@ const handleRegister = () => {
     return
   }
 
-  //Obtener usuarios de LocalStorage
-  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
+  try {
+    // 2. CREAR USUARIO EN FIREBASE AUTH
+    // Esto crea la cuenta técnica (email/password)
+    const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.value.trim(),
+        password.value.trim()
+    );
+    const user = userCredential.user;
 
-  //Comprobar si el usuario ya existe (Opcional pero recomendado)
-  if (usuarios.find(u => u.nombre === username.value.trim())) {
-    errorMsg.value = "El nombre de usuario ya está en uso"
-    showError.value = true
-    return
+    // 3. GUARDAR PERFIL EN FIRESTORE (Base de datos en Madrid)
+    // Usamos el UID de Firebase como ID del documento
+    await setDoc(doc(db, "usuarios", user.uid), {
+      nombre: username.value.trim(),
+      email: email.value.trim(),
+      rol: "operario",
+      fechaRegistro: new Date()
+    });
+
+    // 4. FINALIZAR
+    alert("Usuario registrado correctamente en la nube");
+    router.replace('/login');
+
+  } catch (error) {
+    showError.value = true;
+    // Manejo de errores específicos de Firebase
+    if (error.code === 'auth/email-already-in-use') {
+      errorMsg.value = "Este email ya está registrado";
+    } else if (error.code === 'auth/weak-password') {
+      errorMsg.value = "La contraseña debe tener al menos 6 caracteres";
+    } else {
+      errorMsg.value = "Error en el servidor: " +error;
+    }
   }
-
-  //Crear y guardar el usuario
-  const nuevoUsuario = {
-    nombre: username.value.trim(),
-    email: email.value.trim(),
-    password: password.value.trim()
-  }
-
-  usuarios.push(nuevoUsuario)
-  localStorage.setItem("usuarios", JSON.stringify(usuarios))
-
-  //Finalizar
-  alert("Usuario registrado correctamente")
-
-  // En Vue usamos router.replace para navegar
-  router.replace('/login')
 }
 </script>
 

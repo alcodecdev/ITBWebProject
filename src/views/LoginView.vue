@@ -1,25 +1,22 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Cookies from 'js-cookie' // Importamos la librería
+import { auth, db } from "@/firebase"
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import Cookies from 'js-cookie'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
-
-const username = ref('')
+const username = ref('') // Usaremos el email para el login manual de Firebase
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
-const usuarios = ref([])
 
-onMounted(() => {
-  // Seguimos leyendo usuarios de LocalStorage
-  usuarios.value = JSON.parse(localStorage.getItem("usuarios")) || []
-})
-
-const handleLogin = () => {
+// --- FUNCIÓN: LOGIN MANUAL (Firestore) ---
+const handleLogin = async () => {
   showError.value = false
 
   if (!username.value.trim() || !password.value.trim()) {
@@ -28,27 +25,65 @@ const handleLogin = () => {
     return
   }
 
-  const usuarioValido = usuarios.value.find(
-      u => u.nombre === username.value.trim() && u.password === password.value.trim()
-  )
+  try {
+    // 1. Validar en Firebase Auth
+    const userCredential = await signInWithEmailAndPassword(auth, username.value.trim(), password.value.trim());
+    const user = userCredential.user;
 
-  if (usuarioValido) {
-    // GUARDAR SESION CON COOKIES
-    // "expires: 1" significa que la cookie expirara en 1 día
-    // Convertimos el objeto a String porque las cookies solo guardan texto
-    Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1 })
+    // 2. Obtener datos extra de Firestore (Nombre, Rol, etc.)
+    const docRef = doc(db, "usuarios", user.uid);
+    const docSnap = await getDoc(docRef);
 
-    router.replace('/home')
-  } else {
-    errorMsg.value = "Usuario o contraseña incorrectos"
-    showError.value = true
+    if (docSnap.exists()) {
+      const datosCompletos = docSnap.data();
+      // 3. Guardar en Cookie
+      Cookies.set('usuario_logeado', JSON.stringify(datosCompletos), { expires: 1 });
+      router.replace('/home');
+    }
+  } catch (error) {
+    showError.value = true;
+    errorMsg.value = "Email o contraseña incorrectos";
+  }
+}
+
+// --- FUNCIÓN: LOGIN CON GOOGLE ---
+const loginConGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // Verificar si el usuario ya existe en Firestore
+    const docRef = doc(db, "usuarios", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    let datosUsuario;
+
+    if (docSnap.exists()) {
+      datosUsuario = docSnap.data();
+    } else {
+      // Si es su primera vez, lo registramos automáticamente
+      datosUsuario = {
+        nombre: user.displayName,
+        email: user.email,
+        rol: "operario",
+        foto: user.photoURL,
+        fechaRegistro: new Date()
+      };
+      await setDoc(docRef, datosUsuario);
+    }
+
+    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
+    router.replace('/home');
+
+  } catch (error) {
+    console.error("Error Google Auth:", error);
   }
 }
 </script>
 
 <template>
   <div class="min-vh-100 d-flex flex-column w-100">
-
     <div class="container d-flex flex-grow-1 align-items-center justify-content-center py-5">
       <div class="row justify-content-center w-100">
         <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
@@ -63,17 +98,14 @@ const handleLogin = () => {
 
           <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
             <form @submit.prevent="handleLogin">
-
-
               <CampoFormulario
                   divClass="mb-4"
-                  label="Usuario"
+                  label="Email"
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
-                  placeholder="Nombre de usuario"
+                  placeholder="tu@email.com"
                   v-model="username"
               />
-
 
               <CampoFormulario
                   divClass="mb-5"
@@ -83,11 +115,15 @@ const handleLogin = () => {
                   placeholder="Contraseña"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   v-model="password"
-
               />
 
-              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm mb-3">
                 Iniciar Sesión
+              </button>
+
+              <button type="button" @click="loginConGoogle" class="btn btn-light w-100 py-2 d-flex align-items-center justify-content-center border-2 fw-bold">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" class="me-2">
+                Entrar con Google
               </button>
             </form>
 
@@ -110,11 +146,3 @@ const handleLogin = () => {
     <Footer />
   </div>
 </template>
-
-<style>
-body, html {
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa !important;
-}
-</style>
