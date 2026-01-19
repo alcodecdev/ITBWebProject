@@ -4,18 +4,26 @@ import RegisterView from '@/views/RegisterView.vue'
 import HomeView from "@/views/HomeView.vue";
 import ScannerView from "@/views/ScannerView.vue";
 import FormView from "@/views/FormView.vue";
+import { auth } from '@/firebase'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHistory(/*import.meta.env.BASE_URL*/),
     routes: [
         {
-            path: '/',
+            /*path: '/',
             redirect: '/login'
+            */
+            path: '/',
+            component: () => import('@/views/HomeView.vue'),
+            meta: { requiresAuth: true }
         },
         {
-            path: '/login',
+            /*path: '/login',
             name: 'login',
             component: LoginView
+             */
+            path: '/login',
+            component: () => import('@/views/LoginView.vue')
         },
         {
             path: '/register',
@@ -38,6 +46,15 @@ const router = createRouter({
             component: FormView
         }
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    const user = auth.currentUser
+    if (to.meta.requiresAuth && !user) {
+        next('/login')
+    } else {
+        next()
+    }
 })
 
 

@@ -1,5 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { signOut } from "firebase/auth"
+import { auth } from "@/firebase"
+
+const logout = () => {
+  signOut(auth)
+}
 
 const router = useRouter()
 
@@ -19,10 +25,14 @@ const irAtras = () => {
   }
 }
 
-const handleLogout = () => {
+const handleLogout = async () => {
   // Limpiamos sesión
   localStorage.removeItem('usuario_logeado')
   localStorage.removeItem('isAuth')
+
+  if (auth.currentUser) {
+    await signOut(auth)
+  }
   // Al login
   router.replace('/login')
 }
