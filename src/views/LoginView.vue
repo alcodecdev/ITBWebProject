@@ -82,6 +82,7 @@ const handleLogin = () => {
                   labelClass="form-label fw-bold text-light small"
                   placeholder="Contraseña"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+                  v-model="password"
 
               />
 
