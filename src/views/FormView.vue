@@ -171,33 +171,33 @@ const handleSubmit = () => {
         <div class="col-12 col-lg-10">
 
           <TitleAndSubtitle
-              divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
+              divClass="mb-4 pb-3"
               subtitle="Porcí - Control de Lots"
               title="Registre de Tramesa"
               titleClass="display-5 fw-bolder text-success"
           />
 
-          <form class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-success bg-opacity-22 shadow text-white"
+          <form class="row g-4 p-4 p-md-5 rounded-4 bg-white shadow-lg border-0 text-dark"
                 @submit.prevent="handleSubmit">
 
-            <campo-formulario v-model="formData.nif" :error="errores.nif" div-class="col-md-6" label="NIF:"/>
-            <campo-formulario v-model="formData.passw" :error="errores.passw" div-class="col-md-6"
+            <campo-formulario v-model="formData.nif" :error="errores.nif" label-class="text-secondary fw-bold small" div-class="col-md-6" label="NIF:"/>
+            <campo-formulario v-model="formData.passw" :error="errores.passw" div-class="col-md-6" label-class="text-secondary fw-bold small"
                               label="CONTRASENYA MOVILITAT:" type="password"/>
 
-            <campo-formulario v-model="formData.origen" :error="errores.origen" div-class="col-md-6"
+            <campo-formulario v-model="formData.origen" :error="errores.origen" div-class="col-md-6" label-class="text-secondary fw-bold small"
                               label="CODI EXPLOTACIÓ ORIGEN:"/>
-            <campo-formulario v-model="formData.destino" :error="errores.destino" div-class="col-md-6"
+            <campo-formulario v-model="formData.destino" :error="errores.destino" div-class="col-md-6" label-class="text-secondary fw-bold small"
                               label="CODI EXPLOTACIÓ DESTINACIÓ:"/>
 
-            <campo-formulario v-model="formData.especie" :error="errores.especie" div-class="col-md-3"
+            <campo-formulario v-model="formData.especie" :error="errores.especie" div-class="col-md-3" label-class="text-secondary fw-bold small"
                               label="ESPÈCIE:"/>
-            <campo-formulario v-model="formData.accio" :error="errores.accio" div-class="col-md-3" label="ACCIÓ:"/>
-            <campo-formulario v-model="formData.moviment" :error="errores.moviment" div-class="col-md-3"
+            <campo-formulario v-model="formData.accio" :error="errores.accio" div-class="col-md-3" label="ACCIÓ:" label-class="text-secondary fw-bold small"/>
+            <campo-formulario v-model="formData.moviment" :error="errores.moviment" div-class="col-md-3" label-class="text-secondary fw-bold small"
                               label="MOVIMENT:"/>
 
             <div class="col-md-3">
-              <label class="form-label fw-bold text-light small">CODI CATEGORIA:</label>
-              <select v-model="formData.categoria" :class="{'is-invalid': errores.categoria}"
+              <label class="form-label fw-bold text-secondary small">CODI CATEGORIA:</label>
+              <select required v-model="formData.categoria" :class="{'is-invalid': errores.categoria}"
                       class="form-select bg-light text-dark border-secondary h-auto py-2">
                 <option disabled value="">Selecciona uno</option>
                 <option value="Engreix">Engreix</option>
@@ -210,18 +210,27 @@ const handleSubmit = () => {
               <div v-if="errores.categoria" class="yellow-error">{{ errores.categoria }}</div>
             </div>
 
-            <campo-formulario v-model="formData.fechaSalida" :error="errores.fechaSalida" div-class="col-md-6" label="DATA SORTIDA:"
-                              type="date"/>
-            <campo-formulario v-model="formData.fechaLlegada" :error="errores.fechaLlegada" div-class="col-md-6" label="DATA ARRIBADA:"
-                              type="date"/>
+            <campo-formulario
+                v-model="formData.fechaSalida"
+                :error="errores.fechaSalida"
+                div-class="col-md-6" label="DATA SORTIDA:"
+                label-class="text-secondary fw-bold small"
+                type="date"
+            />
+            <campo-formulario
+                v-model="formData.fechaLlegada" :error="errores.fechaLlegada"
+                div-class="col-md-6" label="DATA ARRIBADA:"
+                label-class="text-secondary fw-bold small"
+                type="date"
+            />
 
             <div class="col-md-6">
-              <label class="form-label fw-bold text-light small d-block">MOBILITAT (SI/NO)</label>
+              <label class="form-label text-secondary fw-bold small small d-block">MOBILITAT (SI/NO)</label>
               <div class="btn-group w-100">
                 <input id="si" v-model="formData.mobilitat" class="btn-check" type="radio" value="si">
-                <label class="btn btn-outline-light fw-bold" for="si">SÍ</label>
+                <label class="btn btn-outline-secondary fw-bold" for="si">SÍ</label>
                 <input id="no" v-model="formData.mobilitat" class="btn-check" type="radio" value="no">
-                <label class="btn btn-outline-light fw-bold" for="no">NO</label>
+                <label class="btn btn-outline-secondary fw-bold" for="no">NO</label>
               </div>
             </div>
 
@@ -229,12 +238,17 @@ const handleSubmit = () => {
               <h5 class="text-light fw-bold">Dades del Transport</h5>
             </div>
 
-            <campo-formulario v-model="formData.nombreTransportista" :error="errores.nombreTransportista" div-class="col-md-6"
-                              label="NOM TRANSPORTISTA:"/>
+            <campo-formulario
+                v-model="formData.nombreTransportista"
+                :error="errores.nombreTransportista"
+                div-class="col-md-6"
+                label-class="text-secondary fw-bold small"
+                label="NOM TRANSPORTISTA:"
+            />
 
             <div class="col-md-6">
-              <label class="form-label fw-bold text-light small">MITJÀ DE TRANSPORT:</label>
-              <select v-model="formData.medioTransporte"
+              <label class="form-label fw-bold text-secondary small">MITJÀ DE TRANSPORT:</label>
+              <select required v-model="formData.medioTransporte"
                       class="form-select bg-light text-dark border-secondary h-auto py-2">
                 <option disabled value="">Selecciona uno</option>
                 <option value="Camion">Camión</option>
@@ -250,24 +264,30 @@ const handleSubmit = () => {
                 v-model="formData.matricula"
                 :error="errores.matricula"
                 div-class="col-md-6"
-                label="MATRÍCULA:"/>
+                label="MATRÍCULA:"
+                label-class="text-secondary fw-bold small"
+            />
 
             <campo-formulario
                 v-model="formData.nif"
                 nif                :error="errores.nif"
                 div-class="col-md-6"
-                label="NIF CONDUCTOR:"/>
+                label-class="text-secondary fw-bold small"
+                label="NIF CONDUCTOR:"
+            />
 
             <campo-formulario
                 v-model="formData.sirCode"
                 :error="errores.sirCode"
+                label-class="text-secondary fw-bold small"
                 div-class="col-md-6" label="SIRCODE:"
-                type="number"/>
+                type="number"
+            />
 
             <div class="col-md-6">
               <div
-                  class="p-3 bg-black bg-opacity-25 rounded-3 border border-light border-opacity-50 h-100 d-flex flex-column justify-content-center">
-                <label class="form-label fw-bold text-light small text-uppercase mb-0">Número de animals:</label>
+                  class="p-3 bg-secondary bg-opacity-22 rounded-3 border border-light border-opacity-50 h-100 d-flex flex-column justify-content-center">
+                <label class="form-label fw-bold text-white small text-uppercase mb-0">Número de animals:</label>
                 <div class="text-white fw-bolder display-5">{{ totalAnimals }}</div>
                 <div v-if="errores.animals" class="yellow-error mt-1">{{ errores.animals }}</div>
               </div>
@@ -286,32 +306,4 @@ const handleSubmit = () => {
 </template>
 
 <style scoped>
-/* Color Amarillo Ámbar: Resalta sobre el verde sin molestar la vista */
-.yellow-error {
-  color: #ffca2c;
-  font-size: 0.85rem;
-  font-weight: bold;
-}
-
-/* Forzamos que los componentes hijos (CampoFormulario) también usen amarillo */
-:deep(.invalid-feedback) {
-  color: #ffca2c !important;
-  display: block;
-}
-
-/* Cambia el color del borde del input a amarillo cuando es inválido */
-:deep(.is-invalid) {
-  border-color: #ffca2c !important;
-  box-shadow: 0 0 0 0.25rem rgba(255, 202, 44, 0.25) !important;
-}
-
-/* Estilo para que el select de Bootstrap use el mismo amarillo en caso de error */
-.form-select.is-invalid {
-  border-color: #ffca2c !important;
-}
-
-.display-5 {
-  font-size: 2.5rem;
-  line-height: 1;
-}
 </style>
