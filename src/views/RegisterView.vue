@@ -84,7 +84,7 @@ const handleRegister = () => {
               </div>
 
               <div class="mb-4">
-                <campo-formulario type="text" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+                <campo-formulario type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
               </div>
 
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
