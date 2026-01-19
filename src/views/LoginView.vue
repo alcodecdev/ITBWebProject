@@ -44,6 +44,47 @@ const handleLogin = () => {
     showError.value = true
   }
 }
+
+const loginConGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+
+    // 1. Abrir ventana emergente de Google
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // 2. CONEXIÓN CON FIRESTORE: Verificar si el usuario ya existe
+    const docRef = doc(db, "usuarios", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    let datosUsuario;
+
+    if (docSnap.exists()) {
+      // Si existe, tomamos sus datos (rol, etc.)
+      datosUsuario = docSnap.data();
+    } else {
+      // Si es nuevo, lo registramos automáticamente en la DB de Madrid
+      datosUsuario = {
+        nombre: user.displayName,
+        email: user.email,
+        rol: "operario", // Rol inicial
+        foto: user.photoURL,
+        creadoEn: new Date()
+      };
+      await setDoc(docRef, datosUsuario);
+    }
+
+    // 3. SESIÓN: Guardamos los datos en la Cookie (No en LocalStorage)
+    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
+
+    // 4. Redirigir al panel principal
+    router.replace("/home");
+
+  } catch (error) {
+    console.error("Error al entrar con Google:", error);
+  }
+};
+
 </script>
 
 <template>
@@ -89,6 +130,13 @@ const handleLogin = () => {
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
                 Iniciar Sesión
               </button>
+
+              <button @click="loginConGoogle" class="btn btn-light w-100 mt-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                     alt="Google" width="20" class="me-2">
+                Entrar con Google
+              </button>
+
             </form>
 
             <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
