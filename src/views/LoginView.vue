@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie' // Importamos la librería
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
+import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
 
@@ -63,29 +64,26 @@ const handleLogin = () => {
           <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
             <form @submit.prevent="handleLogin">
 
-              <div class="mb-4">
-                <label for="inputName" class="form-label fw-bold text-light small">Usuario</label>
-                <input
-                    v-model="username"
-                    type="text"
-                    class="form-control form-control-lg bg-light text-dark border-secondary"
-                    id="inputName"
-                    placeholder="Nombre de usuario"
-                    autocomplete="username"
-                >
-              </div>
 
-              <div class="mb-5">
-                <label for="inputPassword1" class="form-label fw-bold text-light small">Contraseña</label>
-                <input
-                    v-model="password"
-                    type="password"
-                    class="form-control form-control-lg bg-light text-dark border-secondary"
-                    id="inputPassword1"
-                    placeholder="Contraseña"
-                    autocomplete="current-password"
-                >
-              </div>
+              <CampoFormulario
+                  divClass="mb-4"
+                  label="Usuario"
+                  labelClass="form-label fw-bold text-light small"
+                  inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+                  placeholder="Nombre de usuario"
+                  v-model="username"
+              />
+
+
+              <CampoFormulario
+                  divClass="mb-5"
+                  type="password"
+                  label="Contraseña"
+                  labelClass="form-label fw-bold text-light small"
+                  placeholder="Contraseña"
+                  inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+
+              />
 
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
                 Iniciar Sesión

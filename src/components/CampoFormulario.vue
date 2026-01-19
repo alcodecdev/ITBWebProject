@@ -10,11 +10,19 @@ const props = defineProps({
   type: {
     type: String,
     default: 'text' },
-  labelClass: { type: String, default: 'form-label fw-bold text-light small' },
-  inputClass: { type: String, default: 'form-control form-control-lg bg-light text-dark border-secondary' },
-  divClass: { type: String, default: 'mb-3' },
-  // NUEVA PROP: Aquí recibiremos el mensaje de error desde el padre
-  error: { type: String, default: '' }
+  labelClass: {
+    type: String,
+    default: 'form-label fw-bold text-light small' },
+  inputClass: {
+    type: String, default:
+      'form-control form-control-lg bg-light text-dark border-secondary' },
+  divClass: {
+    type: String,
+    default: 'mb-3' },
+
+  error: { type:
+    String,
+    default: '' }
 });
 
 const emit = defineEmits(['update:modelValue']);
