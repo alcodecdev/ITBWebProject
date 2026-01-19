@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import Footer from "@/components/layout/Footer.vue";
-import Cookies from 'js-cookie' // Importación correcta
+import Cookies from 'js-cookie';
+import {auth} from "@/firebase.js"; // Importación correcta
 
 const router = useRouter()
 const nombreOperario = ref('')
@@ -28,10 +29,28 @@ const goToScanner = () => {
 }
 
 //Logout corregido para Cookies
-const handleLogout = () => {
-  Cookies.remove('usuario_logeado') //Borramos la cookie
-  router.replace('/login')
-}
+const handleLogout = async () => {
+  try {
+    // 1. Borrado de cookie con path explícito
+    Cookies.remove('usuario_logeado', { path: '/' });
+
+    // 2. Cierre de sesión en Firebase
+    await signOut(auth);
+
+    // 3. LIMPIEZA DE LOCALSTORAGE (Opcional pero recomendado)
+    // Esto evita que el siguiente usuario vea los animales del anterior
+    localStorage.removeItem('listaPorc');
+
+    // 4. RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
+    window.location.replace('/login');
+
+  } catch (error) {
+    console.error("Error al salir:", error);
+    // Si falla, forzamos el borrado y salida igualmente
+    Cookies.remove('usuario_logeado', { path: '/' });
+    window.location.href = '/login';
+  }
+};
 </script>
 
 <template>

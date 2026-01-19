@@ -1,26 +1,23 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Cookies from 'js-cookie' // Importamos la librería
+import { auth, db } from "@/firebase"
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { collection, query, where, getDocs, doc, getDoc, setDoc } from "firebase/firestore"
+import Cookies from 'js-cookie'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
-
-const username = ref('')
+const username = ref('') // Aquí el usuario pondrá su alias (ej: jgarcia)
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
-const usuarios = ref([])
 
-onMounted(() => {
-  // Seguimos leyendo usuarios de LocalStorage
-  usuarios.value = JSON.parse(localStorage.getItem("usuarios")) || []
-})
-
-const handleLogin = () => {
+const handleLogin = async () => {
   showError.value = false
+  errorMsg.value = ""
 
   if (!username.value.trim() || !password.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
@@ -28,63 +25,66 @@ const handleLogin = () => {
     return
   }
 
-  const usuarioValido = usuarios.value.find(
-      u => u.nombre === username.value.trim() && u.password === password.value.trim()
-  )
+  try {
+    // 1. BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
+    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
+    const querySnapshot = await getDocs(q);
 
-  if (usuarioValido) {
-    // GUARDAR SESION CON COOKIES
-    // "expires: 1" significa que la cookie expirara en 1 día
-    // Convertimos el objeto a String porque las cookies solo guardan texto
-    Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1 })
+    if (querySnapshot.empty) {
+      errorMsg.value = "El usuario no existe";
+      showError.value = true;
+      return;
+    }
 
-    router.replace('/home')
-  } else {
-    errorMsg.value = "Usuario o contraseña incorrectos"
-    showError.value = true
+    // Obtenemos los datos del documento encontrado
+    const usuarioDoc = querySnapshot.docs[0];
+    const datosUsuario = usuarioDoc.data();
+    const emailReal = datosUsuario.email;
+
+    // 2. LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
+    await signInWithEmailAndPassword(auth, emailReal, password.value.trim());
+
+    // 3. GUARDAR SESIÓN EN COOKIE
+    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 , path: '/'});
+    window.location.href=('/home');
+
+  } catch (error) {
+    console.error(error);
+    errorMsg.value = "Contraseña incorrecta";
+    showError.value = true;
   }
 }
 
+// Login con Google (mantenemos la lógica pero adaptada a Cookies)
 const loginConGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider();
-
-    // 1. Abrir ventana emergente de Google
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // 2. CONEXIÓN CON FIRESTORE: Verificar si el usuario ya existe
     const docRef = doc(db, "usuarios", user.uid);
     const docSnap = await getDoc(docRef);
 
     let datosUsuario;
-
     if (docSnap.exists()) {
-      // Si existe, tomamos sus datos (rol, etc.)
       datosUsuario = docSnap.data();
     } else {
-      // Si es nuevo, lo registramos automáticamente en la DB de Madrid
       datosUsuario = {
         nombre: user.displayName,
         email: user.email,
-        rol: "operario", // Rol inicial
+        rol: "operario",
         foto: user.photoURL,
         creadoEn: new Date()
       };
       await setDoc(docRef, datosUsuario);
     }
 
-    // 3. SESIÓN: Guardamos los datos en la Cookie (No en LocalStorage)
     Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
-
-    // 4. Redirigir al panel principal
     router.replace("/home");
-
   } catch (error) {
-    console.error("Error al entrar con Google:", error);
+    console.error("Error Google:", error);
   }
 };
-
 </script>
 
 <template>

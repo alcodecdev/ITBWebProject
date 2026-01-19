@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { auth, db } from "@/firebase" // Importamos la conexión
-import { createUserWithEmailAndPassword } from "firebase/auth" // Herramienta de Auth
-import { doc, setDoc } from "firebase/firestore" // Herramienta de Base de Datos
+import { auth, db } from "@/firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore"
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import ParraphAndLink from "@/components/ParraphAndLink.vue";
 import Footer from "@/components/layout/Footer.vue";
@@ -16,27 +16,28 @@ const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
 
-const handleRegister = async () => { // Añadimos async
+const handleRegister = async () => {
   showError.value = false
   errorMsg.value = ""
 
-  // 1. Validaciones básicas de UI
   if (!username.value.trim() || !password.value.trim() || !email.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(email.value)) {
-    errorMsg.value = "El formato del email no es válido"
-    showError.value = true
-    return
-  }
-
   try {
-    // 2. CREAR USUARIO EN FIREBASE AUTH
-    // Esto crea la cuenta técnica (email/password)
+    // 1. COMPROBAR SI EL USERNAME YA EXISTE
+    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      errorMsg.value = "Este nombre de usuario ya está en uso";
+      showError.value = true;
+      return;
+    }
+
+    // 2. CREAR CUENTA EN FIREBASE AUTH
     const userCredential = await createUserWithEmailAndPassword(
         auth,
         email.value.trim(),
@@ -44,28 +45,23 @@ const handleRegister = async () => { // Añadimos async
     );
     const user = userCredential.user;
 
-    // 3. GUARDAR PERFIL EN FIRESTORE (Base de datos en Madrid)
-    // Usamos el UID de Firebase como ID del documento
+    // 3. GUARDAR PERFIL EN FIRESTORE
     await setDoc(doc(db, "usuarios", user.uid), {
-      nombre: username.value.trim(),
+      nombre: username.value.trim(), // Este será su alias de login
       email: email.value.trim(),
       rol: "operario",
       fechaRegistro: new Date()
     });
 
-    // 4. FINALIZAR
-    alert("Usuario registrado correctamente en la nube");
+    alert("Registro completado con éxito");
     router.replace('/login');
 
   } catch (error) {
     showError.value = true;
-    // Manejo de errores específicos de Firebase
     if (error.code === 'auth/email-already-in-use') {
       errorMsg.value = "Este email ya está registrado";
-    } else if (error.code === 'auth/weak-password') {
-      errorMsg.value = "La contraseña debe tener al menos 6 caracteres";
     } else {
-      errorMsg.value = "Error en el servidor: " +error;
+      errorMsg.value = "Error: " + error.message;
     }
   }
 }
