@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie' // Importamos la librería
-import CampoFormulario from "@/components/CampoFormulario.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 
@@ -33,8 +32,8 @@ const handleLogin = () => {
   )
 
   if (usuarioValido) {
-    // GUARDAR SESIÓN CON COOKIES
-    // 'expires: 1' significa que la cookie expirará en 1 día
+    // GUARDAR SESION CON COOKIES
+    // "expires: 1" significa que la cookie expirara en 1 día
     // Convertimos el objeto a String porque las cookies solo guardan texto
     Cookies.set('usuario_logeado', JSON.stringify(usuarioValido), { expires: 1 })
 

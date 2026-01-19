@@ -17,14 +17,14 @@ const idInput = ref('')
 const errorMsg = ref('')
 
 onMounted(() => {
-  // 1. VALIDACIÓN DE SEGURIDAD CON COOKIES
+  // VALIDACION DE SEGURIDAD CON COOKIES
   const userCookie = Cookies.get('usuario_logeado')
   if (!userCookie) {
     router.replace('/login')
     return // Salimos para no ejecutar el resto
   }
 
-  // 2. Carga de datos del scanner (LocalStorage está bien aquí)
+  // Carga de datos del scanner
   const guardado = localStorage.getItem(storageKey)
   if (guardado) {
     lista.value = JSON.parse(guardado)

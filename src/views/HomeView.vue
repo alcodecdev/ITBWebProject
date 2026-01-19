@@ -9,8 +9,8 @@ import Cookies from 'js-cookie' // Importación correcta
 const router = useRouter()
 const nombreOperario = ref('')
 
-// 1. Verificación de Seguridad
-// Lo ideal es hacerlo dentro de onMounted para asegurar que el router está listo
+//Verificacion de Seguridad
+//Lo ideal es hacerlo dentro de onMounted para asegurar que el router esta listo
 onMounted(() => {
   const userCookie = Cookies.get('usuario_logeado')
 
@@ -18,7 +18,7 @@ onMounted(() => {
     const usuario = JSON.parse(userCookie)
     nombreOperario.value = usuario.nombre
   } else {
-    // Si no hay cookie, al login
+    //Si no hay cookie, al login
     router.push('/login')
   }
 })
@@ -29,7 +29,7 @@ const goToScanner = () => {
 
 //Logout corregido para Cookies
 const handleLogout = () => {
-  Cookies.remove('usuario_logeado') // Borramos la cookie, no el localStorage
+  Cookies.remove('usuario_logeado') //Borramos la cookie
   router.replace('/login')
 }
 </script>

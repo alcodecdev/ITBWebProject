@@ -39,7 +39,7 @@ onMounted(() => {
   totalAnimals.value = animalesGuardados.length
 })
 
-// --- FUNCIONES DE VALIDACION ---
+//FUNCIONES DE VALIDACION
 
 function validarNif() {
   if (formData.value.nif.trim() === "") {
@@ -129,10 +129,10 @@ function validarAnimals() {
   return true;
 }
 
-// --- MANEJADOR DEL BOTÓN ENVIAR ---
+//MANEJO DEL BOTON ENVIAR
 
 const handleSubmit = () => {
-  errores.value = {}; // Resetear errores al inicio (como hacías al principio del click)
+  errores.value = {}; // Resetear errores al inicio
 
   // Ejecutamos todas igual que en tu jQuery
   const v1 = validarNif();
