@@ -1,18 +1,57 @@
 <script setup>
+import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
+import { auth, db } from "@/firebase"
+import { onAuthStateChanged } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
+import Cookies from 'js-cookie'
+
+onMounted(() => {
+  // Este observador detecta automáticamente si el usuario está logueado en Firebase
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // Si hay usuario en Firebase pero la Cookie se borró (al cerrar el navegador o F5)
+      if (!Cookies.get('usuario_logeado')) {
+        try {
+          // Vamos a buscar sus datos a la base de datos de Madrid
+          const docRef = doc(db, "usuarios", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            // Restauramos la Cookie de sesión
+            Cookies.set('usuario_logeado', JSON.stringify(docSnap.data()), { expires: 1 });
+            console.log("Sesión sincronizada con Firestore");
+          }
+        } catch (error) {
+          console.error("Error al sincronizar sesión:", error);
+        }
+      }
+    } else {
+      // Si no hay usuario en Firebase, borramos la Cookie por seguridad
+      Cookies.remove('usuario_logeado');
+    }
+  });
+});
 </script>
 
 <template>
   <div class="app-container">
-        <RouterView />
+    <RouterView />
   </div>
 </template>
 
 <style>
+/* He corregido min-vh-100 por min-height */
 body, html {
   margin: 0;
   padding: 0;
   background-color: #f8f9fa !important;
-  min-vh-100: 100vh;
+  min-height: 100vh;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>

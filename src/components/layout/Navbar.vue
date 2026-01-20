@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie';
+import {auth} from "@/firebase.js";
 
 const router = useRouter()
 
@@ -19,13 +21,28 @@ const irAtras = () => {
   }
 }
 
-const handleLogout = () => {
-  // Limpiamos sesión
-  localStorage.removeItem('usuario_logeado')
-  localStorage.removeItem('isAuth')
-  // Al login
-  router.replace('/login')
-}
+const handleLogout = async () => {
+  try {
+    // 1. Borrado de cookie con path explícito
+    Cookies.remove('usuario_logeado', { path: '/' });
+
+    // 2. Cierre de sesión en Firebase
+    await signOut(auth);
+
+    // 3. LIMPIEZA DE LOCALSTORAGE (Opcional pero recomendado)
+    // Esto evita que el siguiente usuario vea los animales del anterior
+    localStorage.removeItem('listaPorc');
+
+    // 4. RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
+    window.location.replace('/login');
+
+  } catch (error) {
+    console.error("Error al salir:", error);
+    // Si falla, forzamos el borrado y salida igualmente
+    Cookies.remove('usuario_logeado', { path: '/' });
+    window.location.href = '/login';
+  }
+};
 </script>
 
 <template>

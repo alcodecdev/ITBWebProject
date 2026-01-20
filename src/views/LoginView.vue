@@ -1,114 +1,161 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import CampoFormulario from "@/components/CampoFormulario.vue";
+import { auth, db } from "@/firebase"
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { collection, query, where, getDocs, doc, getDoc, setDoc } from "firebase/firestore"
+import Cookies from 'js-cookie'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+import Footer from "@/components/layout/Footer.vue";
+import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
-
-
-const username = ref('')
+const username = ref('') // Aquí el usuario pondrá su alias (ej: jgarcia)
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
-const usuarios = ref([])
 
-//leemos los usuarios de LocalStorage
-onMounted(() => {
-  usuarios.value = JSON.parse(localStorage.getItem("usuarios")) || []
-})
-
-const handleLogin = () => {
+const handleLogin = async () => {
   showError.value = false
+  errorMsg.value = ""
 
-  // Validaciones
   if (!username.value.trim() || !password.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  // Buscar usuario válido
-  const usuarioValido = usuarios.value.find(
-      u => u.nombre === username.value.trim() && u.password === password.value.trim()
-  )
+  try {
+    // 1. BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
+    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
+    const querySnapshot = await getDocs(q);
 
-  if (usuarioValido) {
-    // Guardamos la sesión (opcional para el router)
-    localStorage.setItem('usuario_logeado', JSON.stringify(usuarioValido))
+    if (querySnapshot.empty) {
+      errorMsg.value = "El usuario no existe";
+      showError.value = true;
+      return;
+    }
 
-    // REDIRECCIÓN VUE (Equivalente a window.location.replace)
-    router.replace('/home')
-  } else {
-    errorMsg.value = "Usuario o contraseña incorrectos"
-    showError.value = true
+    // Obtenemos los datos del documento encontrado
+    const usuarioDoc = querySnapshot.docs[0];
+    const datosUsuario = usuarioDoc.data();
+    const emailReal = datosUsuario.email;
+
+    // 2. LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
+    await signInWithEmailAndPassword(auth, emailReal, password.value.trim());
+
+    // 3. GUARDAR SESIÓN EN COOKIE
+    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 , path: '/'});
+    window.location.href=('/home');
+
+  } catch (error) {
+    console.error(error);
+    errorMsg.value = "Contraseña incorrecta";
+    showError.value = true;
   }
 }
+
+// Login con Google (mantenemos la lógica pero adaptada a Cookies)
+const loginConGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const docRef = doc(db, "usuarios", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    let datosUsuario;
+    if (docSnap.exists()) {
+      datosUsuario = docSnap.data();
+    } else {
+      datosUsuario = {
+        nombre: user.displayName,
+        email: user.email,
+        rol: "operario",
+        foto: user.photoURL,
+        creadoEn: new Date()
+      };
+      await setDoc(docRef, datosUsuario);
+    }
+
+    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
+    router.replace("/home");
+  } catch (error) {
+    console.error("Error Google:", error);
+  }
+};
 </script>
 
 <template>
-  <div class="min-vh-100 d-flex align-items-center justify-content-center w-100">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
+  <div class="min-vh-100 d-flex flex-column w-100">
 
-        <TitleAndSubtitle
-            divClass="text-center mb-5"
-            title="GTR"
-            subtitle="Gestion de envio"
-            titleClass="display-3 fw-bolder text-success"
-            subtitleClass="h5 text-success text-uppercase tracking-wider"
-        />
+    <div class="container d-flex flex-grow-1 align-items-center justify-content-center py-5">
+      <div class="row justify-content-center w-100">
+        <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
-        <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
-          <form @submit.prevent="handleLogin">
+          <TitleAndSubtitle
+              divClass="text-center mb-5"
+              title="GTR"
+              subtitle="Gestion de envio"
+              titleClass="display-3 fw-bolder text-success"
+              subtitleClass="h5 text-success text-uppercase tracking-wider"
+          />
 
-            <div class="mb-4">
-              <label for="inputName" class="form-label fw-bold text-light small">Usuario</label>
-              <input
-                  v-model="username"
-                  type="text"
-                  class="form-control form-control-lg bg-light text-dark border-secondary"
-                  id="inputName"
+          <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
+            <form @submit.prevent="handleLogin">
+
+
+              <CampoFormulario
+                  divClass="mb-4"
+                  label="Usuario"
+                  labelClass="form-label fw-bold text-light small"
+                  inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   placeholder="Nombre de usuario"
-                  autocomplete="username"
-              >
-            </div>
+                  v-model="username"
+              />
 
-            <div class="mb-5">
-              <label for="inputPassword1" class="form-label fw-bold text-light small">Contraseña</label>
-              <input
-                  v-model="password"
+
+              <CampoFormulario
+                  divClass="mb-5"
                   type="password"
-                  class="form-control form-control-lg bg-light text-dark border-secondary"
-                  id="inputPassword1"
+                  label="Contraseña"
+                  labelClass="form-label fw-bold text-light small"
                   placeholder="Contraseña"
-                  autocomplete="current-password"
-              >
+                  inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+                  v-model="password"
+
+              />
+
+              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+                Iniciar Sesión
+              </button>
+
+              <button @click="loginConGoogle" class="btn btn-light w-100 mt-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                     alt="Google" width="20" class="me-2">
+                Entrar con Google
+              </button>
+
+            </form>
+
+            <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
+              {{ errorMsg }}
             </div>
+          </div>
 
-            <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
-              Iniciar Sesión
-            </button>
-          </form>
-
-          <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
-            {{ errorMsg }}
+          <div class="text-center mt-5">
+            <p class="text-light-emphasis">
+              ¿No estas registrado?
+              <router-link to="/register" class="text-dark text-decoration-none fw-bold border-bottom border-light">
+                Registrate aquí
+              </router-link>
+            </p>
           </div>
         </div>
-
-        <div class="text-center mt-5">
-          <p class="text-light-emphasis">
-            ¿No estas registrado?
-            <router-link to="/register" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-              Registrate aquí
-            </router-link>
-          </p>
-        </div>
-
       </div>
     </div>
-  </div>
+    <Footer />
   </div>
 </template>
 
