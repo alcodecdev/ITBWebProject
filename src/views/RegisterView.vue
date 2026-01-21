@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { auth, db } from "@/firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore"
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import ParraphAndLink from "@/components/ParraphAndLink.vue";
 import Footer from "@/components/layout/Footer.vue";
@@ -13,50 +16,54 @@ const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
 
-const handleRegister = () => {
+const handleRegister = async () => {
   showError.value = false
   errorMsg.value = ""
 
-  //Validaciones basicas
   if (!username.value.trim() || !password.value.trim() || !email.value.trim()) {
     errorMsg.value = "Todos los campos son obligatorios"
     showError.value = true
     return
   }
 
-  // Validacion de Email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(email.value)) {
-    errorMsg.value = "El formato del email no es válido"
-    showError.value = true
-    return
+  try {
+    // 1. COMPROBAR SI EL USERNAME YA EXISTE
+    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      errorMsg.value = "Este nombre de usuario ya está en uso";
+      showError.value = true;
+      return;
+    }
+
+    // 2. CREAR CUENTA EN FIREBASE AUTH
+    const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.value.trim(),
+        password.value.trim()
+    );
+    const user = userCredential.user;
+
+    // 3. GUARDAR PERFIL EN FIRESTORE
+    await setDoc(doc(db, "usuarios", user.uid), {
+      nombre: username.value.trim(), // Este será su alias de login
+      email: email.value.trim(),
+      rol: "operario",
+      fechaRegistro: new Date()
+    });
+
+    alert("Registro completado con éxito");
+    router.replace('/login');
+
+  } catch (error) {
+    showError.value = true;
+    if (error.code === 'auth/email-already-in-use') {
+      errorMsg.value = "Este email ya está registrado";
+    } else {
+      errorMsg.value = "Error: " + error.message;
+    }
   }
-
-  //Obtener usuarios de LocalStorage
-  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
-
-  //Comprobar si el usuario ya existe
-  if (usuarios.find(u => u.nombre === username.value.trim())) {
-    errorMsg.value = "El nombre de usuario ya está en uso"
-    showError.value = true
-    return
-  }
-
-  //Crear y guardar el usuario
-  const nuevoUsuario = {
-    nombre: username.value.trim(),
-    email: email.value.trim(),
-    password: password.value.trim()
-  }
-
-  usuarios.push(nuevoUsuario)
-  localStorage.setItem("usuarios", JSON.stringify(usuarios))
-
-  //Finalizar
-  alert("Usuario registrado correctamente")
-
-  // En Vue usamos router.replace para navegar
-  router.replace('/login')
 }
 </script>
 
@@ -84,7 +91,7 @@ const handleRegister = () => {
               </div>
 
               <div class="mb-4">
-                <campo-formulario type="text" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+                <campo-formulario type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
               </div>
 
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
@@ -96,7 +103,6 @@ const handleRegister = () => {
               {{ errorMsg }}
             </div>
           </div>
-
 
           <div class="text-center mt-4">
             <parraph-and-link
