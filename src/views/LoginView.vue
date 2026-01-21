@@ -10,7 +10,7 @@ import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 
 const router = useRouter()
-const username = ref('') // Aquí el usuario pondrá su alias (ej: jgarcia)
+const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
