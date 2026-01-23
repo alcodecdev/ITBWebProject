@@ -4,23 +4,30 @@ import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
+import {inicializarFormEnvioPorc} from "@/App/appFormEnvioPorc.js";
+
+'../App/appFormEnvioPorc.js'
+import {onMounted} from "vue";
+
+onMounted(() => inicializarFormEnvioPorc())
 </script>
 
 <template>
   <navbar></navbar>
   <div class="container">
-    <div class="roww justify-content-center">
+    <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
         <title-and-subtitle
+            class="textoOscuro"
             title="Registre de tramesa"
-            title-class="display-5 fw-bolder text-success"
+            title-class="display-5 fw-bolder"
             subtitle="Porcí - Control de lots"
-            subtitle-class="text-success text-uppercase small mb-0"
+            subtitle-class="text-uppercase small mb-0"
             divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
         ></title-and-subtitle>
       </div>
 
-      <form id="formEnvio" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-success bg-opacity-22 shadow">
+      <form id="formEnvio" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-opacity-22 text-light shadow">
         <campo-formulario
             type="text"
             label="NIF"
@@ -29,80 +36,93 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="nifError"
+         id="inputNif"></campo-formulario>
 
         <campo-formulario
             type="password"
             label="CONTRASENYA MOVILITAT:"
-            placeholder="12345678"
+            placeholder="*******"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            error-div-i-d="passwordError"
+         id="inputPassword"></campo-formulario>
 
         <campo-formulario
             type="text"
             label="CODI EXPLOTACIÓ ORIGEN:"
-            placeholder="12345678"
+            model-value="ES250020011648"
+            :readonly="true"
+            placeholder=""
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="originCodeError"
+         id="inputOrigen"></campo-formulario>
 
         <campo-formulario
             type="text"
             label="CODI EXPLOTACIÓ DESTINACIÓ:"
-            placeholder="12345678"
+            placeholder="ES430050035112"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="explotationCodeError"
+         id="inputDestino"></campo-formulario>
 
         <campo-formulario
             type="text"
+            :readonly="true"
             label="ESPÈCIE:"
-            placeholder="12345678"
+            model-value="02"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="specieCodeError"
+         id="inputEspecie"></campo-formulario>
 
         <campo-formulario
             type="text"
             label="ACCIÓ:"
-            placeholder="12345678"
+            model-value="NO"
+            :readonly="true"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="actionCodeError"
+         id="inputAccio"></campo-formulario>
 
         <campo-formulario
             type="text"
             label="MOVIMENT:"
+            model-value="01"
+            :readonly="true"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="movementCodeError"
+         id="inputMoviment"></campo-formulario>
 
         <div class="col-md-3">
-          <label class="form-label fw-bold text-light  small" for="inputCategoria">CODI CATEGORIA:</label>
+          <label class="form-label text-light small" for="inputCategoria">CODI CATEGORIA:</label>
           <select class="form-select bg-light text-dark border-secondary" id="inputCategoria" required>
             <option selected disabled value="">Selecciona uno</option>
-            <option value="Engreix">Engreix</option>
-            <option value="Garrins">Garrins</option>
-            <option value="Recria/Transicio">Recria/Transicio</option>
-            <option value="Femelles reproductores">Femelles reproductores</option>
-            <option value="Reposicio">Reposicio</option>
-            <option value="Sementals">Sementals</option>
+            <option value="00">Engreix</option>
+            <option value="01">Garrins</option>
+            <option value="02">Recria/Transicio</option>
+            <option value="03">Femelles reproductores</option>
+            <option value="04">Reposicio</option>
+            <option value="05">Sementals</option>
           </select>
-          <div id="errorCategoria" class="text-danger small fw-bold"></div>
+          <div id="errorCategory" class="text-danger small fw-bold"></div>
         </div>
 
         <campo-formulario
@@ -113,8 +133,9 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
+            error-div-i-d="exitError"
 
-        ></campo-formulario>
+         id="inputFechaSalida"></campo-formulario>
 
         <campo-formulario
             type="date"
@@ -124,7 +145,8 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            error-div-i-d="comeError"
+         id="inputFechaLlegada"></campo-formulario>
 
         <div class="col-md-6">
           <label class="form-label fw-bold text-light  small d-block">MOBILITAT (SI/NO)</label>
@@ -134,33 +156,31 @@ import Button from "@/components/Button.vue";
             <input type="radio" class="btn-check" name="mobilitat" id="noMobilitat" value="no" checked required>
             <label class="btn btn-outline-light fw-bold" for="noMobilitat">NO</label>
           </div>
+          <div id="errorMobility" class="text-danger small fw-bold"></div>
         </div>
 
         <div class="col-12">
-          <h5 class="mt-4 text-light  fw-bold border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
+          <h5 class="mt-4 text-light border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
         </div>
-
         <campo-formulario
+            id="inputNombreTransportista"
             type="text"
             label="NOM TRANSPORTISTA"
-            placeholder="12345678"
-            label-class="form-label fw-bold text-light  small"
+            placeholder="Introduir nom"
+            label-class="form-label fw-bold text-light small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
+            error-div-i-d="nameTransportError"
         ></campo-formulario>
 
-        <div class="col-md-6">
-          <label class="form-label fw-bold text-light  small">MITJÀ DE TRANSPORT:</label>
+        <div class="col-md-6 mb-3"> <label class="form-label text-light small" for="selectMedioTransporte">MITJÀ DE TRANSPORT:</label>
           <select class="form-select bg-light text-dark border-secondary" id="selectMedioTransporte" required>
             <option selected disabled value="">Selecciona uno</option>
-            <option value="Camion">Camión</option>
-            <option value="Avion">Avion</option>
-            <option value="Tren">Tren</option>
-            <option value="Conduccion a pie">Conduccion a pie</option>
-            <option value="Barco">Barco</option>
-            <option value="Otros">Otros</option>
+            <option value="01">Camión</option>
+            <option value="99">Otros</option>
           </select>
+          <div id="errorTransport" class="text-danger small fw-bold"></div>
         </div>
 
 
@@ -172,7 +192,8 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            error-div-i-d="MatriculaError"
+         id="inputMatricula"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -182,17 +203,19 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="NIFError"
+         id="inputNifConductor"></campo-formulario>
 
         <campo-formulario
-            type="text"
+            type="number"
             label="NÚMERO DE ANIMALES:"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        ></campo-formulario>
+            errorDivID="AnimalNumberError"
+         id="inputAnimals"></campo-formulario>
 
         <campo-formulario
             type="number"
@@ -202,14 +225,15 @@ import Button from "@/components/Button.vue";
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
-        >
+            errorDivID="SIRCODEError"
+         id="inputsirCode">
         </campo-formulario>
 
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
 
             <Button
-                type="button"
+                id="cancelar"
                 clase="btn btn-outline-danger btn-lg flex-grow-1 fw-bold bg-danger text-light"
                 nombreSpan="CANCELAR"
             >
@@ -218,7 +242,7 @@ import Button from "@/components/Button.vue";
             </Button>
 
             <Button
-                type="submit"
+                id="enviar"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
                 nombreSpan="REGISTRAR TRAMESA"
             >

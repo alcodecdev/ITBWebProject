@@ -1,28 +1,20 @@
 <script setup>
 const props = defineProps({
-  modelValue: [String, Number], // Necesario para que el v-model funcione correctamente
-  label: {
-    type: String, default: 'Usuario'
-  },
-  placeholder: {
-    type: String,
-    default: 'Nombre de usuario' },
-  type: {
-    type: String,
-    default: 'text' },
-  labelClass: {
-    type: String,
-    default: 'form-label fw-bold text-light small' },
+  modelValue: [String, Number],
+  label: { type: String, default: ' ' },
+  placeholder: { type: String, default: '' },
+  id: { type: String, required: true },
+  type: { type: String, default: 'text' },
   inputClass: {
-    type: String, default:
-      'form-control form-control-lg bg-light text-dark border-secondary' },
-  divClass: {
     type: String,
-    default: 'mb-3' },
-
-  error: { type:
-    String,
-    default: '' }
+    default: 'form-control form-control-lg bg-light text-dark border-secondary'
+  },
+  errorDivID:{
+    type: String
+  },
+  divClass: { type: String, default: 'mb-3' },
+  error: { type: String, default: '' },
+  readonly:{type: Boolean, default: false}
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -30,20 +22,20 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div :class="divClass">
-    <label :class="labelClass">{{ label }}</label>
+    <label :for="id">{{ label }}</label>
 
     <input
         :type="type"
         :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
+        :id="id"
         :class="[
           inputClass,
           { 'is-invalid': error }
         ]"
-    >
-
-    <div v-if="error" class="invalid-feedback fw-bold">
+        :readonly="readonly" >
+    <div :id="errorDivID" class="invalid-feedback fw-bold">
       {{ error }}
     </div>
   </div>

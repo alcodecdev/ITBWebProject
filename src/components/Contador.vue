@@ -24,11 +24,11 @@ defineProps({
   },
   divClaseDisplay:{
     type: String,
-    default: "display-1 fw-bolder text-success"
+    default: "display-1 fw-bolder text-dark"
   },
   divClaseDisplayText:{
     type: String,
-    default: "h5 text-uppercase text-success opacity-75"
+    default: "h5 text-uppercase text-dark opacity-75"
   },
   divClaseButton:{
     type: String,

@@ -1,15 +1,12 @@
 export function inicializarFormEnvioPorc() {
     let listado = {};
 
-    // Selectores de botones
     const sendButton = document.getElementById('enviar');
-    const cancelButton = document.getElementById('cancelar');
 
     if (sendButton) {
         sendButton.addEventListener('click', function (e) {
             e.preventDefault();
 
-            // Ejecutamos todas las funciones de validación
             const v1 = validarNif();
             const v2 = validarPasswd();
             const v3 = validarEspecie();
@@ -26,163 +23,145 @@ export function inicializarFormEnvioPorc() {
             const v14 = validarsirCode();
             const v15 = agregarListadoAnimales();
 
-            // Captura de datos Radios y Select (JS Puro)
             const radioMobilidad = document.querySelector("input[name='mobilitat']:checked");
             listado.mobilitat = radioMobilidad ? radioMobilidad.value : null;
             listado.medioTransporte = document.getElementById("selectMedioTransporte")?.value;
 
             if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v10 && v11 && v12 && v13 && v14 && v15) {
                 localStorage.setItem("listadoEnviadoPorc", JSON.stringify(listado));
-                console.log("Objeto JSON generado:", listado);
-
                 alert("¡Formulario enviado!");
-                window.location.replace("../scanner/scannerStart.html");
+                window.location.href = "/home"; // Redirección tras éxito
             } else {
                 alert("Revisa los campos marcados en rojo");
             }
         });
     }
 
-    // --- FUNCIONES DE VALIDACIÓN (JS PURO) ---
-
     function validarNif() {
         const input = document.getElementById("inputNif");
         const nif = input.value.trim();
-        if (nif === "") return marcarError(input, "#errorNif", "Usuario no encontrado");
+        if (nif === "") return marcarError(input, "#nifError", "Usuario no encontrado");
+        if (nif.length !== 9) return marcarError(input, "#nifError", "El NIF debe contener 8 letras y un carácter")
         listado.nif = nif;
-        return marcarExito(input, "#errorNif");
+        return marcarExito(input, "#nifError");
     }
 
     function validarPasswd() {
-        const input = document.getElementById("inputPassw");
+        const input = document.getElementById("inputPassword");
         const passwd = input.value.trim();
-        if (passwd === "") return marcarError(input, "#errorPassw", "Clave de paso incorrecta");
+        if (passwd === "") return marcarError(input, "#passwordError", "Clave de paso incorrecta");
+        if (passwd.length !== 20) return marcarError(input, "#passwordError", "La contraseña debe contener 20 caracteres");
         listado.passwd = passwd;
-        return marcarExito(input, "#errorPassw");
+        return marcarExito(input, "#passwordError");
     }
 
+
+    //PONER QUE SEA READONLY FALTA HACER
     function validarEspecie() {
         const input = document.getElementById("inputEspecie");
-        const especie = input.value.trim();
-        if (especie.length > 2 || isNaN(especie)) return marcarError(input, "#errorEspecie", "Máximo 2 dígitos");
-        if (especie !== "02") return marcarError(input, "#errorEspecie", "Debe ser 02");
-        listado.especie = especie;
-        return marcarExito(input, "#errorEspecie");
+        listado.especie = input.value.trim();
+        return marcarExito(input, "#specieCodeError");
     }
 
     function validarOrigen() {
         const input = document.getElementById("inputOrigen");
         const valor = input.value.trim();
         const destino = document.getElementById("inputDestino").value.trim();
-        if (valor === "") return marcarError(input, "#errorExplotacio", "Campo obligatorio");
-        if (valor.length > 14) return marcarError(input, "#errorExplotacio", "Máximo 14 caracteres");
-        if (valor === destino) return marcarError(input, "#errorExplotacio", "Origen y destino son iguales");
+        if (valor === destino) return marcarError(input, "#originCodeError", "Origen inválido");
         listado.origen = valor;
-        return marcarExito(input, "#errorExplotacio");
+        return marcarExito(input, "#originCodeError");
     }
 
     function validarDestino() {
         const input = document.getElementById("inputDestino");
         const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#errorDestino", "Campo obligatorio");
-        if (valor.length > 14) return marcarError(input, "#errorDestino", "Máximo 14 caracteres");
+        if (valor === "") return marcarError(input, "#explotationCodeError", "Campo obligatorio");
+        if (valor !== "") return marcarError(input, "#explotationCodeError", "El código de destino debe tener 14 caracteres");
         listado.destino = valor;
-        return marcarExito(input, "#errorDestino");
+        return marcarExito(input, "#explotationCodeError");
     }
 
     function validarAccio() {
         const input = document.getElementById("inputAccio");
         const valor = input.value.trim().toLowerCase();
-        if (valor !== "no") return marcarError(input, "#errorAccio", "Debe ser 'no'");
+        if (valor !== "NO" || valor !== "SI") return marcarError(input, "#actionCodeError", "Debe ser 'NO' o 'SI'");
         listado.accio = valor;
-        return marcarExito(input, "#errorAccio");
+        return marcarExito(input, "#actionCodeError");
     }
 
     function validarMoviment() {
         const input = document.getElementById("inputMoviment");
-        const valor = input.value.trim();
-        if (valor !== "01" && valor !== "02") return marcarError(input, "#errorMoviment", "Debe ser 01 o 02");
-        listado.moviment = valor;
-        return marcarExito(input, "#errorMoviment");
+        listado.moviment = input.value.trim();
+        return marcarExito(input, "#movementCodeError");
     }
 
     function validarCategoria() {
         const input = document.getElementById("inputCategoria");
         const valor = input.value;
-        if (!valor) return marcarError(input, "#errorCategoria", "Selecciona una categoría");
+        if (!valor) return marcarError(input, "#errorCategory", "Selecciona una categoría");
         listado.categoria = valor;
-        return marcarExito(input, "#errorCategoria");
-    }
-
-    function validarAnimals() {
-        const input = document.getElementById("inputAnimals");
-        const animalesEscaneados = JSON.parse(localStorage.getItem("listaPorc")) || [];
-        const total = animalesEscaneados.length;
-        input.value = total;
-        if (total > 999999) return marcarError(input, "#errorAnimals", "Máximo 6 dígitos");
-        if (total <= 0) return marcarError(input, "#errorAnimals", "Debe ser mayor a 0");
-        listado.numAnimals = total;
-        return marcarExito(input, "#errorAnimals");
+        return marcarExito(input, "#errorCategory");
     }
 
     function validarFechas() {
         const inputSalida = document.getElementById("inputFechaSalida");
         const inputLlegada = document.getElementById("inputFechaLlegada");
-        const sVal = inputSalida.value;
-        const aVal = inputLlegada.value;
-        const hoy = new Date();
-        const fSalida = new Date(sVal);
-        const fArribada = new Date(aVal);
-        let ok = true;
+        if (!inputSalida.value) return marcarError(inputSalida, "#exitError", "Fecha inválida");
+        marcarExito(inputSalida, "#exitError");
+        if (!inputLlegada.value) return marcarError(inputLlegada, "#comeError", "Fecha inválida");
 
-        if (!sVal || fSalida < hoy.setHours(0,0,0,0)) {
-            marcarError(inputSalida, "#errorFechaSalida", "Fecha inválida");
-            ok = false;
-        } else { marcarExito(inputSalida, "#errorFechaSalida"); }
+        const fechaSalida = new Date(inputSalida.value);
+        const fechaLlegada = new Date(inputLlegada.value);
 
-        if (!aVal || fArribada <= fSalida) {
-            marcarError(inputLlegada, "#errorFechaLlegada", "Debe ser posterior a salida");
-            ok = false;
-        } else { marcarExito(inputLlegada, "#errorFechaLlegada"); }
-
-        listado.fechaSalida = sVal;
-        listado.fechaLlegada = aVal;
-        return ok;
-    }
-
-    function validarsirCode() {
-        const input = document.getElementById("inputsirCode");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#errorsirCode", "Campo obligatorio");
-        if (valor.length > 15) return marcarError(input, "#errorsirCode", "Máximo 15");
-        listado.sirCode = valor;
-        return marcarExito(input, "#errorsirCode");
-    }
-
-    function validarMatricula() {
-        const input = document.getElementById("inputMatricula");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#errorMatricula", "Campo obligatorio");
-        if (valor.length > 10) return marcarError(input, "#errorMatricula", "Máximo 10");
-        listado.matricula = valor;
-        return marcarExito(input, "#errorMatricula");
-    }
-
-    function validarNifConductor() {
-        const input = document.getElementById("inputNifConductor");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#errorNifConductor", "Campo obligatorio");
-        if (valor.length > 9) return marcarError(input, "#errorNifConductor", "Máximo 9");
-        listado.nifConductor = valor;
-        return marcarExito(input, "#errorNifConductor");
+        if (fechaLlegada.getTime() < fechaSalida.getTime()) return marcarError(inputLlegada, "#comeError", "La fecha de llegada no puede ser anterior a la de salida");
+        listado.dataSortida = inputSalida.value;
+        listado.dataArribada = inputLlegada.value;
+        return marcarExito(inputLlegada, "#comeError");
     }
 
     function validarNomDelTransportista() {
         const input = document.getElementById("inputNombreTransportista");
         const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#errorNombreTransportista", "Campo obligatorio");
+        if (valor === "") return marcarError(input, "#nameTransportError", "Campo obligatorio");
         listado.nombreTransportista = valor;
-        return marcarExito(input, "#errorNombreTransportista");
+        return marcarExito(input, "#nameTransportError");
+    }
+
+    function validarMatricula() {
+        const input = document.getElementById("inputMatricula");
+        const valor = input.value.trim();
+        if (valor === "") return marcarError(input, "#MatriculaError", "Campo obligatorio");
+        listado.matricula = valor;
+        return marcarExito(input, "#MatriculaError");
+    }
+
+    function validarNifConductor() {
+        const input = document.getElementById("inputNifConductor");
+        const valor = input.value.trim();
+        if (valor === "") return marcarError(input, "#NIFError", "Campo obligatorio");
+        listado.nifConductor = valor;
+        return marcarExito(input, "#NIFError");
+    }
+
+    function validarAnimals() {
+        const input = document.getElementById("inputAnimals");
+        const total = input.value.trim();
+        if (total === "" || total <= 0) return marcarError(input, "#AnimalNumberError", "Cantidad inválida");
+        if(total > 999999) return marcarError(input, "#AnimalNumberError", "Cantidad de animales demasiado alta");
+        listado.numAnimals = total;
+        return marcarExito(input, "#AnimalNumberError");
+    }
+
+    function validarsirCode() {
+        const input = document.getElementById("inputsirCode");
+        const valor = input.value.trim();
+        if (valor !== null || valor !== "") {
+            if (valor.length < 15 || valor.length > 15) {
+                return marcarError(input, "inputsirCode", "El SIRcode debe contener 15 caracteres")
+            }
+        }
+        listado.sirCode = valor;
+        return marcarExito(input, "#SIRCODEError");
     }
 
     function agregarListadoAnimales() {
@@ -190,19 +169,19 @@ export function inicializarFormEnvioPorc() {
         return true;
     }
 
-    // --- HELPERS (JS PURO) ---
     function marcarError(inputElement, errorDivSelector, msg) {
         const errorDiv = document.querySelector(errorDivSelector);
-        inputElement.classList.add("is-invalid");
-        inputElement.classList.remove("is-valid");
+        if (inputElement) inputElement.classList.add("is-invalid");
         if (errorDiv) errorDiv.textContent = msg;
         return false;
     }
 
     function marcarExito(inputElement, errorDivSelector) {
         const errorDiv = document.querySelector(errorDivSelector);
-        inputElement.classList.remove("is-invalid");
-        inputElement.classList.add("is-valid");
+        if (inputElement) {
+            inputElement.classList.remove("is-invalid");
+            inputElement.classList.add("is-valid");
+        }
         if (errorDiv) errorDiv.textContent = "";
         return true;
     }

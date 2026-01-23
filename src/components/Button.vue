@@ -5,12 +5,13 @@ defineProps({
   clase: String,
   claseSpan: String,
   nombreSpan: String,
-  idButton: String
+  idButton: String,
+  style: String
 })
 </script>
 
 <template>
-  <button :type="type" :class="clase">
+  <button :type="type" :class="clase" :style="style">
     <span :class="claseSpan">{{nombreSpan}}</span>
   </button>
 </template>

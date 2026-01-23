@@ -10,7 +10,7 @@ defineProps({
   },
   divClaseHijoUno:{
     type: String,
-    default: 'spinner-grow text-info position-absolute'
+    default: 'spinner-grow text-success position-absolute'
   },
   divClaseStyleUno:{
     type: String,
@@ -18,7 +18,7 @@ defineProps({
   },
   divClaseHijoDos:{
     type: String,
-    default: 'spinner-border text-info'
+    default: 'spinner-border text-light'
   },
   divClaseStyleDos:{
     type: String,
