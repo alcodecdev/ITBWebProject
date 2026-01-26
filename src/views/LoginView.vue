@@ -137,7 +137,7 @@ const loginConGoogle = async () => {
               </button>
 
               <div class="text-center mt-3">
-                <button @click="loginConGoogle" class="btn btn-light  w-60 mt-3">
+                <button @click="loginConGoogle" class="btn btn-light  w-60 mt-3" type="button">
                   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                        alt="" width="20" class="me-2">
                   Entrar con Google
