@@ -90,16 +90,16 @@ const handleRegister = async () => {
           <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 shadow" id="formRegister">
             <form @submit.prevent="handleRegister" class="formulario">
 
-              <div class="mb-4">
-                <campo-formulario id="email" type="text" v-model="email" placeholder="ejemplo@gmail.com" label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+              <div class="mb-4 text-light">
+                <campo-formulario id="email" type="text" v-model="email" placeholder="ejemplo@gmail.com" label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light border-secondary"></campo-formulario>
               </div>
 
-              <div class="mb-4">
-                <campo-formulario id="username" type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+              <div class="mb-4 text-light">
+                <campo-formulario id="username" type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light border-secondary"></campo-formulario>
               </div>
 
-              <div class="mb-4">
-                <campo-formulario id="password" type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+              <div class="mb-4 text-light">
+                <campo-formulario id="password" type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light  border-secondary"></campo-formulario>
               </div>
 
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">

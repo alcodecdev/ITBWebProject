@@ -109,7 +109,7 @@ const loginConGoogle = async () => {
             <form @submit.prevent="handleLogin" class="formulario">
 
 
-              <CampoFormulario
+              <CampoFormulario class="text-light"
                   divClass="mb-4"
                   id="user"
                   label="Usuario"
@@ -120,7 +120,7 @@ const loginConGoogle = async () => {
               />
 
 
-              <CampoFormulario
+              <CampoFormulario class="text-light"
                   divClass="mb-5"
                   id="password"
                   type="password"

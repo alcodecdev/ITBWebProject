@@ -22,7 +22,7 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div :class="divClass">
-    <label :for="id">{{ label }}</label>
+    <label :for="id" >{{ label }}</label>
 
     <input
         :type="type"

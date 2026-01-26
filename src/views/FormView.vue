@@ -27,7 +27,7 @@ onMounted(() => inicializarFormEnvioPorc())
         ></title-and-subtitle>
       </div>
 
-      <form id="formEnvio" class="row g-3 p-4 p-md-5 border border-secondary border-opacity-22 rounded-4 bg-opacity-22 text-light shadow">
+      <form class="row g-4 p-4 p-md-5 rounded-4 bg-white shadow-lg border-0 text-dark">
         <campo-formulario
             type="text"
             label="NIF"
@@ -112,7 +112,7 @@ onMounted(() => inicializarFormEnvioPorc())
          id="inputMoviment"></campo-formulario>
 
         <div class="col-md-3">
-          <label class="form-label text-light small" for="inputCategoria">CODI CATEGORIA:</label>
+          <label class="form-label small" for="inputCategoria">CODI CATEGORIA:</label>
           <select class="form-select bg-light text-dark border-secondary" id="inputCategoria" required>
             <option selected disabled value="">Selecciona uno</option>
             <option value="00">Engreix</option>
@@ -174,7 +174,7 @@ onMounted(() => inicializarFormEnvioPorc())
             error-div-i-d="nameTransportError"
         ></campo-formulario>
 
-        <div class="col-md-6 mb-3"> <label class="form-label text-light small" for="selectMedioTransporte">MITJÀ DE TRANSPORT:</label>
+        <div class="col-md-6 mb-3"> <label class="form-label small" for="selectMedioTransporte">MITJÀ DE TRANSPORT:</label>
           <select class="form-select bg-light text-dark border-secondary" id="selectMedioTransporte" required>
             <option selected disabled value="">Selecciona uno</option>
             <option value="01">Camión</option>
@@ -232,14 +232,6 @@ onMounted(() => inicializarFormEnvioPorc())
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
 
-            <Button
-                id="cancelar"
-                clase="btn btn-outline-danger btn-lg flex-grow-1 fw-bold bg-danger text-light"
-                nombreSpan="CANCELAR"
-            >
-              <router-link to="/scanner" class="text-decoration-none color-inherit" style="color: inherit;">
-              </router-link>
-            </Button>
 
             <Button
                 id="enviar"
