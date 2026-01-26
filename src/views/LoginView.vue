@@ -8,9 +8,11 @@ import Cookies from 'js-cookie'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
+import '../assets/styles/coloursAndAnimation.css'
+
 
 const router = useRouter()
-const username = ref('') // Aquí el usuario pondrá su alias (ej: jgarcia)
+const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
@@ -26,7 +28,7 @@ const handleLogin = async () => {
   }
 
   try {
-    // BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
+    // 1. BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
     const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
     const querySnapshot = await getDocs(q);
 
@@ -95,19 +97,21 @@ const loginConGoogle = async () => {
         <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
           <TitleAndSubtitle
-              divClass="text-center mb-5"
-              title="GTR"
-              subtitle="Gestion de envio"
-              titleClass="display-3 fw-bolder text-success"
-              subtitleClass="h5 text-success text-uppercase tracking-wider"
+              class="textoOscuro"
+              divClass="text-start mb-4"
+              title="GTR Login"
+              subtitle="Gestión de envío"
+              titleClass="display-3 fw-bolder"
+              subtitleClass="h5  text-uppercase tracking-wider"
           />
 
-          <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-22 shadow">
-            <form @submit.prevent="handleLogin">
+          <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 shadow" id="formLogin">
+            <form @submit.prevent="handleLogin" class="formulario">
 
 
-              <CampoFormulario
+              <CampoFormulario class="text-light"
                   divClass="mb-4"
+                  id="user"
                   label="Usuario"
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
@@ -116,8 +120,9 @@ const loginConGoogle = async () => {
               />
 
 
-              <CampoFormulario
+              <CampoFormulario class="text-light"
                   divClass="mb-5"
+                  id="password"
                   type="password"
                   label="Contraseña"
                   labelClass="form-label fw-bold text-light small"
@@ -131,11 +136,14 @@ const loginConGoogle = async () => {
                 Iniciar Sesión
               </button>
 
-              <button @click="loginConGoogle" class="btn btn-light w-100 mt-3" type="button">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                     alt="Google" width="20" class="me-2">
-                Entrar con Google
-              </button>
+              <div class="text-center mt-3">
+                <button @click="loginConGoogle" class="btn btn-light  w-60 mt-3">
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                       alt="" width="20" class="me-2">
+                  Entrar con Google
+                </button>
+              </div>
+
 
             </form>
 

@@ -8,6 +8,7 @@ import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import BarraAgregar from "@/components/BarraAgregar.vue";
 import Contador from "@/components/Contador.vue";
 import Button from "@/components/Button.vue";
+import '../assets/styles/coloursAndAnimation.css'
 
 const router = useRouter()
 const storageKey = 'listaPorc'
@@ -79,11 +80,12 @@ const goToForm = () => {
       <SpinnerAnimation />
 
       <TitleAndSubtitle
+          class="textoScanner"
           divClass="mb-4"
-          titleH2Class="fw-bold text-success"
+          titleH2Class="fw-bold"
           titleH2="ESCANEO"
           subtitle="Lector Activo"
-          subtitleClass="text-success small text-uppercase tracking-widest"
+          subtitleClass=" small text-uppercase tracking-widest"
       />
 
       <BarraAgregar
@@ -103,7 +105,7 @@ const goToForm = () => {
               type="submit"
               @click="goToForm"
               nombreSpan="FINALIZAR Y ENVIAR FORMULARIO"
-              clase="btn btn-success btn-lg w-100 fw-bold py-3 fs-4 text-uppercase shadow"/>
+              clase="btn btn-lg w-100 fw-bold py-3 fs-4 text-uppercase shadow" id="botonNavbar"/>
         </div>
       </div>
     </div>

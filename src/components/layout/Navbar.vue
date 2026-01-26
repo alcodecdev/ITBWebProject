@@ -46,7 +46,8 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <nav class="container-fluid bg-success py-3 border-bottom border-secondary border-opacity-25 mb-4 shadow-sm">
+  <nav class="container-fluid py-3 border-bottom border-secondary border-opacity-25 mb-4 shadow-sm" id="navbar">
+
     <div class="row align-items-center">
 
       <div class="col-4 text-start">

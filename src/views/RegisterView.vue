@@ -7,6 +7,9 @@ import { doc, setDoc, collection, query, where, getDocs } from "firebase/firesto
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import ParraphAndLink from "@/components/ParraphAndLink.vue";
 import Footer from "@/components/layout/Footer.vue";
+import '../assets/styles/coloursAndAnimation.css'
+import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+
 
 const router = useRouter()
 
@@ -74,24 +77,29 @@ const handleRegister = async () => {
       <div class="row justify-content-center w-100">
         <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
-          <div class="text-start mb-4">
-            <h1 class="display-3 fw-bolder text-success mb-0">ITB Register</h1>
-            <p class="h5 text-success text-uppercase">Take control</p>
-          </div>
+          <TitleAndSubtitle
+              class="textoOscuro"
+              divClass="text-start mb-4"
+              title="GTR Register"
+              subtitle="Gestión de envío"
+              titleClass="display-3 fw-bolder"
+              subtitleClass="h5  text-uppercase tracking-wider"
+          />
 
-          <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 bg-success bg-opacity-23 shadow">
-            <form @submit.prevent="handleRegister">
 
-              <div class="mb-4">
-                <campo-formulario type="text" v-model="email" placeholder="ejemplo@gmail.com"  label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+          <div class="p-4 p-md-5 border border-secondary border-opacity-25 rounded-4 shadow" id="formRegister">
+            <form @submit.prevent="handleRegister" class="formulario">
+
+              <div class="mb-4 text-light">
+                <campo-formulario id="email" type="text" v-model="email" placeholder="ejemplo@gmail.com" label="Email" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light border-secondary"></campo-formulario>
               </div>
 
-              <div class="mb-4">
-                <campo-formulario type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+              <div class="mb-4 text-light">
+                <campo-formulario id="username" type="text" v-model="username" placeholder="Usuario"  label="Usuario" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light border-secondary"></campo-formulario>
               </div>
 
-              <div class="mb-4">
-                <campo-formulario type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light text-dark border-secondary"></campo-formulario>
+              <div class="mb-4 text-light">
+                <campo-formulario id="password" type="password" v-model="password" placeholder="*****"  label="Contraseña" label-class="form-label fw-bold text-light small" input-class="form-control form-control-lg bg-light  border-secondary"></campo-formulario>
               </div>
 
               <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import Footer from "@/components/layout/Footer.vue";
+import '../assets/styles/coloursAndAnimation.css'
 import Cookies from 'js-cookie';
 import {auth} from "@/firebase.js"; // Importación correcta
 
@@ -60,18 +61,17 @@ const handleLogout = async () => {
       <div class="container py-5">
         <div class="text-center mb-5">
           <TitleAndSubtitle
+              class="textoOscuro"
               title="GTR Scanner"
-              titleClass="display-2 fw-bolder text-success mb-0"
-              subtitle="Selecciona la especie de animal"
-              subtitleClass="h4 text-success text-uppercase fw-light"
+              titleClass="display-2 fw-bolder mb-0"
           />
 
           <div class="row justify-content-center g-4 mt-4">
             <div class="col-12 col-md-8 col-lg-6">
-              <div class="d-grid gap-4">
+              <div class="d-grid gap-4" id="buttonHome">
                 <Button
                     @click="goToScanner"
-                    clase="btn btn-success btn-lg py-5 border-2 shadow-sm d-flex flex-column align-items-center justify-content-center"
+                    clase="btn text-white btn-lg py-5 border-0 shadow-sm d-flex flex-column align-items-center justify-content-center"
                     claseSpan="display-6 fw-bold text-uppercase"
                     nombreSpan="ESCANEAR"
                 />
