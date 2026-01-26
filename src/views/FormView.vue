@@ -10,6 +10,9 @@ import {inicializarFormEnvioPorc} from "@/App/appFormEnvioPorc.js";
 import {onMounted} from "vue";
 
 onMounted(() => inicializarFormEnvioPorc())
+
+
+
 </script>
 
 <template>
@@ -53,9 +56,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="CODI EXPLOTACIÓ ORIGEN:"
-            model-value="ES250020011648"
-            :readonly="true"
-            placeholder=""
+            placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -66,7 +67,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="CODI EXPLOTACIÓ DESTINACIÓ:"
-            placeholder="ES430050035112"
+            placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -76,9 +77,8 @@ onMounted(() => inicializarFormEnvioPorc())
 
         <campo-formulario
             type="text"
-            :readonly="true"
             label="ESPÈCIE:"
-            model-value="02"
+            placeholder="02"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -89,8 +89,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="ACCIÓ:"
-            model-value="NO"
-            :readonly="true"
+            placeholder="no"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -101,8 +100,6 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="MOVIMENT:"
-            model-value="01"
-            :readonly="true"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -218,7 +215,7 @@ onMounted(() => inicializarFormEnvioPorc())
          id="inputAnimals"></campo-formulario>
 
         <campo-formulario
-            type="number"
+            type="text"
             label="SIRCODE:"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
@@ -232,7 +229,6 @@ onMounted(() => inicializarFormEnvioPorc())
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
 
-
             <Button
                 id="enviar"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
@@ -242,26 +238,11 @@ onMounted(() => inicializarFormEnvioPorc())
               </router-link>
             </Button>
 
-
-
           </div>
-
-
-
-
-
-
-
-
-
-
-
       </form>
 
     </div>
   </div>
-
-
 
 </template>
 

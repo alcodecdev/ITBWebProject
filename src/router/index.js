@@ -48,14 +48,6 @@ router.beforeEach((to, from, next) => {
         return next('/login');
     }
 
-    // Si intentas ir al formulario SIN animales
-    if (to.name === 'form') {
-        const animales = JSON.parse(localStorage.getItem('listaPorc') || '[]');
-        if (animales.length === 0) {
-            return next('/scanner');
-        }
-    }
-
     next(); // En cualquier otro caso, adelante
 });
 

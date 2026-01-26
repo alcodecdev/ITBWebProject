@@ -25,7 +25,7 @@ onMounted(() => {
   }
 })
 
-const goToScanner = () => {
+const goToForm = () => {
   router.push('/form')
 }
 
@@ -49,7 +49,7 @@ const handleLogout = async () => {
     console.error("Error al salir:", error);
     // Si falla, forzamos el borrado y salida igualmente
     Cookies.remove('usuario_logeado', { path: '/' });
-    window.location.href = '/form';
+    window.location.href = '/login';
   }
 };
 </script>
@@ -70,10 +70,10 @@ const handleLogout = async () => {
             <div class="col-12 col-md-8 col-lg-6">
               <div class="d-grid gap-4" id="buttonHome">
                 <Button
-                    @click="goToScanner"
+                    @click="goToForm"
                     clase="btn text-white btn-lg py-5 border-0 shadow-sm d-flex flex-column align-items-center justify-content-center"
                     claseSpan="display-6 fw-bold text-uppercase"
-                    nombreSpan="ESCANEAR"
+                    nombreSpan="ENVIAR"
                 />
               </div>
             </div>

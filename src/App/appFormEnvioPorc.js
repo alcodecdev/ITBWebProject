@@ -1,12 +1,24 @@
 export function inicializarFormEnvioPorc() {
     let listado = {};
 
+    // Helper para formatear fechas a AAAAMMDDHHMM (Requisito Gencat Error 08/09)
+    const formatearFechaGTR = (fechaStr) => {
+        if (!fechaStr) return "";
+        // Reemplazamos separadores T, -, : para limpiar el string del input datetime-local o date
+        const limpia = fechaStr.replace(/[-T:]/g, '');
+        // Si solo tiene fecha (8 chars), añadimos ceros para hora/minuto
+        return limpia.length === 8 ? limpia + "0000" : limpia.padEnd(12, '0').substring(0, 12);
+    };
+
     const sendButton = document.getElementById('enviar');
 
     if (sendButton) {
-        sendButton.addEventListener('click', function (e) {
+        // Usamos una función nombrada para poder removerla si fuera necesario
+        sendButton.onclick = function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
+            // Ejecución de validaciones
             const v1 = validarNif();
             const v2 = validarPasswd();
             const v3 = validarEspecie();
@@ -16,173 +28,279 @@ export function inicializarFormEnvioPorc() {
             const v7 = validarMoviment();
             const v8 = validarCategoria();
             const v9 = validarFechas();
-            const v10 = validarNomDelTransportista();
             const v11 = validarMatricula();
             const v12 = validarNifConductor();
             const v13 = validarAnimals();
             const v14 = validarsirCode();
-            const v15 = agregarListadoAnimales();
+            const v15=validarNomDelTransportista();
+            const v16=validarMedioTransporte();
 
-            const radioMobilidad = document.querySelector("input[name='mobilitat']:checked");
-            listado.mobilitat = radioMobilidad ? radioMobilidad.value : null;
-            listado.medioTransporte = document.getElementById("selectMedioTransporte")?.value;
+            if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v11 && v12 && v13 && v14 && v15 && v16) {
+                const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
 
-            if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v10 && v11 && v12 && v13 && v14 && v15) {
-                localStorage.setItem("listadoEnviadoPorc", JSON.stringify(listado));
-                alert("¡Formulario enviado!");
-                window.location.href = "/home"; // Redirección tras éxito
+                const datosFinales = {
+                    nif: listado.nif,
+                    password: listado.passwd,
+                    tipusEspecie: "02",
+                    tipusAccio: listado.accio.toUpperCase(),
+                    tipusMoviment: listado.moviment,
+                    explotacioSortida: listado.origen,
+                    explotacioEntrada: listado.destino,
+                    codiCategoria: listado.categoria,
+                    numAnimals: listado.numAnimals,
+                    dataSortida: formatearFechaGTR(listado.dataSortida),
+                    dataArribada: formatearFechaGTR(listado.dataArribada),
+                    codiSirentra: listado.sirCode || "",
+                    mitjaTransport: document.getElementById("selectMedioTransporte")?.value || "01",
+                    matricula: listado.matricula,
+                    nifConductor: listado.nifConductor,
+                    mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
+                };
+
+                console.log("Enviando a Gencat:", datosFinales);
+
+                fetch(url, {
+                    method: 'PUT',
+                   // mode: 'cors', // Crucial para peticiones a APIs externas
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosFinales)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("¡Formulario enviado con éxito!");
+                            localStorage.removeItem('listaPorc');
+                            window.location.href = "/home";
+                        } else {
+                            alert("Error " + response.status + ": El servidor de Gencat rechazó la petición.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error Fetch:", error);
+                        alert("No se pudo conectar con la API. Revisa tu conexión o el estado de Gencat.");
+                    });
             } else {
-                alert("Revisa los campos marcados en rojo");
+                alert("Por favor, corrige los errores en rojo antes de enviar.");
             }
-        });
+        };
+    }
+
+    // --- FUNCIONES DE VALIDACIÓN MEJORADAS ---
+
+    function obtenerValor(id) {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : "";
     }
 
     function validarNif() {
         const input = document.getElementById("inputNif");
-        const nif = input.value.trim();
-        if (nif === "") return marcarError(input, "#nifError", "Usuario no encontrado");
-        if (nif.length !== 9) return marcarError(input, "#nifError", "El NIF debe contener 8 letras y un carácter")
-        listado.nif = nif;
+        const val = obtenerValor("inputNif");
+        if (!val || val.length===0 || val.length>9) return marcarError(input, "#nifError", "Error 36: Usuari no trobat");
+        listado.nif = val;
         return marcarExito(input, "#nifError");
     }
 
     function validarPasswd() {
         const input = document.getElementById("inputPassword");
-        const passwd = input.value.trim();
-        if (passwd === "") return marcarError(input, "#passwordError", "Clave de paso incorrecta");
-        if (passwd.length !== 20) return marcarError(input, "#passwordError", "La contraseña debe contener 20 caracteres");
-        listado.passwd = passwd;
+        const val = obtenerValor("inputPassword");
+        if (!val) return marcarError(input, "#passwordError", "Error 35: Clau de pas incorrecte");
+        listado.passwd = val;
         return marcarExito(input, "#passwordError");
     }
 
-
-    //PONER QUE SEA READONLY FALTA HACER
     function validarEspecie() {
         const input = document.getElementById("inputEspecie");
-        listado.especie = input.value.trim();
+        const val = obtenerValor("inputEspecie");
+        if (val !== "02") return marcarError(input, "#specieCodeError", "Error 15: L'espècie ha de ser 02");
+        listado.especie = val;
         return marcarExito(input, "#specieCodeError");
     }
 
     function validarOrigen() {
         const input = document.getElementById("inputOrigen");
-        const valor = input.value.trim();
-        const destino = document.getElementById("inputDestino").value.trim();
-        if (valor === destino) return marcarError(input, "#originCodeError", "Origen inválido");
-        listado.origen = valor;
+        const val = obtenerValor("inputOrigen");
+        if (val.length===0 || val.length > 14) return marcarError(input, "#originCodeError", "Error 04: Máximo 14 caracteres");
+        listado.origen = val;
         return marcarExito(input, "#originCodeError");
     }
 
     function validarDestino() {
         const input = document.getElementById("inputDestino");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#explotationCodeError", "Campo obligatorio");
-        if (valor !== "") return marcarError(input, "#explotationCodeError", "El código de destino debe tener 14 caracteres");
-        listado.destino = valor;
+        const val = obtenerValor("inputDestino");
+        if (val.length===0 || val.length > 14) return marcarError(input, "#explotationCodeError", "Error 05: Máximo 14 caracteres");
+        if (val === listado.origen) return marcarError(input, "#explotationCodeError", "Error 29: Origen y destino iguales");
+        listado.destino = val;
         return marcarExito(input, "#explotationCodeError");
     }
 
     function validarAccio() {
         const input = document.getElementById("inputAccio");
-        const valor = input.value.trim().toLowerCase();
-        if (valor !== "NO" || valor !== "SI") return marcarError(input, "#actionCodeError", "Debe ser 'NO' o 'SI'");
-        listado.accio = valor;
+        const val = obtenerValor("inputAccio").toLowerCase();
+        if (val !== "si" && val !== "no") return marcarError(input, "#actionCodeError", "Error 16: Debe ser SI o NO");
+        listado.accio = val;
         return marcarExito(input, "#actionCodeError");
     }
 
     function validarMoviment() {
         const input = document.getElementById("inputMoviment");
-        listado.moviment = input.value.trim();
+        const val = obtenerValor("inputMoviment");
+        if (val !== "01" && val !== "02") return marcarError(input, "#movementCodeError", "Error 17: Debe ser 01 o 02");
+        listado.moviment = val;
         return marcarExito(input, "#movementCodeError");
     }
 
     function validarCategoria() {
         const input = document.getElementById("inputCategoria");
-        const valor = input.value;
-        if (!valor) return marcarError(input, "#errorCategory", "Selecciona una categoría");
-        listado.categoria = valor;
+        const val = input ? input.value : "";
+        if (!val || parseInt(val) > 5) return marcarError(input, "#errorCategory", "Error 19: Categoría de 01 a 05");
+        listado.categoria = val;
         return marcarExito(input, "#errorCategory");
     }
 
     function validarFechas() {
-        const inputSalida = document.getElementById("inputFechaSalida");
-        const inputLlegada = document.getElementById("inputFechaLlegada");
-        if (!inputSalida.value) return marcarError(inputSalida, "#exitError", "Fecha inválida");
-        marcarExito(inputSalida, "#exitError");
-        if (!inputLlegada.value) return marcarError(inputLlegada, "#comeError", "Fecha inválida");
+        const inputS = document.getElementById("inputFechaSalida");
+        const inputL = document.getElementById("inputFechaLlegada");
 
-        const fechaSalida = new Date(inputSalida.value);
-        const fechaLlegada = new Date(inputLlegada.value);
+        // Inicializamos variables de control
+        let salidaOk = false;
+        let llegadaOk = false;
 
-        if (fechaLlegada.getTime() < fechaSalida.getTime()) return marcarError(inputLlegada, "#comeError", "La fecha de llegada no puede ser anterior a la de salida");
-        listado.dataSortida = inputSalida.value;
-        listado.dataArribada = inputLlegada.value;
-        return marcarExito(inputLlegada, "#comeError");
-    }
+        // 1. Validar presencia de Fecha de Salida (Error 08)
+        if (!inputS.value) {
+            marcarError(inputS, "#exitError", "Error 08: La data de sortida és obligatòria");
+            salidaOk = false;
+        } else {
+            salidaOk = true;
+        }
 
-    function validarNomDelTransportista() {
-        const input = document.getElementById("inputNombreTransportista");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#nameTransportError", "Campo obligatorio");
-        listado.nombreTransportista = valor;
-        return marcarExito(input, "#nameTransportError");
-    }
+        // 2. Validar presencia de Fecha de Arribada (Error 09)
+        if (!inputL.value) {
+            marcarError(inputL, "#comeError", "Error 09: La data d'arribada és obligatòria");
+            llegadaOk = false;
+        } else {
+            llegadaOk = true;
+        }
 
-    function validarMatricula() {
-        const input = document.getElementById("inputMatricula");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#MatriculaError", "Campo obligatorio");
-        listado.matricula = valor;
-        return marcarExito(input, "#MatriculaError");
-    }
+        // Si alguno de los dos falta, cortamos aquí para que se vean los errores en rojo
+        if (!salidaOk || !llegadaOk) return false;
 
-    function validarNifConductor() {
-        const input = document.getElementById("inputNifConductor");
-        const valor = input.value.trim();
-        if (valor === "") return marcarError(input, "#NIFError", "Campo obligatorio");
-        listado.nifConductor = valor;
-        return marcarExito(input, "#NIFError");
+        // 3. Lógica de comparación si ambos existen
+        const fS = new Date(inputS.value);
+        const fL = new Date(inputL.value);
+        const ahora = new Date();
+        ahora.setSeconds(0, 0); // Limpiamos segundos para evitar desfases
+
+        // Error 21: Salida mayor a la actual
+        if (fS < ahora) {
+            return marcarError(inputS, "#exitError", "Error 21: La data sortida ha de ser mes gran que l’actual");
+        }
+
+        // Error 24: Llegada debe ser después de salida
+        if (fL <= fS) {
+            return marcarError(inputL, "#comeError", "Error 24: La data arribada ha de ser major que la data sortida");
+        }
+
+        // Si llegamos aquí, todo es correcto
+        listado.dataSortida = inputS.value;
+        listado.dataArribada = inputL.value;
+
+        marcarExito(inputS, "#exitError");
+        marcarExito(inputL, "#comeError");
+        return true;
     }
 
     function validarAnimals() {
         const input = document.getElementById("inputAnimals");
-        const total = input.value.trim();
-        if (total === "" || total <= 0) return marcarError(input, "#AnimalNumberError", "Cantidad inválida");
-        if(total > 999999) return marcarError(input, "#AnimalNumberError", "Cantidad de animales demasiado alta");
-        listado.numAnimals = total;
+        const val = obtenerValor("inputAnimals"); // Esto ya hace el .trim()
+
+        // 1. Validar si está vacío (Error 07/18 implícito)
+        if (val === "") {
+            return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
+        }
+
+        // 2. Validar que sea un número positivo (Error 18)
+        const num = Number(val);
+        if (isNaN(num) || num <= 0) {
+            return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
+        }
+
+        // 3. Validar longitud máxima (Error 07)
+        if (val.length > 6) {
+            return marcarError(input, "#AnimalNumberError", "Error 07: El número d’animals no pot ser més gran de 6 caràcters");
+        }
+
+        listado.numAnimals = val;
         return marcarExito(input, "#AnimalNumberError");
     }
 
     function validarsirCode() {
         const input = document.getElementById("inputsirCode");
-        const valor = input.value.trim();
-        if (valor !== null || valor !== "") {
-            if (valor.length < 15 || valor.length > 15) {
-                return marcarError(input, "inputsirCode", "El SIRcode debe contener 15 caracteres")
-            }
-        }
-        listado.sirCode = valor;
+        const val = obtenerValor("inputsirCode");
+        if (val && val.length > 15 || val.length===0) return marcarError(input, "#SIRCODEError", "Error 10: Máximo 15 caracteres");
+        listado.sirCode = val;
         return marcarExito(input, "#SIRCODEError");
     }
 
-    function agregarListadoAnimales() {
-        listado.animales = JSON.parse(localStorage.getItem("listaPorc")) || [];
-        return true;
+    function validarMatricula() {
+        const input = document.getElementById("inputMatricula");
+        const val = obtenerValor("inputMatricula");
+        if (val.length > 10 || val.length===0) return marcarError(input, "#MatriculaError", "Error 12: Matrícula máx 10");
+        listado.matricula = val;
+        return marcarExito(input, "#MatriculaError");
     }
 
-    function marcarError(inputElement, errorDivSelector, msg) {
-        const errorDiv = document.querySelector(errorDivSelector);
-        if (inputElement) inputElement.classList.add("is-invalid");
-        if (errorDiv) errorDiv.textContent = msg;
+    function validarNifConductor() {
+        const input = document.getElementById("inputNifConductor");
+        const val = obtenerValor("inputNifConductor");
+        if (val.length > 9 || val.length===0) return marcarError(input, "#NIFError", "Error 13: NIF máx 9");
+        listado.nifConductor = val;
+        return marcarExito(input, "#NIFError");
+    }
+
+    function validarNomDelTransportista() {
+        const input = document.getElementById("inputNombreTransportista");
+        const val = obtenerValor("inputNombreTransportista");
+
+        // Validación típica de campo obligatorio
+        if (val === "") {
+            return marcarError(input, "#nameTransportError", "Error: El nom del transportista és obligatori");
+        }
+
+        // Si la API tiene un límite (ej. 50 caracteres)
+        if (val.length > 50) {
+            return marcarError(input, "#nameTransportError", "Error: El nom és massa llarg");
+        }
+
+        listado.nombreTransportista = val;
+        return marcarExito(input, "#nameTransportError");
+    }
+
+    function validarMedioTransporte() {
+        const input = document.getElementById("selectMedioTransporte");
+        const val = input ? input.value : "";
+
+        // Error 37: El mitjà de transport ha de ser 01 o 99
+        if (val !== "01" && val !== "99") {
+            return marcarError(input, "#errorTransport", "Error 37: El mitjà de transport ha de ser 01 o 99");
+        }
+
+        listado.medioTransporte = val;
+        return marcarExito(input, "#errorTransport");
+    }
+
+    function marcarError(input, selector, msg) {
+        const div = document.querySelector(selector);
+        if (input) input.classList.add("is-invalid");
+        if (div) div.textContent = msg;
         return false;
     }
 
-    function marcarExito(inputElement, errorDivSelector) {
-        const errorDiv = document.querySelector(errorDivSelector);
-        if (inputElement) {
-            inputElement.classList.remove("is-invalid");
-            inputElement.classList.add("is-valid");
+    function marcarExito(input, selector) {
+        const div = document.querySelector(selector);
+        if (input) {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
         }
-        if (errorDiv) errorDiv.textContent = "";
+        if (div) div.textContent = "";
         return true;
     }
 }
