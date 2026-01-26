@@ -26,7 +26,7 @@ const handleLogin = async () => {
   }
 
   try {
-    // 1. BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
+    // BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
     const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
     const querySnapshot = await getDocs(q);
 
@@ -131,7 +131,7 @@ const loginConGoogle = async () => {
                 Iniciar Sesión
               </button>
 
-              <button @click="loginConGoogle" class="btn btn-light w-100 mt-3">
+              <button @click="loginConGoogle" class="btn btn-light w-100 mt-3" type="button">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                      alt="Google" width="20" class="me-2">
                 Entrar con Google
