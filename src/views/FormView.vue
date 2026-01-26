@@ -149,12 +149,12 @@ onMounted(() => inicializarFormEnvioPorc())
          id="inputFechaLlegada"></campo-formulario>
 
         <div class="col-md-6">
-          <label class="form-label fw-bold text-light  small d-block">MOBILITAT (SI/NO)</label>
+          <label class="form-label fw-bold text-secondary small d-block">MOBILITAT (SI/NO)</label>
           <div class="btn-group w-100" role="group">
             <input type="radio" class="btn-check" name="mobilitat" id="siMobilitat" value="si" required>
-            <label class="btn btn-outline-light fw-bold" for="siMobilitat">SÍ</label>
+            <label class="btn btn-outline-secondary fw-bold" for="siMobilitat">SÍ</label>
             <input type="radio" class="btn-check" name="mobilitat" id="noMobilitat" value="no" checked required>
-            <label class="btn btn-outline-light fw-bold" for="noMobilitat">NO</label>
+            <label class="btn btn-outline-secondary fw-bold" for="noMobilitat">NO</label>
           </div>
           <div id="errorMobility" class="text-danger small fw-bold"></div>
         </div>

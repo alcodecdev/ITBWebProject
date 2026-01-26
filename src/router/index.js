@@ -3,7 +3,6 @@ import Cookies from 'js-cookie'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import HomeView from "@/views/HomeView.vue"
-import ScannerView from "@/views/ScannerView.vue"
 import FormView from "@/views/FormView.vue"
 
 const router = createRouter({
@@ -29,12 +28,6 @@ const router = createRouter({
             path: '/home',
             name: 'home',
             component: HomeView,
-            meta: { requiereAuth: true }
-        },
-        {
-            path: '/scanner',
-            name: 'scanner',
-            component: ScannerView,
             meta: { requiereAuth: true }
         },
         {

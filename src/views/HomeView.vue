@@ -26,7 +26,7 @@ onMounted(() => {
 })
 
 const goToScanner = () => {
-  router.push('/scanner')
+  router.push('/form')
 }
 
 //Logout corregido para Cookies
@@ -49,7 +49,7 @@ const handleLogout = async () => {
     console.error("Error al salir:", error);
     // Si falla, forzamos el borrado y salida igualmente
     Cookies.remove('usuario_logeado', { path: '/' });
-    window.location.href = '/login';
+    window.location.href = '/form';
   }
 };
 </script>
