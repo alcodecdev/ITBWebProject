@@ -81,10 +81,10 @@ const handleLogout = async () => {
 
           <div class="text-center mt-5">
             <Button
-                nombreSpan="&larr; Cerrar sesion"
+                nombreSpan="← Cerrar sesion"
                 @click="handleLogout"
                 clase="btn btn-danger btn-lg px-4 fw-bold text-uppercase shadow-sm"
-                style="font-size: 0.9rem; letter-spacing: 1px;"
+                :style="{ fontSize: '0.9rem', letterSpacing: '1px' }"
             />
           </div>
         </div>

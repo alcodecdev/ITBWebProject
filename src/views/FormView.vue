@@ -4,9 +4,9 @@ import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
-import {inicializarFormEnvioPorc} from "@/App/appFormEnvioPorc.js";
+import {inicializarFormEnvioPorc} from "@/App/appForm.js";
 
-'../App/appFormEnvioPorc.js'
+'../App/appForm.js'
 import {onMounted} from "vue";
 
 onMounted(() => inicializarFormEnvioPorc())
