@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 export function inicializarFormEnvioPorc() {
     let listado = {};
 
@@ -65,21 +67,41 @@ export function inicializarFormEnvioPorc() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosFinales)
                 })
-                    .then(response => {
+                    .then(async response => {
                         if (response.ok) {
-                            alert("¡Formulario enviado con éxito!");
+                            await Swal.fire({
+                                icon: 'success',
+                                title: '¡Alta Tramitada!',
+                                text: 'El formulari s\'ha enviat correctament.',
+                                confirmButtonColor: '#2e7d32'
+                            });
                             localStorage.removeItem('listaPorc');
                             window.location.href = "/home";
                         } else {
-                            alert("Error " + response.status + ": El servidor de Gencat rechazó la petición.");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: `Servidor va respondre amb codi ${response.status}. Revisa les dades.`,
+                                confirmButtonColor: '#d33'
+                            });
                         }
                     })
                     .catch(error => {
                         console.error("Error Fetch:", error);
-                        alert("No se pudo conectar con la API. Revisa tu conexión o el estado de Gencat.");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Fallada de la connexió',
+                            text: 'No es pot connectar amb l\'API. Revisa la teva Internet o el servei GTR.',
+                            confirmButtonColor: '#d33'
+                        });
                     });
             } else {
-                alert("Por favor, corrige los errores en rojo antes de enviar.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Formulari incomplet\n',
+                    text: 'Si us plau, corregiu els errors marcats en vermell.',
+                    confirmButtonColor: '#ffc107'
+                });
             }
         };
     }

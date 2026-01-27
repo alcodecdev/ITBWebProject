@@ -9,6 +9,7 @@ import ParraphAndLink from "@/components/ParraphAndLink.vue";
 import Footer from "@/components/layout/Footer.vue";
 import '../assets/styles/coloursAndAnimation.css'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
+import Swal from 'sweetalert2'
 
 
 const router = useRouter()
@@ -56,7 +57,14 @@ const handleRegister = async () => {
       fechaRegistro: new Date()
     });
 
-    alert("Registro completado con éxito");
+    await Swal.fire({
+      icon: 'success',
+      title: '¡Registre completat!',
+      text: 'El teu compte ha estat creat. Ara podeu iniciar sessió.',
+      confirmButtonColor: '#2e7d32',
+      timer: 3000,
+      timerProgressBar: true
+    });
     router.replace('/login');
 
   } catch (error) {
