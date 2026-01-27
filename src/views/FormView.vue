@@ -100,7 +100,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="MOVIMENT:"
-            placeholder="12345678"
+            placeholder="01"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -125,7 +125,6 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="date"
             label="DATA SORTIDA:"
-            placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -137,7 +136,6 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="date"
             label="DATA ARRIBADA:"
-            placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -195,7 +193,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="NIF CONDUCTOR:"
-            placeholder="12345678"
+            placeholder="12345678X"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -206,7 +204,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="number"
             label="NÚMERO DE ANIMALES:"
-            placeholder="12345678"
+            placeholder="Ej(200)"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -217,7 +215,7 @@ onMounted(() => inicializarFormEnvioPorc())
         <campo-formulario
             type="text"
             label="SIRCODE:"
-            placeholder="12345678"
+            placeholder="12345678ABCD"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -228,7 +226,6 @@ onMounted(() => inicializarFormEnvioPorc())
 
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
-
             <Button
                 id="enviar"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
@@ -237,13 +234,10 @@ onMounted(() => inicializarFormEnvioPorc())
               <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
               </router-link>
             </Button>
-
           </div>
       </form>
-
     </div>
   </div>
-
 </template>
 
 <style scoped>
