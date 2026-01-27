@@ -32,17 +32,17 @@ const goToForm = () => {
 //Logout corregido para Cookies
 const handleLogout = async () => {
   try {
-    // 1. Borrado de cookie con path explícito
+    // Borrado de cookie con path explícito
     Cookies.remove('usuario_logeado', { path: '/' });
 
-    // 2. Cierre de sesión en Firebase
+    // Cierre de sesión en Firebase
     await signOut(auth);
 
-    // 3. LIMPIEZA DE LOCALSTORAGE (Opcional pero recomendado)
+    // IMPIEZA DE LOCALSTORAGE
     // Esto evita que el siguiente usuario vea los animales del anterior
     localStorage.removeItem('listaPorc');
 
-    // 4. RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
+    // RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
     window.location.replace('/login');
 
   } catch (error) {

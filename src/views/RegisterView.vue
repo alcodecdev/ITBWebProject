@@ -30,7 +30,7 @@ const handleRegister = async () => {
   }
 
   try {
-    // 1. COMPROBAR SI EL USERNAME YA EXISTE
+    //COMPROBAR SI EL USERNAME YA EXISTE
     const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
     const querySnapshot = await getDocs(q);
 
@@ -40,7 +40,7 @@ const handleRegister = async () => {
       return;
     }
 
-    // 2. CREAR CUENTA EN FIREBASE AUTH
+    // CREAR CUENTA EN FIREBASE AUTH
     const userCredential = await createUserWithEmailAndPassword(
         auth,
         email.value.trim(),
@@ -48,7 +48,7 @@ const handleRegister = async () => {
     );
     const user = userCredential.user;
 
-    // 3. GUARDAR PERFIL EN FIRESTORE
+    // GUARDAR PERFIL EN FIRESTORE
     await setDoc(doc(db, "usuarios", user.uid), {
       nombre: username.value.trim(), // Este será su alias de login
       email: email.value.trim(),

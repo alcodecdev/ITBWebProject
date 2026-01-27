@@ -28,7 +28,7 @@ const handleLogin = async () => {
   }
 
   try {
-    // 1. BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
+    // BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
     const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
     const querySnapshot = await getDocs(q);
 
@@ -43,10 +43,10 @@ const handleLogin = async () => {
     const datosUsuario = usuarioDoc.data();
     const emailReal = datosUsuario.email;
 
-    // 2. LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
+    // LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
     await signInWithEmailAndPassword(auth, emailReal, password.value.trim());
 
-    // 3. GUARDAR SESIÓN EN COOKIE
+    // GUARDAR SESIÓN EN COOKIE
     Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 , path: '/'});
     window.location.href=('/home');
 
@@ -57,7 +57,7 @@ const handleLogin = async () => {
   }
 }
 
-// Login con Google (mantenemos la lógica pero adaptada a Cookies)
+// Login con Google
 const loginConGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider();

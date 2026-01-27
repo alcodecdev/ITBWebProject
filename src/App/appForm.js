@@ -61,7 +61,7 @@ export function inicializarFormEnvioPorc() {
 
                 fetch(url, {
                     method: 'PUT',
-                   // mode: 'cors', // Crucial para peticiones a APIs externas
+                    mode: 'cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosFinales)
                 })
@@ -84,7 +84,7 @@ export function inicializarFormEnvioPorc() {
         };
     }
 
-    // --- FUNCIONES DE VALIDACIÓN MEJORADAS ---
+    //FUNCIONES DE VALIDACIONES
 
     function obtenerValor(id) {
         const el = document.getElementById(id);
@@ -160,11 +160,11 @@ export function inicializarFormEnvioPorc() {
         const inputS = document.getElementById("inputFechaSalida");
         const inputL = document.getElementById("inputFechaLlegada");
 
-        // Inicializamos variables de control
+        //Inicializamos variables de control
         let salidaOk = false;
         let llegadaOk = false;
 
-        // 1. Validar presencia de Fecha de Salida (Error 08)
+        // Validar presencia de Fecha de Salida
         if (!inputS.value) {
             marcarError(inputS, "#exitError", "Error 08: La data de sortida és obligatòria");
             salidaOk = false;
@@ -172,7 +172,7 @@ export function inicializarFormEnvioPorc() {
             salidaOk = true;
         }
 
-        // 2. Validar presencia de Fecha de Arribada (Error 09)
+        // Validar presencia de Fecha de Arribada
         if (!inputL.value) {
             marcarError(inputL, "#comeError", "Error 09: La data d'arribada és obligatòria");
             llegadaOk = false;
@@ -183,23 +183,20 @@ export function inicializarFormEnvioPorc() {
         // Si alguno de los dos falta, cortamos aquí para que se vean los errores en rojo
         if (!salidaOk || !llegadaOk) return false;
 
-        // 3. Lógica de comparación si ambos existen
+        // Lógica de comparación si ambos existen
         const fS = new Date(inputS.value);
         const fL = new Date(inputL.value);
         const ahora = new Date();
         ahora.setSeconds(0, 0); // Limpiamos segundos para evitar desfases
 
-        // Error 21: Salida mayor a la actual
         if (fS < ahora) {
             return marcarError(inputS, "#exitError", "Error 21: La data sortida ha de ser mes gran que l’actual");
         }
 
-        // Error 24: Llegada debe ser después de salida
         if (fL <= fS) {
             return marcarError(inputL, "#comeError", "Error 24: La data arribada ha de ser major que la data sortida");
         }
 
-        // Si llegamos aquí, todo es correcto
         listado.dataSortida = inputS.value;
         listado.dataArribada = inputL.value;
 
@@ -212,18 +209,18 @@ export function inicializarFormEnvioPorc() {
         const input = document.getElementById("inputAnimals");
         const val = obtenerValor("inputAnimals"); // Esto ya hace el .trim()
 
-        // 1. Validar si está vacío (Error 07/18 implícito)
+        // Validar si está vacío
         if (val === "") {
             return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
         }
 
-        // 2. Validar que sea un número positivo (Error 18)
+        //Validar que sea un número positivo
         const num = Number(val);
         if (isNaN(num) || num <= 0) {
             return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
         }
 
-        // 3. Validar longitud máxima (Error 07)
+        // Validar longitud máxima
         if (val.length > 6) {
             return marcarError(input, "#AnimalNumberError", "Error 07: El número d’animals no pot ser més gran de 6 caràcters");
         }
@@ -265,7 +262,7 @@ export function inicializarFormEnvioPorc() {
             return marcarError(input, "#nameTransportError", "Error: El nom del transportista és obligatori");
         }
 
-        // Si la API tiene un límite (ej. 50 caracteres)
+        // Si la API tiene un límite
         if (val.length > 50) {
             return marcarError(input, "#nameTransportError", "Error: El nom és massa llarg");
         }
@@ -278,7 +275,6 @@ export function inicializarFormEnvioPorc() {
         const input = document.getElementById("selectMedioTransporte");
         const val = input ? input.value : "";
 
-        // Error 37: El mitjà de transport ha de ser 01 o 99
         if (val !== "01" && val !== "99") {
             return marcarError(input, "#errorTransport", "Error 37: El mitjà de transport ha de ser 01 o 99");
         }

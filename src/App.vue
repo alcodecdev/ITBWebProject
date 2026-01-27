@@ -10,7 +10,7 @@ onMounted(() => {
   // Este observador detecta automáticamente si el usuario está logueado en Firebase
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      // Si hay usuario en Firebase pero la Cookie se borró (al cerrar el navegador o F5)
+      // Si hay usuario en Firebase pero la Cookie se borró
       if (!Cookies.get('usuario_logeado')) {
         try {
           // Vamos a buscar sus datos a la base de datos de Madrid
