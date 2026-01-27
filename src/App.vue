@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
   const resources = performance.getEntriesByType('resource');
   const totalBytes = resources.reduce((acc, res) => acc + (res.transferSize || 0), 0);
 
-  // 0.0005g de CO2 por cada KB es un estándar de la industria (Sustainable Web Design)
+  // 0.0005g de CO2 por cada KB es un estándar de la industria
   const co2Estimated = (totalBytes / 1024) * 0.0005;
 
   console.log(`Esta sesión ha consumido aprox: ${co2Estimated}g de CO2`);
