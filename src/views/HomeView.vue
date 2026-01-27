@@ -38,7 +38,6 @@ const handleLogout = async () => {
     // Cierre de sesión en Firebase
     await signOut(auth);
 
-    // IMPIEZA DE LOCALSTORAGE
     // Esto evita que el siguiente usuario vea los animales del anterior
     localStorage.removeItem('listaPorc');
 
