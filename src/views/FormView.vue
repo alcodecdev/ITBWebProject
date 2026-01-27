@@ -5,13 +5,31 @@ import CampoFormulario from "@/components/CampoFormulario.vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
 import {inicializarFormEnvioPorc} from "@/App/appForm.js";
-
+import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"
+import { getEnergyConsumption } from "@/App/consumoElectrico.js"
 '../App/appForm.js'
-import {onMounted} from "vue";
+import {ref,onMounted} from "vue";
 
-onMounted(() => inicializarFormEnvioPorc())
+const energyData = ref({ wattHora: 0, kilobytes: 0 });
 
+onMounted(() => {
+  // Inicializamos el formulario
+  inicializarFormEnvioPorc();
 
+  // Esperamos un momento a que termine la carga de recursos para medir
+  setTimeout(() => {
+    const impact = estimateSustainability();
+    energyData.value = getEnergyConsumption();
+
+    console.log(
+        `%c SOSTENIBILIDAD GTR %c Impacto: ${impact.co2Grams}g CO2 | Energía: ${energyData.value.wattHora} Wh`,
+        "background: #2e7d32; color: white; padding: 2px 5px; border-radius: 3px; font-weight: bold;",
+        "color: #2e7d32; font-weight: bold;"
+    );
+
+    console.log(`Datos transferidos: ${energyData.value.kilobytes} KB`);
+  }, 1000); // 1 segundo de delay para pillar todos los recursos de red
+});
 
 </script>
 
