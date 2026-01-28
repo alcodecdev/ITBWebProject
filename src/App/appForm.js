@@ -87,7 +87,7 @@ export function inicializarFormEnvioPorc() {
                     window.location.href = "/form";
 
                 } catch (error) {
-                    // 3. Manejo de errores centralizado
+                    //Manejo de errores centralizado
                     let titulo = 'Error de la connexió';
                     let mensaje = 'No es pot connectar amb l\'API. Revisa Internet.';
 
