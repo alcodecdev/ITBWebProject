@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import axios from "axios";
 
 export function inicializarFormEnvioPorc() {
     let listado = {};
@@ -16,7 +17,7 @@ export function inicializarFormEnvioPorc() {
 
     if (sendButton) {
         // Usamos una función nombrada para poder removerla si fuera necesario
-        sendButton.onclick = function (e) {
+        sendButton.onclick = async function (e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -34,11 +35,22 @@ export function inicializarFormEnvioPorc() {
             const v12 = validarNifConductor();
             const v13 = validarAnimals();
             const v14 = validarsirCode();
-            const v15=validarNomDelTransportista();
-            const v16=validarMedioTransporte();
+            const v15 = validarNomDelTransportista();
+            const v16 = validarMedioTransporte();
 
             if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v11 && v12 && v13 && v14 && v15 && v16) {
-               // const url = 'https://preproduccio.aplicacionst';
+
+                // 1. Mostrar estado de carga
+                Swal.fire({
+                    title: 'Processant tramesa...',
+                    text: 'Connectant amb el servidor de Gencat',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                //const url = 'https://preproduccio.aplicacionst';
                 const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
 
                 const datosFinales = {
@@ -60,45 +72,42 @@ export function inicializarFormEnvioPorc() {
                     mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
                 };
 
-                console.log("Enviando a Gencat:", datosFinales);
+                try {
+                    //Llamada con Axios
+                    const response = await axios.put(url, datosFinales);
 
-                fetch(url, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(datosFinales)
-                })
-                    .then(async response => {
-                        if (response.ok) {
-                            await Swal.fire({
-                                icon: 'success',
-                                title: '¡Alta Tramitada!',
-                                text: 'El formulari s\'ha enviat correctament.',
-                                confirmButtonColor: '#2e7d32'
-                            });
-                            localStorage.removeItem('listaPorc');
-                            window.location.href = "/form";
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: `Servidor va respondre amb codi ${response.status}. Revisa les dades.`,
-                                confirmButtonColor: '#d33'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error Fetch:", error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Fallada de la connexió',
-                            text: 'No es pot connectar amb l\'API. Revisa la teva Internet o el servei GTR.',
-                            confirmButtonColor: '#d33'
-                        });
+                    await Swal.fire({
+                        icon: 'success',
+                        title: '¡Alta Tramitada!',
+                        text: 'El formulari s\'ha enviat correctament.',
+                        confirmButtonColor: '#2e7d32'
                     });
+
+                    localStorage.removeItem('listaPorc');
+                    window.location.href = "/form";
+
+                } catch (error) {
+                    // 3. Manejo de errores centralizado
+                    let titulo = 'Error de la connexió';
+                    let mensaje = 'No es pot connectar amb l\'API. Revisa Internet.';
+
+                    if (error.response) {
+                        // El servidor respondió con un código
+                        titulo = `Error ${error.response.status}`;
+                        mensaje = 'El servidor de Gencat ha rebutjat la petició. Revisa les dades.';
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: titulo,
+                        text: mensaje,
+                        confirmButtonColor: '#d33'
+                    });
+                }
             } else {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Formulari incomplet\n',
+                    title: 'Formulari incomplet',
                     text: 'Si us plau, corregiu els errors marcats en vermell.',
                     confirmButtonColor: '#ffc107'
                 });
