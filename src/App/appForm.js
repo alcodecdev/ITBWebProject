@@ -75,7 +75,7 @@ export function inicializarFormEnvioPorc() {
                                 confirmButtonColor: '#2e7d32'
                             });
                             localStorage.removeItem('listaPorc');
-                            window.location.href = "/home";
+                            window.location.href = "/form";
                         } else {
                             Swal.fire({
                                 icon: 'error',
