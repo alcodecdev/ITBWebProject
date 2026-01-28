@@ -38,6 +38,7 @@ export function inicializarFormEnvioPorc() {
             const v16=validarMedioTransporte();
 
             if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v11 && v12 && v13 && v14 && v15 && v16) {
+               // const url = 'https://preproduccio.aplicacionst';
                 const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
 
                 const datosFinales = {

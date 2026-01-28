@@ -9,6 +9,7 @@ import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"
 import { getEnergyConsumption } from "@/App/consumoElectrico.js"
 '../App/appForm.js'
 import {ref,onMounted} from "vue";
+import Footer from "@/components/layout/Footer.vue";
 
 const energyData = ref({ wattHora: 0, kilobytes: 0 });
 
@@ -35,7 +36,7 @@ onMounted(() => {
 
 <template>
   <navbar></navbar>
-  <div class="container">
+  <div class="container flex-grow-1 my-5">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
         <title-and-subtitle
@@ -256,6 +257,7 @@ onMounted(() => {
       </form>
     </div>
   </div>
+  <Footer />
 </template>
 
 <style scoped>
