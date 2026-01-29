@@ -43,7 +43,7 @@ export function inicializarFormEnvioPorc() {
                 // 1. Mostrar estado de carga
                 Swal.fire({
                     title: 'Processant tramesa...',
-                    text: 'Connectant amb el servidor de Gencat',
+                    text: 'Connectant amb el servidor',
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();
@@ -83,7 +83,6 @@ export function inicializarFormEnvioPorc() {
                         confirmButtonColor: '#2e7d32'
                     });
 
-                    localStorage.removeItem('listaPorc');
                     window.location.href = "/form";
 
                 } catch (error) {

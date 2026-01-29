@@ -38,9 +38,6 @@ const handleLogout = async () => {
     // Cierre de sesión en Firebase
     await signOut(auth);
 
-    // Esto evita que el siguiente usuario vea los animales del anterior
-    localStorage.removeItem('listaPorc');
-
     // RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
     window.location.replace('/login');
 
