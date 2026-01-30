@@ -17,7 +17,7 @@ const props = defineProps({
     type: String
   }
 })
-</script>s
+</script>
 
 <template>
   <p :class="parraphStyle">

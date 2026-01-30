@@ -9,12 +9,46 @@ import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"
 import { getEnergyConsumption } from "@/App/consumoElectrico.js"
 '../App/appForm.js'
 import {ref,onMounted} from "vue";
+import {useRoute, useRouter} from "vue-router";
 import Footer from "@/components/layout/Footer.vue";
+const route = useRoute();
+const router = useRouter();
+let esEdicion = ref(false);
 
 const energyData = ref({ wattHora: 0, kilobytes: 0 });
 
 onMounted(() => {
-  // Inicializamos el formulario
+  const nifURL = route.params.nifURL;
+  if (nifURL){
+    esEdicion = true;
+    const listado = JSON.parse(localStorage.getItem("listaAltas")) || [];
+    const encontrado = listado.find(item => item.nif === nifURL);
+    if (encontrado){
+      setTimeout(() => {
+        // RELLENADO MANUAL (JS PURO) para que tu appForm.js lo detecte
+        document.getElementById("inputNif").value = encontrado.nif;
+        document.getElementById("inputPassword").value = encontrado.password;
+        document.getElementById("inputOrigen").value = encontrado.ExplotacionOrigen;
+        document.getElementById("inputDestino").value = encontrado.ExplotacionDestino;
+        document.getElementById("inputAnimals").value = encontrado.numAnimals;
+        document.getElementById("inputsirCode").value = encontrado.sirCode;
+        document.getElementById("inputMatricula").value = encontrado.matricula;
+        document.getElementById("inputNifConductor").value = encontrado.nifConductor;
+
+        // Para los SELECTS
+        document.getElementById("inputCategoria").value = encontrado.categoria;
+        document.getElementById("selectMedioTransporte").value = encontrado.medioTransporte;
+
+        // Para los RADIO buttons (Mobilitat)
+        if (encontrado.mobilitat.toLowerCase() === 'si') {
+          document.getElementById("siMobilitat").checked = true;
+        } else {
+          document.getElementById("noMobilitat").checked = true;
+        }
+      }, 100);
+    }
+  }
+
   inicializarFormEnvioPorc();
 
   // Esperamos un momento a que termine la carga de recursos para medir

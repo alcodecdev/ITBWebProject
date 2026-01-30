@@ -25,6 +25,10 @@ onMounted(() => {
   }
 })
 
+const goToList = () =>{
+  router.push('/list')
+}
+
 const goToForm = () => {
   router.push('/form')
 }
@@ -69,6 +73,7 @@ const handleLogout = async () => {
             <div class="col-12 col-md-8 col-lg-6">
               <div class="d-grid gap-4" id="buttonHome">
                 <Button
+                    style="margin-bottom: 10px"
                     @click="goToForm"
                     clase="btn text-white btn-lg py-5 border-0 shadow-sm d-flex flex-column align-items-center justify-content-center"
                     claseSpan="display-6 fw-bold text-uppercase"
@@ -82,7 +87,14 @@ const handleLogout = async () => {
             <Button
                 nombreSpan="← Cerrar sesion"
                 @click="handleLogout"
-                clase="btn btn-danger btn-lg px-4 fw-bold text-uppercase shadow-sm"
+                clase="btn btn-danger btn-lg px-4 fw-bold text-uppercase shadow-sm me-3"
+                :style="{ fontSize: '0.9rem', letterSpacing: '1px' }"
+            />
+
+            <Button
+                nombreSpan="Ver mis altas →"
+                @click="goToList"
+                clase="btn btn-success btn-lg px-4 fw-bold text-uppercase shadow-sm"
                 :style="{ fontSize: '0.9rem', letterSpacing: '1px' }"
             />
           </div>

@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 
 export function inicializarFormEnvioPorc() {
+    let listaAltas = JSON.parse(localStorage.getItem("listaAltas")) || [];
     let listado = {};
 
     // Helper para formatear fechas a AAAAMMDDHHMM (Requisito Gencat Error 08/09)
@@ -71,10 +72,38 @@ export function inicializarFormEnvioPorc() {
                     nifConductor: listado.nifConductor,
                     mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
                 };
+                 let alta = {
+                    nif: listado.nif,
+                    password: listado.passwd,
+                    tipoAccion: listado.accio.toUpperCase(),
+                    tipoMovimiento: listado.moviment,
+                    ExplotacionOrigen: listado.origen,
+                    ExplotacionDestino: listado.destino,
+                    codigoRega: listado.destino,
+                    categoria: listado.categoria,
+                    numAnimals: listado.numAnimals,
+                    fechaSalida: listado.dataSortida,
+                    fechaLlegada: listado.dataArribada,
+                    sirCode: listado.sirCode,
+                    medioTransporte: listado.medioTransporte,
+                    matricula: listado.matricula,
+                    nifConductor: listado.nifConductor,
+                     mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
+                }
+
 
                 try {
                     //Llamada con Axios
                     const response = await axios.put(url, datosFinales);
+                    const index = listaAltas.findIndex(item => item.nif === alta.nif);
+                    if (index !== -1){
+                        listaAltas[index] = alta
+                    }
+                    else{
+                        listaAltas.push(alta);
+                    }
+                    localStorage.setItem("listaAltas", JSON.stringify(listaAltas));
+
 
                     await Swal.fire({
                         icon: 'success',
