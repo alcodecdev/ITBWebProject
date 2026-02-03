@@ -208,7 +208,7 @@ onMounted(() => {
         </div>
 
         <div class="col-12">
-          <h5 class="mt-4 text-light border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
+          <h5 class="mt-4 border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
         </div>
         <campo-formulario
             id="inputNombreTransportista"
