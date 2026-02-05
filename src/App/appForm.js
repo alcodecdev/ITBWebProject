@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import axios from "axios";
+import router from "@/router/index.js";
 
 export function inicializarFormEnvioPorc() {
     let listaAltas = JSON.parse(localStorage.getItem("listaAltas")) || [];
@@ -15,6 +16,27 @@ export function inicializarFormEnvioPorc() {
     };
 
     const sendButton = document.getElementById('enviar');
+    const buttonLogin = document.getElementById('buttonlogin');
+
+
+    const peticion ={
+        nif: "37370803N",
+        password: "5Q62h4rP",
+        tipusEspecie: "02",
+        tipusAccio: "NO",
+        tipusMoviment: "01",
+        explotacioSortida: "1880AE",
+        explotacioEntrada: "1000AM",
+        codiCategoria: "4531",
+        numAnimals: "200",
+        dataSortida: "202601221303",
+        dataArribada: "202601231630",
+        codiSirentra: "0123456789ABCD",
+        mitjaTransport: "01",
+        matricula: "0123456789",
+        nifConductor: "01234567B",
+        mobilitat: "SI"
+    }
 
     if (sendButton) {
         // Usamos una función nombrada para poder removerla si fuera necesario
@@ -51,7 +73,6 @@ export function inicializarFormEnvioPorc() {
                     }
                 });
 
-                //const url = 'https://preproduccio.aplicacionst';
                 const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
 
                 const datosFinales = {
@@ -90,6 +111,8 @@ export function inicializarFormEnvioPorc() {
                     nifConductor: listado.nifConductor,
                      mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
                 }
+
+
 
 
                 try {

@@ -1,94 +1,95 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { auth, db } from "@/firebase"
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
-import { collection, query, where, getDocs, doc, getDoc, setDoc } from "firebase/firestore"
-import Cookies from 'js-cookie'
+import axios from "axios";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
+import Cookies from 'js-cookie';
 
 
 const router = useRouter()
 const username = ref('')
 const password = ref('')
+const CodiMO = ref('')
 const errorMsg = ref('')
 const showError = ref(false)
-
 const handleLogin = async () => {
-  showError.value = false
-  errorMsg.value = ""
+  showError.value = false;
+  errorMsg.value = "";
 
-  if (!username.value.trim() || !password.value.trim()) {
-    errorMsg.value = "Todos los campos son obligatorios"
-    showError.value = true
-    return
-  }
+  const peticion = {
+    // Usamos .trim() para evitar errores por espacios invisibles al copiar/pegar
+    nif: username.value,
+    password: password.value,
+    tipusEspecie: "02",
+    tipusAccio: "NO",
+    tipusMoviment: "01",
+    explotacioSortida: CodiMO.value,
+    explotacioEntrada: "1000AM",
+    codiCategoria: "01",
+    numAnimals: "200",
+    dataSortida: "202605221303",
+    dataArribada: "202605231630",
+    codiSirentra: "0123456789ABCD",
+    mitjaTransport: "01",
+    matricula: "0123456789",
+    nifConductor: "01234567B",
+    mobilitat: "SI"
+  };
 
   try {
-    // BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
-    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
-    const querySnapshot = await getDocs(q);
+    const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
 
-    if (querySnapshot.empty) {
-      errorMsg.value = "El usuario no existe";
-      showError.value = true;
-      return;
+    console.log("Enviando petición...", peticion);
+    const response = await axios.put(url, peticion);
+
+    // --- PASO CRUCIAL ---
+    // Si el servidor responde 200 OK, creamos la cookie para que el Router nos deje pasar
+    Cookies.set('usuario_logeado', 'true', { expires: 1, path: '/' });
+
+    // Navegamos a home
+    await router.replace("/home");
+
+  }  catch (error) {
+  console.error("Error completo capturado:", error);
+
+  // 1. Verificamos que el servidor haya respondido con datos
+  if (error.response && error.response.data && error.response.data.descripcio) {
+    const erroresRecibidos = error.response.data.descripcio;
+    console.log("Mensajes del servidor:", erroresRecibidos);
+
+    let esErrorGrave = false;
+    // Lista de fallos que bloquean el acceso
+    const fallosProhibidos = ["Error 14", "Error 26", "Error 27", "Error 28", "Error 29", "Error 32", "Error 33", "Error 35", "Error 36", "Error 400"];
+
+    // 2. Comprobamos los errores uno por uno
+    for (let e of erroresRecibidos) {
+      if (fallosProhibidos.some(f => e.includes(f))) {
+        esErrorGrave = true;
+        break;
+      }
     }
 
-    // Obtenemos los datos del documento encontrado
-    const usuarioDoc = querySnapshot.docs[0];
-    const datosUsuario = usuarioDoc.data();
-    const emailReal = datosUsuario.email;
-
-    // LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
-    await signInWithEmailAndPassword(auth, emailReal, password.value.trim());
-
-    // GUARDAR SESIÓN EN COOKIE
-    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 , path: '/'});
-    window.location.href=('/home');
-
-  } catch (error) {
-    console.error(error);
-    errorMsg.value = "Contraseña incorrecta";
+    if (esErrorGrave) {
+      console.log("Bloqueando acceso por error grave.");
+      errorMsg.value = "NIF, Contrasenya o Codi MO incorrectes";
+      showError.value = true;
+    } else {
+      console.log("Error no grave detectado, permitiendo entrada.");
+      Cookies.set('usuario_logeado', 'true', { expires: 1, path: '/' });
+      router.replace("/home");
+    }
+  } else {
+    // 3. Si no hay respuesta clara del servidor o es un error de red
+    console.log("Error sin descripción o de red.");
+    errorMsg.value = "Error de connexió o validació genèrica";
     showError.value = true;
   }
 }
-
-// Login con Google
-const loginConGoogle = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    const docRef = doc(db, "usuarios", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    let datosUsuario;
-    if (docSnap.exists()) {
-      datosUsuario = docSnap.data();
-    } else {
-      datosUsuario = {
-        nombre: user.displayName,
-        email: user.email,
-        rol: "operario",
-        foto: user.photoURL,
-        creadoEn: new Date()
-      };
-      await setDoc(docRef, datosUsuario);
-    }
-
-    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
-    router.replace("/home");
-  } catch (error) {
-    console.error("Error Google:", error);
-  }
-};
+}
 </script>
-
 <template>
   <div class="min-vh-100 d-flex flex-column w-100">
 
@@ -100,7 +101,7 @@ const loginConGoogle = async () => {
               class="textoOscuro"
               divClass="text-start mb-4"
               title="GTR Login"
-              subtitle="Gestión de envío"
+              subtitle="Inici de sessió"
               titleClass="display-3 fw-bolder"
               subtitleClass="h5  text-uppercase tracking-wider"
           />
@@ -112,7 +113,7 @@ const loginConGoogle = async () => {
               <CampoFormulario class="text-light"
                   divClass="mb-4"
                   id="user"
-                  label="Usuario"
+                  label="NIF"
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   placeholder="Nombre de usuario"
@@ -121,10 +122,10 @@ const loginConGoogle = async () => {
 
 
               <CampoFormulario class="text-light"
-                  divClass="mb-5"
+                  divClass="mb-3"
                   id="password"
                   type="password"
-                  label="Contraseña"
+                  label="Contrasenya"
                   labelClass="form-label fw-bold text-light small"
                   placeholder="Contraseña"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
@@ -132,17 +133,22 @@ const loginConGoogle = async () => {
 
               />
 
-              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+              <CampoFormulario class="text-light"
+                               divClass="mb-5"
+                               id="mo"
+                               type="password"
+                               label="Codi MO"
+                               labelClass="form-label fw-bold text-light small"
+                               placeholder="Contraseña"
+                               inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+                               v-model="CodiMO"
+
+              />
+
+              <button type="submit" id="loginButton" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
                 Iniciar Sesión
               </button>
 
-              <div class="text-center mt-3">
-                <button @click="loginConGoogle" class="btn btn-light  w-60 mt-3" type="button">
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                       alt="" width="20" class="me-2">
-                  Entrar con Google
-                </button>
-              </div>
 
 
             </form>
@@ -150,15 +156,6 @@ const loginConGoogle = async () => {
             <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
               {{ errorMsg }}
             </div>
-          </div>
-
-          <div class="text-center mt-5">
-            <p class="text-light-emphasis">
-              ¿No estas registrado?
-              <router-link to="/register" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-                Registrate aquí
-              </router-link>
-            </p>
           </div>
         </div>
       </div>

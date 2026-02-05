@@ -1,4 +1,5 @@
 <script setup>
+/*
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { auth, db } from "@/firebase"
@@ -75,9 +76,9 @@ const handleRegister = async () => {
       errorMsg.value = "Error: " + error.message;
     }
   }
-}
+}*/
 </script>
-
+<!--
 <template>
   <div class="min-vh-100 d-flex flex-column bg-light w-100">
 
@@ -135,3 +136,5 @@ const handleRegister = async () => {
     <Footer />
   </div>
 </template>
+
+-->
