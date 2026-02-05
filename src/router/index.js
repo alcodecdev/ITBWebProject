@@ -34,7 +34,7 @@ const router = createRouter({
             path: '/home',
             name: 'home',
             component: HomeView,
-            meta: { requiereAuth: true }
+            meta: { requiereAuth: false }
         },
         {
             path: '/form/:nifURL?',

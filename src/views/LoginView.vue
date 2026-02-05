@@ -1,94 +1,103 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from "axios";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
-import Cookies from 'js-cookie';
+import router from "@/router/index.js";
+let showError = ref(false);
+const nif = ref("");
+const password = ref("");
+const mobilitat = ref("");
+let errorMsg = ref("")
 
+const errores = ref([]); // array que contendrá todos los errores
 
-const router = useRouter()
-const username = ref('')
-const password = ref('')
-const CodiMO = ref('')
-const errorMsg = ref('')
-const showError = ref(false)
-const handleLogin = async () => {
-  showError.value = false;
-  errorMsg.value = "";
+const ERRORES = {
+  nif: ["Error 14", "Error 26"],
+  password: ["Error 27", "Error 28", "Error 29"],
+  mobilitat: ["Error 32", "Error 33", "Error 35", "Error 36"]
+};
 
-  const peticion = {
-    // Usamos .trim() para evitar errores por espacios invisibles al copiar/pegar
-    nif: username.value,
-    password: password.value,
-    tipusEspecie: "02",
-    tipusAccio: "NO",
-    tipusMoviment: "01",
-    explotacioSortida: CodiMO.value,
-    explotacioEntrada: "1000AM",
-    codiCategoria: "01",
-    numAnimals: "200",
-    dataSortida: "202605221303",
-    dataArribada: "202605231630",
-    codiSirentra: "0123456789ABCD",
-    mitjaTransport: "01",
-    matricula: "0123456789",
-    nifConductor: "01234567B",
-    mobilitat: "SI"
-  };
-
+async function handleLogin() {
   try {
-    const url = 'https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia';
+    const datos = {
+      nif: nif.value,
+      password: password.value,
+      tipusEspecie: "02",
+      tipusAccio:  "NO",
+      tipusMoviment: "01",
+      explotacioEntrada:"1000AM",
+      explotacioSortida: mobilitat.value,
+      codiCategoria:  "01",
+      numAnimals: "200",
+      dataSortida: "202601221303",
+      dataArribada: "002601231630",
+      codiSirentra: "0123456789ABCD",
+      mitjaTransport: "01",
+      matricula: "0123456789",
+      nifConductor:  "01234567B",
+      mobilitat: "SI"
+    }
 
-    console.log("Enviando petición...", peticion);
-    const response = await axios.put(url, peticion);
 
-    // --- PASO CRUCIAL ---
-    // Si el servidor responde 200 OK, creamos la cookie para que el Router nos deje pasar
-    Cookies.set('usuario_logeado', 'true', { expires: 1, path: '/' });
+    const response = await fetch(`https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    });
 
-    // Navegamos a home
-    await router.replace("/home");
+    if (!response.ok) {
+      errores.value = []; // limpiar errores previos
+      errores.value.push(`Datos invalidos`);
+    }
 
-  }  catch (error) {
-  console.error("Error completo capturado:", error);
+    if (response.ok) {
+      try {
+        const responseText = await response.text();
+        const apiResponse = JSON.parse(responseText);
 
-  // 1. Verificamos que el servidor haya respondido con datos
-  if (error.response && error.response.data && error.response.data.descripcio) {
-    const erroresRecibidos = error.response.data.descripcio;
-    console.log("Mensajes del servidor:", erroresRecibidos);
+        console.log(apiResponse);
 
-    let esErrorGrave = false;
-    // Lista de fallos que bloquean el acceso
-    const fallosProhibidos = ["Error 14", "Error 26", "Error 27", "Error 28", "Error 29", "Error 32", "Error 33", "Error 35", "Error 36", "Error 400"];
+        errores.value = []; // limpiar errores previos
+        errorMsg.value = "";
 
-    // 2. Comprobamos los errores uno por uno
-    for (let e of erroresRecibidos) {
-      if (fallosProhibidos.some(f => e.includes(f))) {
-        esErrorGrave = true;
-        break;
+        const mensajes = apiResponse.descripcio || [];
+
+        // Clasifico los errores
+        for (const msg of mensajes) {
+          if (ERRORES.nif.some(code => msg.startsWith(code))) {
+            errores.value.push(`NIF: ${msg}`);
+          } else if (ERRORES.password.some(code => msg.startsWith(code))) {
+            errores.value.push(`Contraseña: ${msg}`);
+          } else if (ERRORES.mobilitat.some(code => msg.startsWith(code))) {
+            errores.value.push(`Mobilitat: ${msg}`);
+          }
+        }
+
+        if (errores.value.length === 0) {
+        await router.replace("/home")
+        }
+        else {
+
+          showError.value = true;
+          errorMsg.value = `${errores.value}`
+        }
+
+      } catch (error) {
+        console.error("Failed to parse response:", error);
       }
     }
 
-    if (esErrorGrave) {
-      console.log("Bloqueando acceso por error grave.");
-      errorMsg.value = "NIF, Contrasenya o Codi MO incorrectes";
-      showError.value = true;
-    } else {
-      console.log("Error no grave detectado, permitiendo entrada.");
-      Cookies.set('usuario_logeado', 'true', { expires: 1, path: '/' });
-      router.replace("/home");
-    }
-  } else {
-    // 3. Si no hay respuesta clara del servidor o es un error de red
-    console.log("Error sin descripción o de red.");
-    errorMsg.value = "Error de connexió o validació genèrica";
-    showError.value = true;
+  } catch (error) {
+    console.error("Error completo:", error);
+
   }
 }
-}
+
 </script>
 <template>
   <div class="min-vh-100 d-flex flex-column w-100">
@@ -117,7 +126,7 @@ const handleLogin = async () => {
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   placeholder="Nombre de usuario"
-                  v-model="username"
+                  v-model="nif"
               />
 
 
@@ -141,7 +150,7 @@ const handleLogin = async () => {
                                labelClass="form-label fw-bold text-light small"
                                placeholder="Contraseña"
                                inputClass="form-control form-control-lg bg-light text-dark border-secondary"
-                               v-model="CodiMO"
+                               v-model="mobilitat"
 
               />
 
