@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import {ref} from "vue";
+import Footer from "@/components/layout/Footer.vue";
 
 let listado = ref(JSON.parse(localStorage.getItem("listaAltas")) || []);
 
@@ -74,4 +75,5 @@ const borrarAlta = function (nif) {
       </table>
     </div>
   </div>
+  <Footer />
 </template>
