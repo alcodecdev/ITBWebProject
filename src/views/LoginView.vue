@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
 import router from "@/router/index.js";
+import Swal from "sweetalert2";
 let showError = ref(false);
 const nif = ref("");
 const password = ref("");
@@ -20,6 +21,11 @@ const ERRORES = {
 };
 
 async function handleLogin() {
+  Swal.fire({
+    title: 'Validant...',
+    didOpen: () => { Swal.showLoading(); },
+    allowOutsideClick: false
+  });
   try {
     const datos = {
       nif: nif.value,
@@ -50,8 +56,9 @@ async function handleLogin() {
     });
 
     if (!response.ok) {
-      errores.value = []; // limpiar errores previos
-      errores.value.push(`Datos invalidos`);
+      errores.value = ["Dades invàlides (Error de xarxa)"];
+      // Mostramos alerta de error de conexion
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Dades invàlides' });;
     }
 
     if (response.ok) {
@@ -69,31 +76,36 @@ async function handleLogin() {
         // Clasifico los errores
         for (const msg of mensajes) {
           if (ERRORES.nif.some(code => msg.startsWith(code))) {
-            errores.value.push(`NIF: ${msg}`);
+            errores.value.push(`<b>NIF:</b> ${msg}`);
           } else if (ERRORES.password.some(code => msg.startsWith(code))) {
-            errores.value.push(`Contraseña: ${msg}`);
+            errores.value.push(`<b>Contraseña:</b> ${msg}`);
           } else if (ERRORES.mobilitat.some(code => msg.startsWith(code))) {
-            errores.value.push(`Mobilitat: ${msg}`);
+            errores.value.push(`<b>Mobilitat:</b> ${msg}`);
           }
         }
 
         if (errores.value.length === 0) {
-        await router.replace("/home")
+          Swal.close(); // Cerramos el loading
+          await router.replace("/home");
         }
         else {
-
-          showError.value = true;
-          errorMsg.value = `${errores.value}`
+          Swal.fire({
+            icon: 'error',
+            title: 'Errors de validació',
+            html: `<ul style="text-align: left;">${errores.value.map(e => `<li>${e}</li>`).join('')}</ul>`,
+            confirmButtonColor: '#d33'
+          });
         }
 
       } catch (error) {
-        console.error("Failed to parse response:", error);
+        //console.error("Failed to parse response:", error);
+        Swal.fire({ icon: 'error', title: 'Error de format', text: 'La resposta del servidor no és vàlida' });
       }
     }
 
   } catch (error) {
-    console.error("Error completo:", error);
-
+    //console.error("Error completo:", error);
+    Swal.fire({ icon: 'error', title: 'Error crític', text: 'No es pot connectar amb Gencat' });
   }
 }
 
