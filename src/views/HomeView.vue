@@ -6,24 +6,10 @@ import Button from "@/components/Button.vue";
 import Footer from "@/components/layout/Footer.vue";
 import '../assets/styles/coloursAndAnimation.css'
 import Cookies from 'js-cookie';
-import {auth} from "@/firebase.js"; // Importación correcta
 
 const router = useRouter()
 const nombreOperario = ref('')
 
-//Verificacion de Seguridad
-//Lo ideal es hacerlo dentro de onMounted para asegurar que el router esta listo
-onMounted(() => {
-  const userCookie = Cookies.get('usuario_logeado')
-
-  if (userCookie) {
-    const usuario = JSON.parse(userCookie)
-    nombreOperario.value = usuario.nombre
-  } else {
-    //Si no hay cookie, al login
-    router.push('/login')
-  }
-})
 
 const goToList = () =>{
   router.push('/list')
@@ -35,22 +21,14 @@ const goToForm = () => {
 
 //Logout corregido para Cookies
 const handleLogout = async () => {
-  try {
-    // Borrado de cookie con path explícito
-    Cookies.remove('usuario_logeado', { path: '/' });
+  // Borrar la cookie de todas las formas posibles
+  Cookies.remove('usuario_logeado');
+  Cookies.remove('usuario_logeado', { path: '/' });
+  Cookies.remove('usuario_logeado', { path: '', domain: window.location.hostname });
 
-    // Cierre de sesión en Firebase
-    await signOut(auth);
-
-    // RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
-    window.location.replace('/login');
-
-  } catch (error) {
-    console.error("Error al salir:", error);
-    // Si falla, forzamos el borrado y salida igualmente
-    Cookies.remove('usuario_logeado', { path: '/' });
-    window.location.href = '/login';
-  }
+  // En lugar de window.location, usa el router para que Vue mantenga el control
+  // O si prefieres reset total, usa:
+  window.location.assign('/login');
 };
 </script>
 
@@ -62,7 +40,7 @@ const handleLogout = async () => {
         <div class="text-center mb-5">
           <TitleAndSubtitle
               class="textoOscuro"
-              title="GTR Scanner"
+              title="GTR Altes"
               titleClass="display-2 fw-bolder mb-0"
           />
 

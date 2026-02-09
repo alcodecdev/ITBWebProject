@@ -1,8 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie';
-import {auth} from "@/firebase.js";
-
 const router = useRouter()
 
 // Definimos props por si en alguna página el botón de "Volver" debe ir a un sitio específico
@@ -25,9 +23,6 @@ const handleLogout = async () => {
   try {
     // 1. Borrado de cookie con path explícito
     Cookies.remove('usuario_logeado', { path: '/' });
-
-    // 2. Cierre de sesión en Firebase
-    await signOut(auth);
 
     // 3. LIMPIEZA DE LOCALSTORAGE (Opcional pero recomendado)
     // Esto evita que el siguiente usuario vea los animales del anterior

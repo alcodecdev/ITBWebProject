@@ -1,94 +1,104 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { auth, db } from "@/firebase"
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
-import { collection, query, where, getDocs, doc, getDoc, setDoc } from "firebase/firestore"
-import Cookies from 'js-cookie'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
+import router from "@/router/index.js";
+let showError = ref(false);
+const nif = ref("");
+const password = ref("");
+const mobilitat = ref("");
+let errorMsg = ref("")
 
+const errores = ref([]); // array que contendrá todos los errores
 
-const router = useRouter()
-const username = ref('')
-const password = ref('')
-const errorMsg = ref('')
-const showError = ref(false)
+const ERRORES = {
+  nif: ["Error 14", "Error 26"],
+  password: ["Error 27", "Error 28", "Error 29"],
+  mobilitat: ["Error 32", "Error 33", "Error 35", "Error 36"]
+};
 
-const handleLogin = async () => {
-  showError.value = false
-  errorMsg.value = ""
-
-  if (!username.value.trim() || !password.value.trim()) {
-    errorMsg.value = "Todos los campos son obligatorios"
-    showError.value = true
-    return
-  }
-
+async function handleLogin() {
   try {
-    // BUSCAR EL EMAIL ASOCIADO AL USERNAME EN FIRESTORE
-    const q = query(collection(db, "usuarios"), where("nombre", "==", username.value.trim()));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-      errorMsg.value = "El usuario no existe";
-      showError.value = true;
-      return;
+    const datos = {
+      nif: nif.value,
+      password: password.value,
+      tipusEspecie: "02",
+      tipusAccio:  "NO",
+      tipusMoviment: "01",
+      explotacioEntrada:"1000AM",
+      explotacioSortida: mobilitat.value,
+      codiCategoria:  "01",
+      numAnimals: "200",
+      dataSortida: "202601221303",
+      dataArribada: "002601231630",
+      codiSirentra: "0123456789ABCD",
+      mitjaTransport: "01",
+      matricula: "0123456789",
+      nifConductor:  "01234567B",
+      mobilitat: "SI"
     }
 
-    // Obtenemos los datos del documento encontrado
-    const usuarioDoc = querySnapshot.docs[0];
-    const datosUsuario = usuarioDoc.data();
-    const emailReal = datosUsuario.email;
 
-    // LOGUEAR EN FIREBASE USANDO EL EMAIL RECUPERADO
-    await signInWithEmailAndPassword(auth, emailReal, password.value.trim());
+    const response = await fetch(`https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    });
 
-    // GUARDAR SESIÓN EN COOKIE
-    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 , path: '/'});
-    window.location.href=('/home');
+    if (!response.ok) {
+      errores.value = []; // limpiar errores previos
+      errores.value.push(`Datos invalidos`);
+    }
+
+    if (response.ok) {
+      try {
+        const responseText = await response.text();
+        const apiResponse = JSON.parse(responseText);
+
+        console.log(apiResponse);
+
+        errores.value = []; // limpiar errores previos
+        errorMsg.value = "";
+
+        const mensajes = apiResponse.descripcio || [];
+
+        // Clasifico los errores
+        for (const msg of mensajes) {
+          if (ERRORES.nif.some(code => msg.startsWith(code))) {
+            errores.value.push(`NIF: ${msg}`);
+          } else if (ERRORES.password.some(code => msg.startsWith(code))) {
+            errores.value.push(`Contraseña: ${msg}`);
+          } else if (ERRORES.mobilitat.some(code => msg.startsWith(code))) {
+            errores.value.push(`Mobilitat: ${msg}`);
+          }
+        }
+
+        if (errores.value.length === 0) {
+        await router.replace("/home")
+        }
+        else {
+
+          showError.value = true;
+          errorMsg.value = `${errores.value}`
+        }
+
+      } catch (error) {
+        console.error("Failed to parse response:", error);
+      }
+    }
 
   } catch (error) {
-    console.error(error);
-    errorMsg.value = "Contraseña incorrecta";
-    showError.value = true;
+    console.error("Error completo:", error);
+
   }
 }
 
-// Login con Google
-const loginConGoogle = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    const docRef = doc(db, "usuarios", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    let datosUsuario;
-    if (docSnap.exists()) {
-      datosUsuario = docSnap.data();
-    } else {
-      datosUsuario = {
-        nombre: user.displayName,
-        email: user.email,
-        rol: "operario",
-        foto: user.photoURL,
-        creadoEn: new Date()
-      };
-      await setDoc(docRef, datosUsuario);
-    }
-
-    Cookies.set('usuario_logeado', JSON.stringify(datosUsuario), { expires: 1 });
-    router.replace("/home");
-  } catch (error) {
-    console.error("Error Google:", error);
-  }
-};
 </script>
-
 <template>
   <div class="min-vh-100 d-flex flex-column w-100">
 
@@ -100,7 +110,7 @@ const loginConGoogle = async () => {
               class="textoOscuro"
               divClass="text-start mb-4"
               title="GTR Login"
-              subtitle="Gestión de envío"
+              subtitle="Inici de sessió"
               titleClass="display-3 fw-bolder"
               subtitleClass="h5  text-uppercase tracking-wider"
           />
@@ -112,19 +122,19 @@ const loginConGoogle = async () => {
               <CampoFormulario class="text-light"
                   divClass="mb-4"
                   id="user"
-                  label="Usuario"
+                  label="NIF"
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   placeholder="Nombre de usuario"
-                  v-model="username"
+                  v-model="nif"
               />
 
 
               <CampoFormulario class="text-light"
-                  divClass="mb-5"
+                  divClass="mb-3"
                   id="password"
                   type="password"
-                  label="Contraseña"
+                  label="Contrasenya"
                   labelClass="form-label fw-bold text-light small"
                   placeholder="Contraseña"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
@@ -132,17 +142,22 @@ const loginConGoogle = async () => {
 
               />
 
-              <button type="submit" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
+              <CampoFormulario class="text-light"
+                               divClass="mb-5"
+                               id="mo"
+                               type="password"
+                               label="Codi MO"
+                               labelClass="form-label fw-bold text-light small"
+                               placeholder="Contraseña"
+                               inputClass="form-control form-control-lg bg-light text-dark border-secondary"
+                               v-model="mobilitat"
+
+              />
+
+              <button type="submit" id="loginButton" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
                 Iniciar Sesión
               </button>
 
-              <div class="text-center mt-3">
-                <button @click="loginConGoogle" class="btn btn-light  w-60 mt-3" type="button">
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                       alt="" width="20" class="me-2">
-                  Entrar con Google
-                </button>
-              </div>
 
 
             </form>
@@ -150,15 +165,6 @@ const loginConGoogle = async () => {
             <div v-if="showError" class="alert alert-danger mt-4 py-2 text-center small fw-bold">
               {{ errorMsg }}
             </div>
-          </div>
-
-          <div class="text-center mt-5">
-            <p class="text-light-emphasis">
-              ¿No estas registrado?
-              <router-link to="/register" class="text-dark text-decoration-none fw-bold border-bottom border-light">
-                Registrate aquí
-              </router-link>
-            </p>
           </div>
         </div>
       </div>

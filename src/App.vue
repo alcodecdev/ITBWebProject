@@ -1,11 +1,14 @@
 <script setup>
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { auth, db } from "@/firebase"
+//import { auth, db } from "@/firebase"
+/*
 import { onAuthStateChanged } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
-import Cookies from 'js-cookie'
 
+import Cookies from 'js-cookie'
+*/
+/*
 onMounted(() => {
   // Este observador detecta automáticamente si el usuario está logueado en Firebase
   onAuthStateChanged(auth, async (user) => {
@@ -31,7 +34,7 @@ onMounted(() => {
       Cookies.remove('usuario_logeado');
     }
   });
-});
+});*/
 
 // Estimación simple de transferencia de datos
 window.addEventListener('load', () => {
