@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
