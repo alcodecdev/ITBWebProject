@@ -85,7 +85,14 @@ async function handleLogin() {
         }
 
         if (errores.value.length === 0) {
-          Swal.close(); // Cerramos el loading
+          await Swal.fire({
+            icon: 'success',
+            title: 'Sessió iniciada',
+            text: 'Has entrat correctament al sistema',
+            showConfirmButton: false, // Ocultamos el botón para que sea automático
+            timer: 1500,              // Dura 1.5 segundos
+            timerProgressBar: true    // Muestra una barrita de tiempo abajo
+          });
           await router.replace("/home");
         }
         else {
