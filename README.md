@@ -24,7 +24,7 @@ Se utiliza el sistema de reactividad de Vue para gestionar el estado de los form
 La navegación entre el login y el panel principal es fluida y rápida, algo crítico para el trabajo en movilidad.
 
 #### Arquitectura Basada en Componentes
-Permite una separación clara entre la lógica de comunicación con Gencat y la interfaz visual, facilitando futuras actualizaciones del sistema.
+Permite una separación clara entre la lógica de comunicación y la interfaz visual, facilitando futuras actualizaciones del sistema.
 
 #### Rendimiento Optimizado
 Gracias a su ligereza, la aplicación garantiza tiempos de carga mínimos, factor determinante para su uso en entornos rurales con conectividad limitada.
