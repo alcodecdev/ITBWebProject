@@ -22,16 +22,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'firebase-vendor': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
           'vue-vendor': ['vue', 'vue-router'],
         },
-      },
-    },
-    //Eliminar console.log y debugger en produccion para ahorrar espacio
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
       },
     },
   },
