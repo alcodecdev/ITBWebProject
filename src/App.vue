@@ -45,7 +45,6 @@ window.addEventListener('load', () => {
   const co2Estimated = (totalBytes / 1024) * 0.0005;
 
   console.log(`Esta sesión ha consumido aprox: ${co2Estimated}g de CO2`);
-  // Aquí podrías guardar 'co2Estimated' en tu Firebase junto al registro del animal
 });
 
 </script>
