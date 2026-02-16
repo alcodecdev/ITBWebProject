@@ -275,7 +275,7 @@ export function inicializarFormEnvioPorc() {
             return marcarError(inputS, "#exitError", "Error 21: La data sortida ha de ser mes gran que l’actual");
         }
 
-        if (fL <= fS) {
+        if (fL < fS) {
             return marcarError(inputL, "#comeError", "Error 24: La data arribada ha de ser major que la data sortida");
         }
 

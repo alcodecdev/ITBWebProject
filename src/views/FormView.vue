@@ -69,7 +69,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <navbar></navbar>
   <div class="container flex-grow-1 my-5">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">

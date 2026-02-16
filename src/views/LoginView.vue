@@ -1,11 +1,15 @@
 <script setup>
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Footer from "@/components/layout/Footer.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
 import router from "@/router/index.js";
 import Swal from "sweetalert2";
+import Navbar from "@/components/layout/Navbar.vue";
+
+const { t } = useI18n()
 let showError = ref(false);
 const nif = ref("");
 const password = ref("");
@@ -22,7 +26,7 @@ const ERRORES = {
 
 async function handleLogin() {
   Swal.fire({
-    title: 'Validant...',
+    title: t('alertas.validant'),
     didOpen: () => { Swal.showLoading(); },
     allowOutsideClick: false
   });
@@ -58,7 +62,7 @@ async function handleLogin() {
     if (!response.ok) {
       errores.value = ["Dades invàlides (Error de xarxa)"];
       // Mostramos alerta de error de conexion
-      Swal.fire({ icon: 'error', title: 'Error', text: 'Dades invàlides' });;
+      Swal.fire({ icon: 'error', title: 'Error', text: t('alertas.error_xarxa') });;
     }
 
     if (response.ok) {
@@ -76,22 +80,22 @@ async function handleLogin() {
         // Clasifico los errores
         for (const msg of mensajes) {
           if (ERRORES.nif.some(code => msg.startsWith(code))) {
-            errores.value.push(`<b>NIF:</b> ${msg}`);
+            errores.value.push(`<b>${t('form.labels.nif')}:</b> ${msg}`);
           } else if (ERRORES.password.some(code => msg.startsWith(code))) {
-            errores.value.push(`<b>Contraseña:</b> ${msg}`);
+            errores.value.push(`<b>${t('form.labels.passwd')}:</b> ${msg}`);
           } else if (ERRORES.mobilitat.some(code => msg.startsWith(code))) {
-            errores.value.push(`<b>Mobilitat:</b> ${msg}`);
+            errores.value.push(`<b>${t('form.labels.origen')}:</b> ${msg}`);
           }
         }
 
         if (errores.value.length === 0) {
           await Swal.fire({
             icon: 'success',
-            title: 'Sessió iniciada',
-            text: 'Has entrat correctament al sistema',
-            showConfirmButton: false, // Ocultamos el botón para que sea automático
-            timer: 1500,              // Dura 1.5 segundos
-            timerProgressBar: true    // Muestra una barrita de tiempo abajo
+            title: t('alertas.exito_titol'),
+            text: t('alertas.exito_missatge'),
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
           });
           await router.replace("/home");
         }
@@ -106,20 +110,19 @@ async function handleLogin() {
 
       } catch (error) {
         //console.error("Failed to parse response:", error);
-        Swal.fire({ icon: 'error', title: 'Error de format', text: 'La resposta del servidor no és vàlida' });
+        Swal.fire({ icon: 'error', title: 'Error de format', text: t('alertas.error_api') });
       }
     }
 
   } catch (error) {
     //console.error("Error completo:", error);
-    Swal.fire({ icon: 'error', title: 'Error crític', text: 'No es pot connectar amb Gencat' });
+    Swal.fire({ icon: 'error', title: 'Error crític', text: t('alertas.error_api_conexio') });
   }
 }
 
 </script>
 <template>
   <div class="min-vh-100 d-flex flex-column w-100">
-
     <div class="container d-flex flex-grow-1 align-items-center justify-content-center py-5">
       <div class="row justify-content-center w-100">
         <div class="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
@@ -127,8 +130,8 @@ async function handleLogin() {
           <TitleAndSubtitle
               class="textoOscuro"
               divClass="text-start mb-4"
-              title="GTR Login"
-              subtitle="Inici de sessió"
+              :title="$t('login.titol')"
+              :subtitle="$t('login.subtitol')"
               titleClass="display-3 fw-bolder"
               subtitleClass="h5  text-uppercase tracking-wider"
           />
@@ -140,10 +143,10 @@ async function handleLogin() {
               <CampoFormulario class="text-light"
                   divClass="mb-4"
                   id="user"
-                  label="NIF"
+                  :label="$t('login.nif_label')"
                   labelClass="form-label fw-bold text-light small"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
-                  placeholder="Nombre de usuario"
+                  :placeholder="$t('login.nif_placeholder')"
                   v-model="nif"
               />
 
@@ -152,9 +155,9 @@ async function handleLogin() {
                   divClass="mb-3"
                   id="password"
                   type="password"
-                  label="Contrasenya"
+                  :label="$t('login.pass_label')"
                   labelClass="form-label fw-bold text-light small"
-                  placeholder="Contraseña"
+                  :placeholder="$t('login.pass_placeholder')"
                   inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                   v-model="password"
 
@@ -164,19 +167,17 @@ async function handleLogin() {
                                divClass="mb-5"
                                id="mo"
                                type="password"
-                               label="Codi MO"
+                               :label="$t('login.codimo_label')"
                                labelClass="form-label fw-bold text-light small"
-                               placeholder="Contraseña"
+                               :placeholder="$t('login.codimo_placeholder')"
                                inputClass="form-control form-control-lg bg-light text-dark border-secondary"
                                v-model="mobilitat"
 
               />
 
               <button type="submit" id="loginButton" class="btn btn-light btn-lg w-100 fw-bold py-3 shadow-sm">
-                Iniciar Sesión
+                {{t('login.boto_entrar')}}
               </button>
-
-
 
             </form>
 

@@ -8,7 +8,6 @@ import '../assets/styles/coloursAndAnimation.css'
 import Cookies from 'js-cookie';
 
 const router = useRouter()
-const nombreOperario = ref('')
 
 
 const goToList = () =>{
@@ -18,18 +17,6 @@ const goToList = () =>{
 const goToForm = () => {
   router.push('/form')
 }
-
-//Logout corregido para Cookies
-const handleLogout = async () => {
-  // Borrar la cookie de todas las formas posibles
-  Cookies.remove('usuario_logeado');
-  Cookies.remove('usuario_logeado', { path: '/' });
-  Cookies.remove('usuario_logeado', { path: '', domain: window.location.hostname });
-
-  // En lugar de window.location, usa el router para que Vue mantenga el control
-  // O si prefieres reset total, usa:
-  window.location.assign('/login');
-};
 </script>
 
 <template>
@@ -44,35 +31,30 @@ const handleLogout = async () => {
               titleClass="display-2 fw-bolder mb-0"
           />
 
-          <div class="row justify-content-center g-4 mt-4">
-            <div class="col-12 col-md-8 col-lg-6">
-              <div class="d-grid gap-4" id="buttonHome">
+          <div class="row justify-content-center mt-5 px-3">
+            <div class="col-12 col-md-8 col-lg-5">
+
+              <div class="col-12 mb-5">
                 <Button
-                    style="margin-bottom: 10px"
                     @click="goToForm"
-                    clase="btn text-white btn-lg py-5 border-0 shadow-sm d-flex flex-column align-items-center justify-content-center"
+                    clase="btn btn-success text-white btn-lg py-5 border-0 shadow d-flex flex-column align-items-center justify-content-center btn-main w-100"
                     claseSpan="display-6 fw-bold text-uppercase"
-                    nombreSpan="ENVIAR"
+                    nombreSpan="Enviar alta"
                 />
               </div>
+
+              <div class="col-12">
+                <Button
+                    @click="goToList"
+                    clase="btn btn-success text-white btn-lg py-5 border-0 shadow d-flex flex-column align-items-center justify-content-center btn-list w-100"
+                    claseSpan="display-6 fw-bold text-uppercase"
+                    nombreSpan="Lista de altas"
+                />
+              </div>
+
             </div>
           </div>
 
-          <div class="text-center mt-5">
-            <Button
-                nombreSpan="← Tancar sesion"
-                @click="handleLogout"
-                clase="btn btn-danger btn-lg px-4 fw-bold text-uppercase shadow-sm me-3"
-                :style="{ fontSize: '0.9rem', letterSpacing: '1px' }"
-            />
-
-            <Button
-                nombreSpan="Veure les meves altes →"
-                @click="goToList"
-                clase="btn btn-success btn-lg px-4 fw-bold text-uppercase shadow-sm"
-                :style="{ fontSize: '0.9rem', letterSpacing: '1px' }"
-            />
-          </div>
         </div>
       </div>
     </main>

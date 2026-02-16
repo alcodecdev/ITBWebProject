@@ -1,14 +1,23 @@
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Cookies from 'js-cookie';
-const router = useRouter()
+import { useI18n } from 'vue-i18n';
+import {computed} from "vue";
 
-// Definimos props por si en alguna página el botón de "Volver" debe ir a un sitio específico
+const router = useRouter()
+const route = useRoute()
+const { t, locale } = useI18n()
+
+// Definimos props por si en alguna página el boton de "Volver" debe ir a un sitio especifico
 const props = defineProps({
   rutaVolver: {
     type: String,
-    default: '' // Si está vacío, usaremos router.back()
+    default: '' // Si esta vacio, usaremos router.back()
   }
+})
+
+const esLogin = computed (() => {
+  return route.path === '/login' || route.name === 'login'
 })
 
 const irAtras = () => {
@@ -19,18 +28,17 @@ const irAtras = () => {
   }
 }
 
+const cambiarIdioma = () => {
+  locale.value = locale.value === 'ca' ? 'es' : 'ca';
+  localStorage.setItem('idioma', locale.value);
+}
+
 const handleLogout = async () => {
   try {
-    // 1. Borrado de cookie con path explícito
+    //Borrado de cookie con path explícito
     Cookies.remove('usuario_logeado', { path: '/' });
-
-    // 3. LIMPIEZA DE LOCALSTORAGE (Opcional pero recomendado)
-    // Esto evita que el siguiente usuario vea los animales del anterior
-    localStorage.removeItem('listaPorc');
-
-    // 4. RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
+    //RESET TOTAL: Usamos window.location para vaciar la memoria de Vue
     window.location.replace('/login');
-
   } catch (error) {
     console.error("Error al salir:", error);
     // Si falla, forzamos el borrado y salida igualmente
@@ -42,22 +50,26 @@ const handleLogout = async () => {
 
 <template>
   <nav class="container-fluid py-3 border-bottom border-secondary border-opacity-25 mb-4 shadow-sm" id="navbar">
-
     <div class="row align-items-center">
 
       <div class="col-4 text-start">
-        <button @click="irAtras" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
-          &larr; Volver
+        <button v-if="!esLogin" @click="irAtras" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
+          &larr; {{ t('nav.tornar') }}
         </button>
       </div>
 
       <div class="col-4 text-center">
-        <span class="fw-bolder text-white h3 mb-0">GTR</span>
+        <span class="fw-bolder text-white h3 mb-0">{{ t('nav.gtr_titol') }}</span>
       </div>
 
-      <div class="col-4 text-end">
-        <button @click="handleLogout" class="btn btn-danger btn-sm px-3 fw-bold text-uppercase border-2 shadow-sm">
-          Salir
+      <div class="col-4 text-end d-flex justify-content-end gap-2">
+
+        <button @click="cambiarIdioma" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
+          {{ locale === 'ca' ? 'ESP' : 'CAT' }}
+        </button>
+
+        <button v-if="!esLogin" @click="handleLogout" class="btn btn-danger btn-sm px-3 fw-bold text-uppercase border-2 shadow-sm">
+          {{ t('nav.tancar_sessio') }}
         </button>
       </div>
 

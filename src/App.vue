@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
+import Navbar from "@/components/layout/Navbar.vue";
 //import { auth, db } from "@/firebase"
 /*
 import { onAuthStateChanged } from "firebase/auth"
@@ -50,6 +51,7 @@ window.addEventListener('load', () => {
 </script>
 
 <template>
+  <Navbar />
   <div class="app-container">
     <RouterView />
   </div>

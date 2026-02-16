@@ -16,7 +16,6 @@ const borrarAlta = function (nif) {
 </script>
 
 <template>
-  <navbar></navbar>
   <div class="container-fluid mt-4">
     <title-and-subtitle
         class="textoOscuro"
