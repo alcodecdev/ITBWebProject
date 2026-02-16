@@ -6,8 +6,8 @@ import {ref} from "vue";
 
 let listado = ref(JSON.parse(localStorage.getItem("listaAltas")) || []);
 
-const borrarAlta = function (nif) {
-  listado.value = listado.value.filter(item => item.nif !== nif)
+const borrarAlta = function (numAnimals) {
+  listado.value = listado.value.filter(item => item.numAnimals !== numAnimals);
   localStorage.setItem("listaAltas", JSON.stringify(listado.value));
 }
 
@@ -64,7 +64,7 @@ const borrarAlta = function (nif) {
           <td>{{ item.matricula }}</td>
           <td>{{ item.nifConductor }}</td>
           <td>{{ item.mobilitat }}</td>
-          <td><Button clase="btn btn-danger" nombreSpan="Borrar" id="borrarAlta" @click="borrarAlta(item.nif)"></Button></td>
+          <td><Button clase="btn btn-danger" nombreSpan="Borrar" id="borrarAlta" @click="borrarAlta(item.numAnimals)"></Button></td>
         </tr>
 
         <tr v-if="listado.length === 0">
