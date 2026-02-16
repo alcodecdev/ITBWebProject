@@ -116,10 +116,9 @@ export function inicializarFormEnvioPorc() {
                 try {
                     //Llamada con Axios
                     const response = await axios.put(url, datosFinales);
-                    const index = listaAltas.findIndex(item => item.nif === alta.nif);
+                    let listaAltas = JSON.parse(localStorage.getItem("listaAltas")) || [];
                     listaAltas.push(alta);
                     localStorage.setItem("listaAltas", JSON.stringify(listaAltas));
-
 
                     await Swal.fire({
                         icon: 'success',
