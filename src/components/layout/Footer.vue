@@ -27,7 +27,7 @@
 
         <div class="text-center text-md-end">
           <p class="mb-0 text-secondary small fw-bold">
-            &copy; 2026 <span class="text-success">GTR Project</span>
+            &copy; 2026 <span class="text-success">GTR</span>
           </p>
           <p class="mb-0 text-muted" style="font-size: 0.65rem;">
             Fondos Europeos de Desarrollo Regional
