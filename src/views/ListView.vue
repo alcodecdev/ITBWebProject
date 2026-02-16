@@ -45,6 +45,7 @@ const borrarAlta = function (nif) {
           <th>Matrícula</th>
           <th>NIF Conductor</th>
           <th>Mobilitat</th>
+          <th>Accions</th>
         </tr>
         </thead>
         <tbody>
