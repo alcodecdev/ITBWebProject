@@ -113,18 +113,11 @@ export function inicializarFormEnvioPorc() {
                 }
 
 
-
-
                 try {
                     //Llamada con Axios
                     const response = await axios.put(url, datosFinales);
                     const index = listaAltas.findIndex(item => item.nif === alta.nif);
-                    if (index !== -1){
-                        listaAltas[index] = alta
-                    }
-                    else{
-                        listaAltas.push(alta);
-                    }
+                    listaAltas.push(alta);
                     localStorage.setItem("listaAltas", JSON.stringify(listaAltas));
 
 
