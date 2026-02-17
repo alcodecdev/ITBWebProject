@@ -2,7 +2,6 @@
 
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
-import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
 import {inicializarFormEnvioPorc} from "@/App/appForm.js";
 import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"

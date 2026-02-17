@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from "@/components/layout/Navbar.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import {ref} from "vue";
