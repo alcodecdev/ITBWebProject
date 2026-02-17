@@ -17,14 +17,13 @@ let esEdicion = ref(false);
 const energyData = ref({ wattHora: 0, kilobytes: 0 });
 
 onMounted(() => {
-  const nifURL = route.params.nifURL;
-  if (nifURL){
+  const numAnimales = route.params.numAnimals;
+  if (numAnimales){
     esEdicion = true;
     const listado = JSON.parse(localStorage.getItem("listaAltas")) || [];
-    const encontrado = listado.find(item => item.nif === nifURL);
+    const encontrado = listado.find(item => item.numAnimals === numAnimales);
     if (encontrado){
       setTimeout(() => {
-        // RELLENADO MANUAL (JS PURO) para que tu appForm.js lo detecte
         document.getElementById("inputNif").value = encontrado.nif;
         document.getElementById("inputPassword").value = encontrado.password;
         document.getElementById("inputOrigen").value = encontrado.ExplotacionOrigen;
@@ -32,6 +31,13 @@ onMounted(() => {
         document.getElementById("inputAnimals").value = encontrado.numAnimals;
         document.getElementById("inputsirCode").value = encontrado.sirCode;
         document.getElementById("inputMatricula").value = encontrado.matricula;
+        document.getElementById("inputNombreTransportista").value = encontrado.nombreTransportista;
+        document.getElementById("inputEspecie").value = "02";
+        document.getElementById("inputAccio").value = encontrado.tipoAccion;
+        document.getElementById("inputMoviment").value = encontrado.tipoMovimiento;
+
+
+
         document.getElementById("inputNifConductor").value = encontrado.nifConductor;
 
         // Para los SELECTS
