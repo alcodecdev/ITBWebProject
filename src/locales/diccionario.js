@@ -18,6 +18,12 @@ export const ca = {
         codimo_placeholder: "Introdueix la codi Mo",
         boto_entrar: "Iniciar Sessió"
     },
+    //PANTALLA INICIO
+    home: {
+        titol: "GTR Altes",
+        enviar: "Enviar alta",
+        llista: "Llista d'altes"
+    },
 
     //FORMULARI DE TRAMESA
     form: {
@@ -145,6 +151,11 @@ export const es = {
         codimo_placeholder: "Introduce el codigo Mo",
         boto_entrar: "Iniciar Sesión"
     },
+    home: {
+        titol: "GTR Altas",
+        enviar: "Enviar alta",
+        llista: "Lista de altas"
+    },
     form: {
         titol: "Registro de envío",
         subtitol: "Porcino - Control de lotes",
@@ -264,6 +275,12 @@ export const en = {
         codimo_label: "Mo Code",
         codimo_placeholder: "Enter Mo code",
         boto_entrar: "Log In"
+    },
+
+    home: {
+        titol: "GTR Entries",
+        enviar: "Send entry",
+        llista: "Entry list"
     },
 
     form: {
@@ -387,6 +404,12 @@ export const fr = {
         codimo_label: "Code Mo",
         codimo_placeholder: "Entrez le code Mo",
         boto_entrar: "Se Connecter"
+    },
+
+    home: {
+        titol: "GTR Enregistrements",
+        enviar: "Envoyer l'entrée",
+        llista: "Liste des entrées"
     },
 
     form: {
