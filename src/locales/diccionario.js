@@ -62,6 +62,9 @@ export const ca = {
             otros: "Altres",
             si: "SÍ",
             no: "NO"
+        },
+        placeholder:{
+            place_nombreTransportista: "Introduir nom"
         }
     },
 
@@ -194,6 +197,9 @@ export const es = {
             otros: "Otros",
             si: "SÍ",
             no: "NO"
+        },
+        placeholder: {
+            place_nombreTransportista: "Introducir nombre"
         }
     },
     llista: {
@@ -323,6 +329,9 @@ export const en = {
             otros: "Others",
             si: "YES",
             no: "NO"
+        },
+        placeholder: {
+            place_nombreTransportista: "Enter name"
         }
     },
 
@@ -454,6 +463,9 @@ export const fr = {
             otros: "Autres",
             si: "OUI",
             no: "NON"
+        },
+        placeholder: {
+            place_nombreTransportista: "Entrer le nom"
         }
     },
 

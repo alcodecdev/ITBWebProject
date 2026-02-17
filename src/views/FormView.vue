@@ -1,5 +1,5 @@
 <script setup>
-
+import { useI18n } from 'vue-i18n'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
 import Button from "@/components/Button.vue";
@@ -10,8 +10,10 @@ import { getEnergyConsumption } from "@/App/consumoElectrico.js"
 import {ref,onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import Footer from "@/components/layout/Footer.vue";
+
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n()
 let esEdicion = ref(false);
 
 const energyData = ref({ wattHora: 0, kilobytes: 0 });
@@ -73,9 +75,9 @@ onMounted(() => {
       <div class="col-12 col-lg-10">
         <title-and-subtitle
             class="textoOscuro"
-            title="Registre de tramesa"
+            :title="$t('form.titol')"
             title-class="display-5 fw-bolder"
-            subtitle="Porcí - Control de lots"
+            :subtitle="$t('form.subtitol')"
             subtitle-class="text-uppercase small mb-0"
             divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
         ></title-and-subtitle>
@@ -84,7 +86,7 @@ onMounted(() => {
       <form class="row g-4 p-4 p-md-5 rounded-4 bg-white shadow-lg border-0 text-dark">
         <campo-formulario
             type="text"
-            label="NIF"
+            :label="$t('form.labels.nif')"
             placeholder="12345678X"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -95,7 +97,7 @@ onMounted(() => {
 
         <campo-formulario
             type="password"
-            label="CONTRASENYA MOVILITAT:"
+            :label="$t('form.labels.passwd')"
             placeholder="*******"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -106,7 +108,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="CODI EXPLOTACIÓ ORIGEN:"
+            :label="$t('form.labels.origen')"
             placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -117,7 +119,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="CODI EXPLOTACIÓ DESTINACIÓ:"
+            :label="$t('form.labels.destino')"
             placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -128,7 +130,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="ESPÈCIE:"
+            :label="$t('form.labels.especie')"
             placeholder="02"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -139,7 +141,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="ACCIÓ:"
+            :label="$t('form.labels.accio')"
             placeholder="no"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -150,7 +152,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="MOVIMENT:"
+            :label="$t('form.labels.moviment')"
             placeholder="01"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -160,22 +162,22 @@ onMounted(() => {
          id="inputMoviment"></campo-formulario>
 
         <div class="col-md-3">
-          <label class="form-label small" for="inputCategoria">CODI CATEGORIA:</label>
+          <label class="form-label small" for="inputCategoria">{{$t('form.labels.categoria')}}</label>
           <select class="form-select bg-light text-dark border-secondary" id="inputCategoria" required>
-            <option selected disabled value="">Selecciona uno</option>
-            <option value="00">Engreix</option>
-            <option value="01">Garrins</option>
-            <option value="02">Recria/Transicio</option>
-            <option value="03">Femelles reproductores</option>
-            <option value="04">Reposicio</option>
-            <option value="05">Sementals</option>
+            <option selected disabled value="">{{ $t('form.opcions.selecciona') }}</option>
+            <option value="00">{{ $t('form.opcions.engreix') }}</option>
+            <option value="01">{{ $t('form.opcions.garrins') }}</option>
+            <option value="02">{{$t('form.opcions.recria')}}</option>
+            <option value="03">{{$t('form.opcions.reproductores')}}</option>
+            <option value="04">{{$t('form.opcions.reposicio')}}</option>
+            <option value="05">{{$t('form.opcions.sementals')}}</option>
           </select>
           <div id="errorCategory" class="text-danger small fw-bold"></div>
         </div>
 
         <campo-formulario
             type="date"
-            label="DATA SORTIDA:"
+            :label="$t('form.labels.data_sortida')"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -186,7 +188,7 @@ onMounted(() => {
 
         <campo-formulario
             type="date"
-            label="DATA ARRIBADA:"
+            :label="$t('form.labels.data_arribada')"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -195,24 +197,24 @@ onMounted(() => {
          id="inputFechaLlegada"></campo-formulario>
 
         <div class="col-md-6">
-          <label class="form-label fw-bold text-secondary small d-block">MOBILITAT (SI/NO)</label>
+          <label class="form-label fw-bold text-secondary small d-block">{{ $t('form.labels.mobilitat') }}</label>
           <div class="btn-group w-100" role="group">
             <input type="radio" class="btn-check" name="mobilitat" id="siMobilitat" value="si" required>
-            <label class="btn btn-outline-secondary fw-bold" for="siMobilitat">SÍ</label>
+            <label class="btn btn-outline-secondary fw-bold" for="siMobilitat">{{ $t('form.opcions.si') }}</label>
             <input type="radio" class="btn-check" name="mobilitat" id="noMobilitat" value="no" checked required>
-            <label class="btn btn-outline-secondary fw-bold" for="noMobilitat">NO</label>
+            <label class="btn btn-outline-secondary fw-bold" for="noMobilitat">{{ $t('form.opcions.no') }}</label>
           </div>
           <div id="errorMobility" class="text-danger small fw-bold"></div>
         </div>
 
         <div class="col-12">
-          <h5 class="mt-4 border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
+          <h5 class="mt-4 border-top border-secondary border-opacity-25 pt-3">{{ $t('form.seccio_transport')}}</h5>
         </div>
         <campo-formulario
             id="inputNombreTransportista"
             type="text"
-            label="NOM TRANSPORTISTA"
-            placeholder="Introduir nom"
+            :label="$t('form.labels.nom_transportista')"
+            :placeholder="$t('form.placeholder.place_nombreTransportista')"
             label-class="form-label fw-bold text-light small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -220,11 +222,11 @@ onMounted(() => {
             error-div-i-d="nameTransportError"
         ></campo-formulario>
 
-        <div class="col-md-6 mb-3"> <label class="form-label small" for="selectMedioTransporte">MITJÀ DE TRANSPORT:</label>
+        <div class="col-md-6 mb-3"> <label class="form-label small" for="selectMedioTransporte">{{ $t('form.labels.medio_transport') }}</label>
           <select class="form-select bg-light text-dark border-secondary" id="selectMedioTransporte" required>
-            <option selected disabled value="">Selecciona uno</option>
-            <option value="01">Camión</option>
-            <option value="99">Otros</option>
+            <option selected disabled value="">{{ $t('form.opcions.selecciona') }}</option>
+            <option value="01">{{ $t('form.opcions.camio') }}</option>
+            <option value="99">{{ $t('form.opcions.otros') }}</option>
           </select>
           <div id="errorTransport" class="text-danger small fw-bold"></div>
         </div>
@@ -232,7 +234,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="MATRÍCULA:"
+            :label="$t('form.labels.matricula')"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -243,7 +245,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="NIF CONDUCTOR:"
+            :label="$t('form.labels.nif_conductor')"
             placeholder="12345678X"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -254,7 +256,7 @@ onMounted(() => {
 
         <campo-formulario
             type="number"
-            label="NÚMERO DE ANIMALES:"
+            :label="$t('form.labels.animals')"
             placeholder="Ej(200)"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -265,7 +267,7 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            label="SIRCODE:"
+            :label="$t('form.labels.sircode')"
             placeholder="12345678ABCD"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
@@ -280,7 +282,7 @@ onMounted(() => {
             <Button
                 id="enviar"
                 clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
-                nombreSpan="REGISTRAR TRAMESA"
+                :nombreSpan="$t('form.boto_registrar')"
             >
               <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
               </router-link>
