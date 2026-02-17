@@ -20,6 +20,10 @@ const esLogin = computed (() => {
   return route.path === '/login' || route.name === 'login'
 })
 
+const esHome = computed (() => {
+  return route.path === '/home' || route.name === 'home'
+})
+
 const irAtras = () => {
   if (props.rutaVolver) {
     router.push(props.rutaVolver)
@@ -53,7 +57,7 @@ const handleLogout = async () => {
     <div class="row align-items-center">
 
       <div class="col-4 text-start">
-        <button v-if="!esLogin" @click="irAtras" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
+        <button v-if="!esLogin && !esHome" @click="irAtras" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
           &larr; {{ t('nav.tornar') }}
         </button>
       </div>
