@@ -1,11 +1,13 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import Footer from "@/components/layout/Footer.vue";
 import '../assets/styles/coloursAndAnimation.css'
 
 const router = useRouter()
+const { t } = useI18n()
 
 
 const goToList = () =>{
@@ -25,7 +27,7 @@ const goToForm = () => {
         <div class="text-center mb-5">
           <TitleAndSubtitle
               class="textoOscuro"
-              title="GTR Altes"
+              :title="$t('home.titol')"
               titleClass="display-2 fw-bolder mb-0"
           />
 
@@ -38,7 +40,7 @@ const goToForm = () => {
                     id="buttonHome"
                     clase="btn btn-success text-white btn-lg py-5 border-0 shadow d-flex flex-column align-items-center justify-content-center btn-main w-100"
                     claseSpan="display-6 fw-bold text-uppercase"
-                    nombreSpan="Enviar alta"
+                    :nombreSpan="$t('home.enviar')"
                 />
               </div>
 
@@ -48,7 +50,7 @@ const goToForm = () => {
                     id="buttonHome"
                     clase="btn btn-success text-white btn-lg py-5 border-0 shadow d-flex flex-column align-items-center justify-content-center btn-list w-100"
                     claseSpan="display-6 fw-bold text-uppercase"
-                    nombreSpan="Lista de altas"
+                    :nombreSpan="$t('home.llista')"
                 />
               </div>
 
