@@ -75,20 +75,14 @@ const handleLogout = async () => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
           >
-            {{ locale === 'ca' ? 'CAT' : 'ESP' }}
+            {{ locale === 'ca' ? 'CAT' : locale === 'es' ? 'ESP' : locale === 'en' ? 'ENG' : 'FRA' }}
           </button>
 
-          <ul class="dropdown-menu dropdown-menu-end shadow">
-            <li>
-              <button class="dropdown-item fw-bold" @click="cambiarIdioma('ca')">
-                CATALÀ
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item fw-bold" @click="cambiarIdioma('es')">
-                CASTELLANO
-              </button>
-            </li>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li><button class="dropdown-item fw-bold" :class="{ active: locale === 'ca' }" @click="cambiarIdioma('ca')">CATALÀ</button></li>
+            <li><button class="dropdown-item fw-bold" :class="{ active: locale === 'es' }" @click="cambiarIdioma('es')">CASTELLANO</button></li>
+            <li><button class="dropdown-item fw-bold" :class="{ active: locale === 'en' }" @click="cambiarIdioma('en')">ENGLISH</button></li>
+            <li><button class="dropdown-item fw-bold" :class="{ active: locale === 'fr' }" @click="cambiarIdioma('fr')">FRANÇAIS</button></li>
           </ul>
         </div>
 

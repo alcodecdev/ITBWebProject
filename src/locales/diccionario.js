@@ -1,12 +1,12 @@
 export const ca = {
-    // --- NAVEGACIÓN ---
+    //NAVEGACIÓN
     nav: {
         tornar: "Tornar",
         tancar_sessio: "Sortir",
         gtr_titol: "GTR"
     },
 
-    // --- PANTALLA DE LOGIN ---
+    //PANTALLA DE LOGIN
     login: {
         titol: "GTR Login",
         subtitol: "Inici de sessió",
@@ -19,7 +19,7 @@ export const ca = {
         boto_entrar: "Iniciar Sessió"
     },
 
-    // --- FORMULARI DE TRAMESA ---
+    //FORMULARI DE TRAMESA
     form: {
         titol: "Registre de tramesa",
         subtitol: "Porcí - Control de lots",
@@ -59,7 +59,7 @@ export const ca = {
         }
     },
 
-    // --- LLISTA D'ALTES ---
+    //LLISTA D'ALTES
     llista: {
         titol: "Llista d'altes",
         buida: "No hi ha dades disponibles",
@@ -85,7 +85,7 @@ export const ca = {
         boto_borrar: "Borrar"
     },
 
-    // --- MISSATGES DE SISTEMA I ERRORS ---
+    //MISSATGES DE SISTEMA I ERRORS
     alertas: {
         validant: "Validant...",
         processant: "Processant tramesa...",
@@ -102,7 +102,7 @@ export const ca = {
         error_format: "La resposta del servidor no és vàlida",
         form_incomplet: "Formulari incomplet",
         form_corregir: "Si us plau, corregiu els errors marcats en vermell.",
-        // Errors de validació Gencat (per codi)
+        // Errors de validació Gencat
         gtr: {
             e36: "Error 36: Usuari no trobat",
             e35: "Error 35: Clau de pas incorrecte",
@@ -244,6 +244,252 @@ export const es = {
             e13: "Error 13: NIF máximo 9 caracteres",
             e37: "Error 37: El medio de transporte debe ser 01 o 99",
             transportista_obligatori: "El nombre del transportista es obligatorio"
+        }
+    }
+};
+export const en = {
+    nav: {
+        tornar: "Back",
+        tancar_sessio: "Logout",
+        gtr_titol: "GTR"
+    },
+
+    login: {
+        titol: "GTR Login",
+        subtitol: "Sign In",
+        nif_label: "NIF/ID",
+        nif_placeholder: "Username",
+        pass_label: "Password",
+        pass_placeholder: "Enter password",
+        codimo_label: "Mo Code",
+        codimo_placeholder: "Enter Mo code",
+        boto_entrar: "Log In"
+    },
+
+    form: {
+        titol: "Shipment Registry",
+        subtitol: "Porcine - Batch Control",
+        seccio_transport: "Transport Data",
+        boto_registrar: "REGISTER SHIPMENT",
+        labels: {
+            nif: "NIF/ID",
+            passwd: "MOBILITY PASSWORD:",
+            origen: "ORIGIN HOLDING CODE:",
+            destino: "DESTINATION HOLDING CODE:",
+            especie: "SPECIES:",
+            accio: "ACTION:",
+            moviment: "MOVEMENT:",
+            categoria: "CATEGORY CODE:",
+            data_sortida: "DEPARTURE DATE:",
+            data_arribada: "ARRIVAL DATE:",
+            mobilitat: "MOBILITY (YES/NO)",
+            nom_transportista: "CARRIER NAME",
+            medio_transport: "MEANS OF TRANSPORT:",
+            matricula: "LICENSE PLATE:",
+            nif_conductor: "DRIVER NIF/ID:",
+            animals: "NUMBER OF ANIMALS:",
+            sircode: "SIRCODE:"
+        },
+        opcions: {
+            selecciona: "Select one",
+            engreix: "Fattening",
+            garrins: "Piglets",
+            recria: "Rearing/Transition",
+            reproductores: "Breeding females",
+            reposicio: "Replacement",
+            sementals: "Sires",
+            camio: "Truck",
+            otros: "Others",
+            si: "YES",
+            no: "NO"
+        }
+    },
+
+    llista: {
+        titol: "Entry List",
+        buida: "No data available",
+        columnes: {
+            nif: "NIF/ID",
+            pass: "Password",
+            accio: "Action",
+            moviment: "Movement Type",
+            origen: "Origin Holding",
+            destino: "Dest. Holding",
+            rega: "Rega Code",
+            cat: "Category",
+            animals: "No. Animals",
+            sortida: "Departure date",
+            arribada: "Arrival date",
+            sirentra: "Sirentra Code",
+            transport: "Means of transport",
+            matricula: "License plate",
+            conductor: "Driver NIF",
+            mobilitat: "Mobility",
+            accions: "Actions"
+        },
+        boto_borrar: "Delete"
+    },
+
+    alertas: {
+        validant: "Validating...",
+        processant: "Processing shipment...",
+        connectant: "Connecting to server",
+        exito_titol: "Session started",
+        exito_missatge: "Login successful",
+        alta_tramitada: "Registration Processed!",
+        alta_ok: "The form has been sent correctly.",
+        error_titol: "Validation Errors",
+        error_xarxa: "Invalid data (Network Error)",
+        error_connexio: "Connection error",
+        error_api: "Cannot connect to API. Check Internet.",
+        error_api_conexio: "Cannot connect to Gencat",
+        error_format: "Server response is invalid",
+        form_incomplet: "Incomplete form",
+        form_corregir: "Please correct the errors marked in red.",
+        gtr: {
+            e36: "Error 36: User not found",
+            e35: "Error 35: Incorrect password",
+            e15: "Error 15: Species must be 02",
+            e04: "Error 04: Max 14 characters",
+            e05: "Error 05: Max 14 characters",
+            e29: "Error 29: Origin and destination are the same",
+            e16: "Error 16: Must be YES or NO",
+            e17: "Error 17: Must be 01 or 02",
+            e19: "Error 19: Category from 01 to 05",
+            e08: "Error 08: Departure date is mandatory",
+            e09: "Error 09: Arrival date is mandatory",
+            e21: "Error 21: Departure date must be later than current",
+            e24: "Error 24: Arrival date must be later than departure",
+            e18: "Error 18: Number of animals must be greater than 0",
+            e07: "Error 07: Animal count cannot exceed 6 characters",
+            e10: "Error 10: Max 15 characters",
+            e12: "Error 12: License plate max 10 characters",
+            e13: "Error 13: NIF max 9 characters",
+            e37: "Error 37: Means of transport must be 01 or 99",
+            transportista_obligatori: "Carrier name is mandatory"
+        }
+    }
+};
+export const fr = {
+    nav: {
+        tornar: "Retour",
+        tancar_sessio: "Quitter",
+        gtr_titol: "GTR"
+    },
+
+    login: {
+        titol: "GTR Login",
+        subtitol: "Ouverture de session",
+        nif_label: "NIF/ID",
+        nif_placeholder: "Nom d'utilisateur",
+        pass_label: "Mot de passe",
+        pass_placeholder: "Entrez le mot de passe",
+        codimo_label: "Code Mo",
+        codimo_placeholder: "Entrez le code Mo",
+        boto_entrar: "Se Connecter"
+    },
+
+    form: {
+        titol: "Registre d'expédition",
+        subtitol: "Porcin - Contrôle des lots",
+        seccio_transport: "Données de Transport",
+        boto_registrar: "ENREGISTRER L'EXPÉDITION",
+        labels: {
+            nif: "NIF/ID",
+            passwd: "MOT DE PASSE MOBILITÉ:",
+            origen: "CODE EXPLOITATION ORIGINE:",
+            destino: "CODE EXPLOITATION DESTINATION:",
+            especie: "ESPÈCE:",
+            accio: "ACTION:",
+            moviment: "MOUVEMENT:",
+            categoria: "CODE CATÉGORIE:",
+            data_sortida: "DATE DE DÉPART:",
+            data_arribada: "DATE D'ARRIVÉE:",
+            mobilitat: "MOBILITÉ (OUI/NON)",
+            nom_transportista: "NOM DU TRANSPORTEUR",
+            medio_transport: "MOYEN DE TRANSPORT:",
+            matricula: "IMMATRICULATION:",
+            nif_conductor: "NIF CONDUCTEUR:",
+            animals: "NOMBRE D'ANIMAUX:",
+            sircode: "SIRCODE:"
+        },
+        opcions: {
+            selecciona: "Sélectionnez-en un",
+            engreix: "Engraissement",
+            garrins: "Porcelets",
+            recria: "Élevage/Transition",
+            reproductores: "Femelles reproductrices",
+            reposicio: "Remplacement",
+            sementals: "Verrats",
+            camio: "Camion",
+            otros: "Autres",
+            si: "OUI",
+            no: "NON"
+        }
+    },
+
+    llista: {
+        titol: "Liste des entrées",
+        buida: "Aucune donnée disponible",
+        columnes: {
+            nif: "NIF/ID",
+            pass: "Mot de passe",
+            accio: "Action",
+            moviment: "Type de Mouvement",
+            origen: "Exploitation Origine",
+            destino: "Exploit. Destination",
+            rega: "Code Rega",
+            cat: "Catégorie",
+            animals: "Nb. Animaux",
+            sortida: "Date de départ",
+            arribada: "Date d'arrivée",
+            sirentra: "Code Sirentra",
+            transport: "Moyen de transport",
+            matricula: "Immatriculation",
+            conductor: "NIF Conducteur",
+            mobilitat: "Mobilité",
+            accions: "Actions"
+        },
+        boto_borrar: "Effacer"
+    },
+
+    alertas: {
+        validant: "Validation...",
+        processant: "Traitement de l'envoi...",
+        connectant: "Connexion au serveur",
+        exito_titol: "Session ouverte",
+        exito_missatge: "Connexion réussie",
+        alta_tramitada: "Enregistrement Terminé!",
+        alta_ok: "Le formulaire a été envoyé correctement.",
+        error_titol: "Erreurs de validation",
+        error_xarxa: "Données invalides (Erreur réseau)",
+        error_connexio: "Erreur de connexion",
+        error_api: "Impossible de se connecter à l'API. Vérifiez Internet.",
+        error_api_conexio: "Impossible de se connecter à Gencat",
+        error_format: "La réponse du serveur est invalide",
+        form_incomplet: "Formulaire incomplet",
+        form_corregir: "Veuillez corriger les erreurs marquées en rouge.",
+        gtr: {
+            e36: "Erreur 36: Utilisateur non trouvé",
+            e35: "Erreur 35: Mot de passe incorrect",
+            e15: "Erreur 15: L'espèce doit être 02",
+            e04: "Erreur 04: Max 14 caractères",
+            e05: "Erreur 05: Max 14 caractères",
+            e29: "Erreur 29: Origine et destination identiques",
+            e16: "Erreur 16: Doit être OUI ou NON",
+            e17: "Erreur 17: Doit être 01 ou 02",
+            e19: "Erreur 19: Catégorie de 01 à 05",
+            e08: "Erreur 08: Date de départ obligatoire",
+            e09: "Erreur 09: Date d'arrivée obligatoire",
+            e21: "Erreur 21: La date de départ doit être postérieure à l'actuelle",
+            e24: "Erreur 24: La date d'arrivée doit être postérieure au départ",
+            e18: "Erreur 18: Le nombre d'animaux doit être supérieur à 0",
+            e07: "Erreur 07: Le nombre d'animaux ne peut pas dépasser 6 caractères",
+            e10: "Erreur 10: Max 15 caractères",
+            e12: "Erreur 12: Immatriculation max 10 caractères",
+            e13: "Erreur 13: NIF max 9 caractères",
+            e37: "Erreur 37: Le moyen de transport doit être 01 ou 99",
+            transportista_obligatori: "Le nom du transporteur est obligatoire"
         }
     }
 };
