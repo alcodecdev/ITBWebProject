@@ -28,9 +28,9 @@ const irAtras = () => {
   }
 }
 
-const cambiarIdioma = () => {
-  locale.value = locale.value === 'ca' ? 'es' : 'ca';
-  localStorage.setItem('idioma', locale.value);
+const cambiarIdioma = (lang) => {
+  locale.value = lang;
+  localStorage.setItem('idioma', lang);
 }
 
 const handleLogout = async () => {
@@ -64,9 +64,29 @@ const handleLogout = async () => {
 
       <div class="col-4 text-end d-flex justify-content-end gap-2">
 
-        <button @click="cambiarIdioma" class="btn btn-light btn-sm fw-bold text-uppercase border-2">
-          {{ locale === 'ca' ? 'ESP' : 'CAT' }}
-        </button>
+        <div class="dropdown">
+          <button
+              class="btn btn-light btn-sm fw-bold text-uppercase border-2 dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+          >
+            {{ locale === 'ca' ? 'CAT' : 'ESP' }}
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li>
+              <button class="dropdown-item fw-bold" @click="cambiarIdioma('ca')">
+                CATALÀ
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item fw-bold" @click="cambiarIdioma('es')">
+                CASTELLANO
+              </button>
+            </li>
+          </ul>
+        </div>
 
         <button v-if="!esLogin" @click="handleLogout" class="btn btn-danger btn-sm px-3 fw-bold text-uppercase border-2 shadow-sm">
           {{ t('nav.tancar_sessio') }}
