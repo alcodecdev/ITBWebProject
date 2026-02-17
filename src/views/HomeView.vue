@@ -9,7 +9,6 @@ import '../assets/styles/coloursAndAnimation.css'
 const router = useRouter()
 const { t } = useI18n()
 
-
 const goToList = () =>{
   router.push('/list')
 }

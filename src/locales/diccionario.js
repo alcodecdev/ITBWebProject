@@ -103,6 +103,7 @@ export const ca = {
         error_titol: "Errors de validació",
         error_xarxa: "Dades invàlides (Error de xarxa)",
         error_connexio: "Error de la connexió",
+        error_servidor: "El servidor de Gencat ha rebutjat la petició. Revisa les dades.",
         error_api: "No es pot connectar amb l'API. Revisa Internet.",
         error_api_conexio:"No es pot connectar amb Gencat",
         error_format: "La resposta del servidor no és vàlida",
@@ -129,7 +130,8 @@ export const ca = {
             e12: "Error 12: Matrícula màxim 10 caràcters",
             e13: "Error 13: NIF màxim 9 caràcters",
             e37: "Error 37: El mitjà de transport ha de ser 01 o 99",
-            transportista_obligatori: "El nom del transportista és obligatori"
+            transportista_obligatori: "El nom del transportista és obligatori",
+            nom_llarg: "Error: El nom és massa llarg"
         }
     }
 };
@@ -228,6 +230,7 @@ export const es = {
         alta_ok: "El formulario se ha enviado correctamente.",
         error_titol: "Errores de validación",
         error_xarxa: "Datos inválidos (Error de red)",
+        error_servidor: "El servidor de Gencat ha rechazado la petición. Revisa los datos.",
         error_connexio: "Error de la conexión",
         error_api: "No se puede conectar con la API. Revisa Internet.",
         error_api_conexio:"No se puede conectar con Gencat",
@@ -254,7 +257,8 @@ export const es = {
             e12: "Error 12: Matrícula máximo 10 caracteres",
             e13: "Error 13: NIF máximo 9 caracteres",
             e37: "Error 37: El medio de transporte debe ser 01 o 99",
-            transportista_obligatori: "El nombre del transportista es obligatorio"
+            transportista_obligatori: "El nombre del transportista es obligatorio",
+            nom_llarg: "Error: El nombre es demasiado largo"
         }
     }
 };
@@ -357,6 +361,7 @@ export const en = {
         alta_ok: "The form has been sent correctly.",
         error_titol: "Validation Errors",
         error_xarxa: "Invalid data (Network Error)",
+        error_servidor: "The Gencat server rejected the request. Please check the data.",
         error_connexio: "Connection error",
         error_api: "Cannot connect to API. Check Internet.",
         error_api_conexio: "Cannot connect to Gencat",
@@ -383,7 +388,8 @@ export const en = {
             e12: "Error 12: License plate max 10 characters",
             e13: "Error 13: NIF max 9 characters",
             e37: "Error 37: Means of transport must be 01 or 99",
-            transportista_obligatori: "Carrier name is mandatory"
+            transportista_obligatori: "Carrier name is mandatory",
+            nom_llarg: "Error: The name is too long"
         }
     }
 };
@@ -487,6 +493,7 @@ export const fr = {
         error_titol: "Erreurs de validation",
         error_xarxa: "Données invalides (Erreur réseau)",
         error_connexio: "Erreur de connexion",
+        error_servidor: "Le serveur de Gencat a rejeté la demande. Veuillez vérifier les données.",
         error_api: "Impossible de se connecter à l'API. Vérifiez Internet.",
         error_api_conexio: "Impossible de se connecter à Gencat",
         error_format: "La réponse du serveur est invalide",
@@ -512,7 +519,8 @@ export const fr = {
             e12: "Erreur 12: Immatriculation max 10 caractères",
             e13: "Erreur 13: NIF max 9 caractères",
             e37: "Erreur 37: Le moyen de transport doit être 01 ou 99",
-            transportista_obligatori: "Le nom du transporteur est obligatoire"
+            transportista_obligatori: "Le nom du transporteur est obligatoire",
+            nom_llarg: "Erreur: Le nom est trop long"
         }
     }
 };

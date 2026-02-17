@@ -1,8 +1,10 @@
 import Swal from 'sweetalert2';
 import axios from "axios";
+import { useI18n } from 'vue-i18n'
 import router from "@/router/index.js";
 
 export function inicializarFormEnvioPorc() {
+    const { t } = useI18n();
     let listaAltas = JSON.parse(localStorage.getItem("listaAltas")) || [];
     let listado = {};
 
@@ -130,8 +132,8 @@ export function inicializarFormEnvioPorc() {
 
                     await Swal.fire({
                         icon: 'success',
-                        title: '¡Alta Tramitada!',
-                        text: 'El formulari s\'ha enviat correctament.',
+                        title: t('alertas.alta_tramitada'),
+                        text: t('alertas.alta_ok'),
                         confirmButtonColor: '#2e7d32'
                     });
 
@@ -139,13 +141,13 @@ export function inicializarFormEnvioPorc() {
 
                 } catch (error) {
                     //Manejo de errores centralizado
-                    let titulo = 'Error de la connexió';
-                    let mensaje = 'No es pot connectar amb l\'API. Revisa Internet.';
+                    let titulo = t('alertas.error_connexio');
+                    let mensaje = t('alertas.error_api');
 
                     if (error.response) {
                         // El servidor respondió con un código
                         titulo = `Error ${error.response.status}`;
-                        mensaje = 'El servidor de Gencat ha rebutjat la petició. Revisa les dades.';
+                        mensaje = t('alertas.error_servidor');
                     }
 
                     Swal.fire({
@@ -158,8 +160,8 @@ export function inicializarFormEnvioPorc() {
             } else {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Formulari incomplet',
-                    text: 'Si us plau, corregiu els errors marcats en vermell.',
+                    title: t('alertas.form_incomplet'),
+                    text: t('alertas.form_corregir'),
                     confirmButtonColor: '#ffc107'
                 });
             }
@@ -176,7 +178,7 @@ export function inicializarFormEnvioPorc() {
     function validarNif() {
         const input = document.getElementById("inputNif");
         const val = obtenerValor("inputNif");
-        if (!val || val.length===0 || val.length>9) return marcarError(input, "#nifError", "Error 36: Usuari no trobat");
+        if (!val || val.length===0 || val.length>9) return marcarError(input, "#nifError", t('alertas.gtr.e36'));
         listado.nif = val;
         return marcarExito(input, "#nifError");
     }
@@ -184,7 +186,7 @@ export function inicializarFormEnvioPorc() {
     function validarPasswd() {
         const input = document.getElementById("inputPassword");
         const val = obtenerValor("inputPassword");
-        if (!val) return marcarError(input, "#passwordError", "Error 35: Clau de pas incorrecte");
+        if (!val) return marcarError(input, "#passwordError", t('alertas.gtr.e35'));
         listado.passwd = val;
         return marcarExito(input, "#passwordError");
     }
@@ -192,7 +194,7 @@ export function inicializarFormEnvioPorc() {
     function validarEspecie() {
         const input = document.getElementById("inputEspecie");
         const val = obtenerValor("inputEspecie");
-        if (val !== "02") return marcarError(input, "#specieCodeError", "Error 15: L'espècie ha de ser 02");
+        if (val !== "02") return marcarError(input, "#specieCodeError", t('alertas.gtr.e15'));
         listado.especie = val;
         return marcarExito(input, "#specieCodeError");
     }
@@ -200,7 +202,7 @@ export function inicializarFormEnvioPorc() {
     function validarOrigen() {
         const input = document.getElementById("inputOrigen");
         const val = obtenerValor("inputOrigen");
-        if (val.length===0 || val.length > 14) return marcarError(input, "#originCodeError", "Error 04: Máximo 14 caracteres");
+        if (val.length===0 || val.length > 14) return marcarError(input, "#originCodeError", t('alertas.gtr.e04'));
         listado.origen = val;
         return marcarExito(input, "#originCodeError");
     }
@@ -208,8 +210,8 @@ export function inicializarFormEnvioPorc() {
     function validarDestino() {
         const input = document.getElementById("inputDestino");
         const val = obtenerValor("inputDestino");
-        if (val.length===0 || val.length > 14) return marcarError(input, "#explotationCodeError", "Error 05: Máximo 14 caracteres");
-        if (val === listado.origen) return marcarError(input, "#explotationCodeError", "Error 29: Origen y destino iguales");
+        if (val.length===0 || val.length > 14) return marcarError(input, "#explotationCodeError", t('alertas.gtr.e05'));
+        if (val === listado.origen) return marcarError(input, "#explotationCodeError", t('alertas.gtr.e29'));
         listado.destino = val;
         return marcarExito(input, "#explotationCodeError");
     }
@@ -217,7 +219,7 @@ export function inicializarFormEnvioPorc() {
     function validarAccio() {
         const input = document.getElementById("inputAccio");
         const val = obtenerValor("inputAccio").toLowerCase();
-        if (val !== "si" && val !== "no") return marcarError(input, "#actionCodeError", "Error 16: Debe ser SI o NO");
+        if (val !== "si" && val !== "no") return marcarError(input, "#actionCodeError", t('alertas.gtr.e16'));
         listado.accio = val;
         return marcarExito(input, "#actionCodeError");
     }
@@ -225,7 +227,7 @@ export function inicializarFormEnvioPorc() {
     function validarMoviment() {
         const input = document.getElementById("inputMoviment");
         const val = obtenerValor("inputMoviment");
-        if (val !== "01" && val !== "02") return marcarError(input, "#movementCodeError", "Error 17: Debe ser 01 o 02");
+        if (val !== "01" && val !== "02") return marcarError(input, "#movementCodeError", t('alertas.gtr.e17'));
         listado.moviment = val;
         return marcarExito(input, "#movementCodeError");
     }
@@ -233,7 +235,7 @@ export function inicializarFormEnvioPorc() {
     function validarCategoria() {
         const input = document.getElementById("inputCategoria");
         const val = input ? input.value : "";
-        if (!val || parseInt(val) > 5) return marcarError(input, "#errorCategory", "Error 19: Categoría de 01 a 05");
+        if (!val || parseInt(val) > 5) return marcarError(input, "#errorCategory", t('alertas.gtr.e19'));
         listado.categoria = val;
         return marcarExito(input, "#errorCategory");
     }
@@ -248,7 +250,7 @@ export function inicializarFormEnvioPorc() {
 
         // Validar presencia de Fecha de Salida
         if (!inputS.value) {
-            marcarError(inputS, "#exitError", "Error 08: La data de sortida és obligatòria");
+            marcarError(inputS, "#exitError", t('alertas.gtr.e08'));
             salidaOk = false;
         } else {
             salidaOk = true;
@@ -256,7 +258,7 @@ export function inicializarFormEnvioPorc() {
 
         // Validar presencia de Fecha de Arribada
         if (!inputL.value) {
-            marcarError(inputL, "#comeError", "Error 09: La data d'arribada és obligatòria");
+            marcarError(inputL, "#comeError", t('alertas.gtr.e09'));
             llegadaOk = false;
         } else {
             llegadaOk = true;
@@ -272,11 +274,11 @@ export function inicializarFormEnvioPorc() {
         ahora.setSeconds(0, 0); // Limpiamos segundos para evitar desfases
 
         if (fS < ahora) {
-            return marcarError(inputS, "#exitError", "Error 21: La data sortida ha de ser mes gran que l’actual");
+            return marcarError(inputS, "#exitError", t('alertas.gtr.e21'));
         }
 
         if (fL < fS) {
-            return marcarError(inputL, "#comeError", "Error 24: La data arribada ha de ser major que la data sortida");
+            return marcarError(inputL, "#comeError", t('alertas.gtr.e24'));
         }
 
         listado.dataSortida = inputS.value;
@@ -293,18 +295,18 @@ export function inicializarFormEnvioPorc() {
 
         // Validar si está vacío
         if (val === "") {
-            return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
+            return marcarError(input, "#AnimalNumberError", t('alertas.gtr.e18'));
         }
 
         //Validar que sea un número positivo
         const num = Number(val);
         if (isNaN(num) || num <= 0) {
-            return marcarError(input, "#AnimalNumberError", "Error 18: El número d’animals ha de ser més gran que 0");
+            return marcarError(input, "#AnimalNumberError", t('alertas.gtr.e18'));
         }
 
         // Validar longitud máxima
         if (val.length > 6) {
-            return marcarError(input, "#AnimalNumberError", "Error 07: El número d’animals no pot ser més gran de 6 caràcters");
+            return marcarError(input, "#AnimalNumberError", t('alertas.gtr.e07'));
         }
 
         listado.numAnimals = val;
@@ -314,7 +316,7 @@ export function inicializarFormEnvioPorc() {
     function validarsirCode() {
         const input = document.getElementById("inputsirCode");
         const val = obtenerValor("inputsirCode");
-        if (val && val.length > 15 || val.length===0) return marcarError(input, "#SIRCODEError", "Error 10: Máximo 15 caracteres");
+        if (val && val.length > 15 || val.length===0) return marcarError(input, "#SIRCODEError", t('alertas.gtr.e10'));
         listado.sirCode = val;
         return marcarExito(input, "#SIRCODEError");
     }
@@ -322,7 +324,7 @@ export function inicializarFormEnvioPorc() {
     function validarMatricula() {
         const input = document.getElementById("inputMatricula");
         const val = obtenerValor("inputMatricula");
-        if (val.length > 10 || val.length===0) return marcarError(input, "#MatriculaError", "Error 12: Matrícula máx 10");
+        if (val.length > 10 || val.length===0) return marcarError(input, "#MatriculaError", t('alertas.gtr.e12'));
         listado.matricula = val;
         return marcarExito(input, "#MatriculaError");
     }
@@ -330,7 +332,7 @@ export function inicializarFormEnvioPorc() {
     function validarNifConductor() {
         const input = document.getElementById("inputNifConductor");
         const val = obtenerValor("inputNifConductor");
-        if (val.length > 9 || val.length===0) return marcarError(input, "#NIFError", "Error 13: NIF máx 9");
+        if (val.length > 9 || val.length===0) return marcarError(input, "#NIFError", t('alertas.gtr.e13'));
         listado.nifConductor = val;
         return marcarExito(input, "#NIFError");
     }
@@ -341,12 +343,12 @@ export function inicializarFormEnvioPorc() {
 
         // Validación típica de campo obligatorio
         if (val === "") {
-            return marcarError(input, "#nameTransportError", "Error: El nom del transportista és obligatori");
+            return marcarError(input, "#nameTransportError", t('alertas.gtr.transportista_obligatori'));
         }
 
         // Si la API tiene un límite
         if (val.length > 50) {
-            return marcarError(input, "#nameTransportError", "Error: El nom és massa llarg");
+            return marcarError(input, "#nameTransportError", t('alertas.gtr.nom_llarg'));
         }
 
         listado.nombreTransportista = val;
@@ -358,7 +360,7 @@ export function inicializarFormEnvioPorc() {
         const val = input ? input.value : "";
 
         if (val !== "01" && val !== "99") {
-            return marcarError(input, "#errorTransport", "Error 37: El mitjà de transport ha de ser 01 o 99");
+            return marcarError(input, "#errorTransport", t('alertas.gtr.e37'));
         }
 
         listado.medioTransporte = val;
