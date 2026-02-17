@@ -8,11 +8,11 @@ const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
 
-// Definimos props por si en alguna página el boton de "Volver" debe ir a un sitio especifico
+// Definimos props por si en alguna página el boton de Volver debe ir a un sitio especifico
 const props = defineProps({
   rutaVolver: {
     type: String,
-    default: '' // Si esta vacio, usaremos router.back()
+    default: '' // Si esta vacio usaremos router.back()
   }
 })
 
