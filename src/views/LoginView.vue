@@ -7,7 +7,7 @@ import CampoFormulario from "@/components/CampoFormulario.vue";
 import '../assets/styles/coloursAndAnimation.css'
 import router from "@/router/index.js";
 import Swal from "sweetalert2";
-import Navbar from "@/components/layout/Navbar.vue";
+import Cookies from "js-cookie";
 
 const { t } = useI18n()
 let showError = ref(false);
@@ -89,6 +89,7 @@ async function handleLogin() {
         }
 
         if (errores.value.length === 0) {
+          Cookies.set('usuario_logeado', 'true', { expires: 1, path: '/' });
           await Swal.fire({
             icon: 'success',
             title: t('alertas.exito_titol'),
