@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Cookies from 'js-cookie'
 import LoginView from '@/views/LoginView.vue'
-import RegisterView from '@/views/RegisterView.vue'
 import HomeView from "@/views/HomeView.vue"
 import FormView from "@/views/FormView.vue"
 import ListView from "@/views/ListView.vue";
@@ -16,45 +15,45 @@ const router = createRouter({
         {
             path: '/list',
             component: ListView,
-            meta: {requiresAuth: false}
+            meta: {requiresAuth: true}
         },
         {
             path: '/login',
             name: 'login',
             component: LoginView,
-            meta: { requiereAuth: false }
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: RegisterView,
-            meta: { requiereAuth: false }
+            meta: { requiresAuth: false }
         },
         {
             path: '/home',
             name: 'home',
             component: HomeView,
-            meta: { requiereAuth: false }
+            meta: { requiresAuth: true }
         },
         {
             path: '/form/:nifURL?',
             name: 'form',
             component: FormView,
-            meta: { requiereAuth: false }
+            meta: { requiresAuth: true }
         }
     ]
+
 })
 
-// --- GUARDIA DE SEGURIDAD ---
 router.beforeEach((to, from, next) => {
     const sesionActiva = Cookies.get('usuario_logeado');
 
-    // Si la ruta es privada y NO hay cookie, bloqueado
-    if (to.meta.requiereAuth && !sesionActiva) {
-        return next('/login');
+    // Si la ruta requiere autenticacion y NO hay cookie al Login
+    if (to.meta.requiresAuth && !sesionActiva) {
+        next('/login');
     }
-
-    next(); // En cualquier otro caso, adelante
+    //Si ya está logeado e intenta ir al Login al Home
+    else if (to.name === 'login' && sesionActiva) {
+        next('/home');
+    }
+    //En cualquier otro caso adelante
+    else {
+        next();
+    }
 });
 
 export default router;
