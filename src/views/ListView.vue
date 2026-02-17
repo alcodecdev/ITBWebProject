@@ -29,7 +29,7 @@ const borrarAlta = function (numAnimals) {
         <thead>
         <tr>
           <th>NIF</th>
-          <th>Contrasenya</th>
+          <th>Especie</th>
           <th>Acciò</th>
           <th>Tipus Moviment</th>
           <th>Explotació Origen</th>
@@ -43,13 +43,14 @@ const borrarAlta = function (numAnimals) {
           <th>Mitjà transport</th>
           <th>Matrícula</th>
           <th>NIF Conductor</th>
+          <th>Nom Conductor</th>
           <th>Mobilitat</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, index) in listado" :key="item.nif">
-          <td> <router-link :to="`/form/${item.nif}`">{{item.nif}}</router-link></td>
-          <td>{{ item.password }}</td>
+          <td> <router-link :to="`/form/${item.numAnimals}`">{{item.nif}}</router-link></td>
+          <td>{{item.tipusEspecie}}</td>
           <td>{{ item.tipoAccion }}</td>
           <td>{{ item.tipoMovimiento }}</td>
           <td>{{ item.ExplotacionOrigen }}</td>
@@ -63,12 +64,13 @@ const borrarAlta = function (numAnimals) {
           <td>{{ item.medioTransporte }}</td>
           <td>{{ item.matricula }}</td>
           <td>{{ item.nifConductor }}</td>
+          <td>{{item.nombreTransportista}}</td>
           <td>{{ item.mobilitat }}</td>
           <td><Button clase="btn btn-danger" nombreSpan="Borrar" id="borrarAlta" @click="borrarAlta(item.numAnimals)"></Button></td>
         </tr>
 
         <tr v-if="listado.length === 0">
-          <td colspan="16" class="text-center">No hi ha dades disponibles</td>
+          <td colspan="17" class="text-center">No hi ha dades disponibles</td>
         </tr>
         </tbody>
       </table>

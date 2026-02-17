@@ -37,7 +37,7 @@ const router = createRouter({
             meta: { requiereAuth: false }
         },
         {
-            path: '/form/:nifURL?',
+            path: '/form/:numAnimals?',
             name: 'form',
             component: FormView,
             meta: { requiereAuth: false }

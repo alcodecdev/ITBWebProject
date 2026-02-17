@@ -93,8 +93,10 @@ export function inicializarFormEnvioPorc() {
                     nifConductor: listado.nifConductor,
                     mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
                 };
+
                  let alta = {
                     nif: listado.nif,
+                     tipusEspecie: listado.tipusEspecie || "02",
                     password: listado.passwd,
                     tipoAccion: listado.accio.toUpperCase(),
                     tipoMovimiento: listado.moviment,
@@ -108,13 +110,15 @@ export function inicializarFormEnvioPorc() {
                     sirCode: listado.sirCode,
                     medioTransporte: listado.medioTransporte,
                     matricula: listado.matricula,
+                     nombreTransportista: document.getElementById("inputNombreTransportista").value ,
                     nifConductor: listado.nifConductor,
                      mobilitat: document.querySelector("input[name='mobilitat']:checked")?.value.toUpperCase() || "NO"
                 }
 
 
                 try {
-                    //Llamada con Axios
+                     console.log(alta);
+                     //Llamada con Axios
                     const response = await axios.put(url, datosFinales);
                     let listaAltas = JSON.parse(localStorage.getItem("listaAltas")) || [];
                     listaAltas.push(alta);
@@ -186,7 +190,7 @@ export function inicializarFormEnvioPorc() {
         const input = document.getElementById("inputEspecie");
         const val = obtenerValor("inputEspecie");
         if (val !== "02") return marcarError(input, "#specieCodeError", "Error 15: L'espècie ha de ser 02");
-        listado.especie = val;
+        listado.tipusEspecie = val;
         return marcarExito(input, "#specieCodeError");
     }
 
