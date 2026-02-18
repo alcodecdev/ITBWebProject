@@ -96,6 +96,9 @@ export const ca = {
 
     //MISSATGES DE SISTEMA I ERRORS
     alertas: {
+        error_catch:"Error de format",
+        error_catch2:"Error crític",
+        error_dades:"Dades invàlides (Error de xarxa)",
         validant: "Validant...",
         processant: "Processant tramesa...",
         connectant: "Connectant amb el servidor",
@@ -227,6 +230,9 @@ export const es = {
         boto_borrar: "Borrar"
     },
     alertas: {
+        error_catch:"Error de formato",
+        error_catch2:"Error crítico",
+        error_dades:"Datos inválidos (Error de red)",
         validant: "Validando...",
         processant: "Procesando envío...",
         connectant: "Conectando con el servidor",
@@ -361,6 +367,9 @@ export const en = {
     },
 
     alertas: {
+        error_catch:"Format error",
+        error_catch2:"Critical error",
+        error_dades:"Invalid data (Network error)",
         validant: "Validating...",
         processant: "Processing shipment...",
         connectant: "Connecting to server",
@@ -495,6 +504,9 @@ export const fr = {
     },
 
     alertas: {
+        error_catch:"Erreur de format",
+        error_catch2:"Erreur critique",
+        error_dades:"Données invalides (Erreur réseau)",
         validant: "Validation...",
         processant: "Traitement de l'envoi...",
         connectant: "Connexion au serveur",

@@ -60,7 +60,7 @@ async function handleLogin() {
     });
 
     if (!response.ok) {
-      errores.value = ["Dades invàlides (Error de xarxa)"];
+      errores.value = [t('alertas.error_dades')];
       // Mostramos alerta de error de conexion
       Swal.fire({ icon: 'error', title: 'Error', text: t('alertas.error_xarxa') });;
     }
@@ -103,7 +103,7 @@ async function handleLogin() {
         else {
           Swal.fire({
             icon: 'error',
-            title: 'Errors de validació',
+            title: t('alertas.error_titol'),
             html: `<ul style="text-align: left;">${errores.value.map(e => `<li>${e}</li>`).join('')}</ul>`,
             confirmButtonColor: '#d33'
           });
@@ -111,13 +111,13 @@ async function handleLogin() {
 
       } catch (error) {
         //console.error("Failed to parse response:", error);
-        Swal.fire({ icon: 'error', title: 'Error de format', text: t('alertas.error_api') });
+        Swal.fire({ icon: 'error', title: t('alertas.error_catch'), text: t('alertas.error_api') });
       }
     }
 
   } catch (error) {
     //console.error("Error completo:", error);
-    Swal.fire({ icon: 'error', title: 'Error crític', text: t('alertas.error_api_conexio') });
+    Swal.fire({ icon: 'error', title: t('alertas.error_catch2'), text: t('alertas.error_api_conexio') });
   }
 }
 
