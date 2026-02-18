@@ -76,6 +76,7 @@ export const ca = {
             nif: "NIF",
             pass: "Contrasenya",
             accio: "Acció",
+            especie: "espècie:",
             moviment: "Tipus Moviment",
             origen: "Explotació Origen",
             destino: "Explotació Destinació",
@@ -88,10 +89,12 @@ export const ca = {
             transport: "Mitjà transport",
             matricula: "Matrícula",
             conductor: "NIF Conductor",
+            nom_conductor: "nom transportistar",
             mobilitat: "Mobilitat",
             accions: "Accions"
         },
-        boto_borrar: "Borrar"
+        boto_borrar: "Borrar",
+        boto_editar: "Editar"
     },
 
     //MISSATGES DE SISTEMA I ERRORS
@@ -212,6 +215,7 @@ export const es = {
             nif: "NIF",
             pass: "Contraseña",
             accio: "Acción",
+            especie: "especie",
             moviment: "Tipo Movimiento",
             origen: "Explotación Origen",
             destino: "Explotación Destino",
@@ -224,10 +228,12 @@ export const es = {
             transport: "Medio transporte",
             matricula: "Matrícula",
             conductor: "NIF Conductor",
+            nom_conductor: "nombre transportista",
             mobilitat: "Movilidad",
             accions: "Acciones"
         },
-        boto_borrar: "Borrar"
+        boto_borrar: "Borrar",
+        boto_editar: "Editar"
     },
     alertas: {
         error_catch:"Error de formato",
@@ -348,6 +354,7 @@ export const en = {
             nif: "NIF/ID",
             pass: "Password",
             accio: "Action",
+            especie: "species",
             moviment: "Movement Type",
             origen: "Origin Holding",
             destino: "Dest. Holding",
@@ -360,10 +367,12 @@ export const en = {
             transport: "Means of transport",
             matricula: "License plate",
             conductor: "Driver NIF",
+            nom_conductor: "carrier name",
             mobilitat: "Mobility",
             accions: "Actions"
         },
-        boto_borrar: "Delete"
+        boto_borrar: "Delete",
+        boto_editar: "Edit"
     },
 
     alertas: {
@@ -485,6 +494,7 @@ export const fr = {
             nif: "NIF/ID",
             pass: "Mot de passe",
             accio: "Action",
+            especie: "espèce:",
             moviment: "Type de Mouvement",
             origen: "Exploitation Origine",
             destino: "Exploit. Destination",
@@ -497,10 +507,12 @@ export const fr = {
             transport: "Moyen de transport",
             matricula: "Immatriculation",
             conductor: "NIF Conducteur",
+            nom_conductor: "nom du transporteur",
             mobilitat: "Mobilité",
             accions: "Actions"
         },
-        boto_borrar: "Effacer"
+        boto_borrar: "Effacer",
+        boto_editar: "Modifier"
     },
 
     alertas: {

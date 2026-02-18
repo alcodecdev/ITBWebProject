@@ -30,9 +30,10 @@ const router = createRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/form',
+            path: '/form/:numAnimals?',
             name: 'form',
             component: FormView,
+            props: true,
             meta: { requiresAuth: true }
         }
     ]

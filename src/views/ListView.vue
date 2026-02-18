@@ -29,8 +29,8 @@ const borrarAlta = function (numAnimals) {
         <thead>
         <tr>
           <th>{{ $t('llista.columnes.nif') }}</th>
-          <th>{{ $t('llista.columnes.pass') }}</th>
-          <th>{{ $t('llista.columnes.accio') }}</th>
+          <th>{{ $t('llista.columnes.especie') }}</th>
+          <th>{{ $t('llista.columnes.accions') }}</th>
           <th>{{ $t('llista.columnes.moviment') }}</th>
           <th>{{ $t('llista.columnes.origen') }}</th>
           <th>{{ $t('llista.columnes.destino') }}</th>
@@ -43,6 +43,7 @@ const borrarAlta = function (numAnimals) {
           <th>{{ $t('llista.columnes.transport') }}</th>
           <th>{{ $t('llista.columnes.matricula') }}</th>
           <th>{{ $t('llista.columnes.conductor') }}</th>
+          <th>{{ $t('llista.columnes.nom_conductor') }}</th>
           <th>{{ $t('llista.columnes.mobilitat') }}</th>
           <th>{{ $t('llista.columnes.accions') }}</th>
         </tr>
@@ -66,11 +67,11 @@ const borrarAlta = function (numAnimals) {
           <td>{{ item.nifConductor }}</td>
           <td>{{item.nombreTransportista}}</td>
           <td>{{ item.mobilitat }}</td>
-          <td><Button clase="btn btn-danger" :nombreSpan="$t('llista.boto_borrar')" id="borrarAlta" @click="borrarAlta(item.nif)"></Button></td>
+          <td><Button clase="btn btn-danger" nombreSpan="Borrar" id="borrarAlta" @click="borrarAlta(item.numAnimals)"></Button></td>
         </tr>
 
         <tr v-if="listado.length === 0">
-          <td colspan="16" class="text-center">{{ $t('llista.buida') }}</td>
+          <td colspan="18" class="text-center">{{ $t('llista.buida') }}</td>
         </tr>
         </tbody>
       </table>

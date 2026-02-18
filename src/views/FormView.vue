@@ -1,7 +1,8 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
+
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
+import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
 import {inicializarFormEnvioPorc} from "@/App/appForm.js";
 import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"
@@ -10,23 +11,20 @@ import { getEnergyConsumption } from "@/App/consumoElectrico.js"
 import {ref,onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import Footer from "@/components/layout/Footer.vue";
-
 const route = useRoute();
 const router = useRouter();
-const { t } = useI18n()
 let esEdicion = ref(false);
 
 const energyData = ref({ wattHora: 0, kilobytes: 0 });
 
 onMounted(() => {
-  const nifURL = route.params.nifURL;
-  if (nifURL){
+  const numAnimales = route.params.numAnimals;
+  if (numAnimales){
     esEdicion = true;
     const listado = JSON.parse(localStorage.getItem("listaAltas")) || [];
-    const encontrado = listado.find(item => item.nif === nifURL);
+    const encontrado = listado.find(item => item.numAnimals === numAnimales);
     if (encontrado){
       setTimeout(() => {
-        // RELLENADO MANUAL (JS PURO) para que tu appForm.js lo detecte
         document.getElementById("inputNif").value = encontrado.nif;
         document.getElementById("inputPassword").value = encontrado.password;
         document.getElementById("inputOrigen").value = encontrado.ExplotacionOrigen;
@@ -34,6 +32,13 @@ onMounted(() => {
         document.getElementById("inputAnimals").value = encontrado.numAnimals;
         document.getElementById("inputsirCode").value = encontrado.sirCode;
         document.getElementById("inputMatricula").value = encontrado.matricula;
+        document.getElementById("inputNombreTransportista").value = encontrado.nombreTransportista;
+        document.getElementById("inputEspecie").value = "02";
+        document.getElementById("inputAccio").value = encontrado.tipoAccion;
+        document.getElementById("inputMoviment").value = encontrado.tipoMovimiento;
+
+
+
         document.getElementById("inputNifConductor").value = encontrado.nifConductor;
 
         // Para los SELECTS
@@ -75,9 +80,9 @@ onMounted(() => {
       <div class="col-12 col-lg-10">
         <title-and-subtitle
             class="textoOscuro"
-            :title="$t('form.titol')"
+            title="Registre de tramesa"
             title-class="display-5 fw-bolder"
-            :subtitle="$t('form.subtitol')"
+            subtitle="Porcí - Control de lots"
             subtitle-class="text-uppercase small mb-0"
             divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
         ></title-and-subtitle>
@@ -86,135 +91,135 @@ onMounted(() => {
       <form class="row g-4 p-4 p-md-5 rounded-4 bg-white shadow-lg border-0 text-dark">
         <campo-formulario
             type="text"
-            :label="$t('form.labels.nif')"
+            label="NIF"
             placeholder="12345678X"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="nifError"
-         id="inputNif"></campo-formulario>
+            id="inputNif"></campo-formulario>
 
         <campo-formulario
             type="password"
-            :label="$t('form.labels.passwd')"
+            label="CONTRASENYA MOVILITAT:"
             placeholder="*******"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="passwordError"
-         id="inputPassword"></campo-formulario>
+            id="inputPassword"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.origen')"
+            label="CODI EXPLOTACIÓ ORIGEN:"
             placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="originCodeError"
-         id="inputOrigen"></campo-formulario>
+            id="inputOrigen"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.destino')"
+            label="CODI EXPLOTACIÓ DESTINACIÓ:"
             placeholder="1111AA"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="explotationCodeError"
-         id="inputDestino"></campo-formulario>
+            id="inputDestino"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.especie')"
+            label="ESPÈCIE:"
             placeholder="02"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="specieCodeError"
-         id="inputEspecie"></campo-formulario>
+            id="inputEspecie"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.accio')"
+            label="ACCIÓ:"
             placeholder="no"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="actionCodeError"
-         id="inputAccio"></campo-formulario>
+            id="inputAccio"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.moviment')"
+            label="MOVIMENT:"
             placeholder="01"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="movementCodeError"
-         id="inputMoviment"></campo-formulario>
+            id="inputMoviment"></campo-formulario>
 
         <div class="col-md-3">
-          <label class="form-label small" for="inputCategoria">{{$t('form.labels.categoria')}}</label>
+          <label class="form-label small" for="inputCategoria">CODI CATEGORIA:</label>
           <select class="form-select bg-light text-dark border-secondary" id="inputCategoria" required>
-            <option selected disabled value="">{{ $t('form.opcions.selecciona') }}</option>
-            <option value="00">{{ $t('form.opcions.engreix') }}</option>
-            <option value="01">{{ $t('form.opcions.garrins') }}</option>
-            <option value="02">{{$t('form.opcions.recria')}}</option>
-            <option value="03">{{$t('form.opcions.reproductores')}}</option>
-            <option value="04">{{$t('form.opcions.reposicio')}}</option>
-            <option value="05">{{$t('form.opcions.sementals')}}</option>
+            <option selected disabled value="">Selecciona uno</option>
+            <option value="00">Engreix</option>
+            <option value="01">Garrins</option>
+            <option value="02">Recria/Transicio</option>
+            <option value="03">Femelles reproductores</option>
+            <option value="04">Reposicio</option>
+            <option value="05">Sementals</option>
           </select>
           <div id="errorCategory" class="text-danger small fw-bold"></div>
         </div>
 
         <campo-formulario
             type="date"
-            :label="$t('form.labels.data_sortida')"
+            label="DATA SORTIDA:"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="exitError"
 
-         id="inputFechaSalida"></campo-formulario>
+            id="inputFechaSalida"></campo-formulario>
 
         <campo-formulario
             type="date"
-            :label="$t('form.labels.data_arribada')"
+            label="DATA ARRIBADA:"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="comeError"
-         id="inputFechaLlegada"></campo-formulario>
+            id="inputFechaLlegada"></campo-formulario>
 
         <div class="col-md-6">
-          <label class="form-label fw-bold text-secondary small d-block">{{ $t('form.labels.mobilitat') }}</label>
+          <label class="form-label fw-bold text-secondary small d-block">MOBILITAT (SI/NO)</label>
           <div class="btn-group w-100" role="group">
             <input type="radio" class="btn-check" name="mobilitat" id="siMobilitat" value="si" required>
-            <label class="btn btn-outline-secondary fw-bold" for="siMobilitat">{{ $t('form.opcions.si') }}</label>
+            <label class="btn btn-outline-secondary fw-bold" for="siMobilitat">SÍ</label>
             <input type="radio" class="btn-check" name="mobilitat" id="noMobilitat" value="no" checked required>
-            <label class="btn btn-outline-secondary fw-bold" for="noMobilitat">{{ $t('form.opcions.no') }}</label>
+            <label class="btn btn-outline-secondary fw-bold" for="noMobilitat">NO</label>
           </div>
           <div id="errorMobility" class="text-danger small fw-bold"></div>
         </div>
 
         <div class="col-12">
-          <h5 class="mt-4 border-top border-secondary border-opacity-25 pt-3">{{ $t('form.seccio_transport')}}</h5>
+          <h5 class="mt-4 border-top border-secondary border-opacity-25 pt-3">Dades del Transport</h5>
         </div>
         <campo-formulario
             id="inputNombreTransportista"
             type="text"
-            :label="$t('form.labels.nom_transportista')"
-            :placeholder="$t('form.placeholder.place_nombreTransportista')"
+            label="NOM TRANSPORTISTA"
+            placeholder="Introduir nom"
             label-class="form-label fw-bold text-light small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
@@ -222,11 +227,11 @@ onMounted(() => {
             error-div-i-d="nameTransportError"
         ></campo-formulario>
 
-        <div class="col-md-6 mb-3"> <label class="form-label small" for="selectMedioTransporte">{{ $t('form.labels.medio_transport') }}</label>
+        <div class="col-md-6 mb-3"> <label class="form-label small" for="selectMedioTransporte">MITJÀ DE TRANSPORT:</label>
           <select class="form-select bg-light text-dark border-secondary" id="selectMedioTransporte" required>
-            <option selected disabled value="">{{ $t('form.opcions.selecciona') }}</option>
-            <option value="01">{{ $t('form.opcions.camio') }}</option>
-            <option value="99">{{ $t('form.opcions.otros') }}</option>
+            <option selected disabled value="">Selecciona uno</option>
+            <option value="01">Camión</option>
+            <option value="99">Otros</option>
           </select>
           <div id="errorTransport" class="text-danger small fw-bold"></div>
         </div>
@@ -234,60 +239,60 @@ onMounted(() => {
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.matricula')"
+            label="MATRÍCULA:"
             placeholder="12345678"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="MatriculaError"
-         id="inputMatricula"></campo-formulario>
+            id="inputMatricula"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.nif_conductor')"
+            label="NIF CONDUCTOR:"
             placeholder="12345678X"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="NIFError"
-         id="inputNifConductor"></campo-formulario>
+            id="inputNifConductor"></campo-formulario>
 
         <campo-formulario
             type="number"
-            :label="$t('form.labels.animals')"
+            label="NÚMERO DE ANIMALES:"
             placeholder="Ej(200)"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="AnimalNumberError"
-         id="inputAnimals"></campo-formulario>
+            id="inputAnimals"></campo-formulario>
 
         <campo-formulario
             type="text"
-            :label="$t('form.labels.sircode')"
+            label="SIRCODE:"
             placeholder="12345678ABCD"
             label-class="form-label fw-bold text-light  small"
             input-class="form-control bg-light text-dark border-secondary"
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="SIRCODEError"
-         id="inputsirCode">
+            id="inputsirCode">
         </campo-formulario>
 
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
-            <Button
-                id="enviar"
-                clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
-                :nombreSpan="$t('form.boto_registrar')"
-            >
-              <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
-              </router-link>
-            </Button>
-          </div>
+          <Button
+              id="enviar"
+              clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
+              nombreSpan="REGISTRAR TRAMESA"
+          >
+            <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
+            </router-link>
+          </Button>
+        </div>
       </form>
     </div>
   </div>
