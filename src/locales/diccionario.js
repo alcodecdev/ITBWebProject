@@ -494,7 +494,7 @@ export const fr = {
             nif: "NIF/ID",
             pass: "Mot de passe",
             accio: "Action",
-            especie: "espèce:",
+            especie: "espèce",
             moviment: "Type de Mouvement",
             origen: "Exploitation Origine",
             destino: "Exploit. Destination",
