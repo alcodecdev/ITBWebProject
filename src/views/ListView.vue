@@ -1,10 +1,11 @@
 <script setup>
-import Navbar from "@/components/layout/Navbar.vue";
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import Button from "@/components/Button.vue";
 import {ref} from "vue";
+import { useI18n } from 'vue-i18n'
 
 let listado = ref(JSON.parse(localStorage.getItem("listaAltas")) || []);
+const { t } = useI18n()
 
 const borrarAlta = function (numAnimals) {
   listado.value = listado.value.filter(item => item.numAnimals !== numAnimals);
@@ -18,7 +19,7 @@ const borrarAlta = function (numAnimals) {
   <div class="container-fluid mt-4">
     <title-and-subtitle
         class="textoOscuro"
-        title="Llista d'altes"
+        :title="$t('llista.titol')"
         title-class="display-5 fw-bolder"
         divClass="mb-4 border-bottom border-secondary border-opacity-50 pb-3"
     ></title-and-subtitle>
@@ -27,23 +28,23 @@ const borrarAlta = function (numAnimals) {
       <table class="table table-success text-center table-bordered">
         <thead>
         <tr>
-          <th>NIF</th>
-          <th>Especie</th>
-          <th>Acciò</th>
-          <th>Tipus Moviment</th>
-          <th>Explotació Origen</th>
-          <th>Explotació Destinació</th>
-          <th>Codi Rega</th>
-          <th>Categoría</th>
-          <th>Número animals</th>
-          <th>Data sortida</th>
-          <th>Data arribada</th>
-          <th>Codi Sirentra</th>
-          <th>Mitjà transport</th>
-          <th>Matrícula</th>
-          <th>NIF Conductor</th>
-          <th>Nom Conductor</th>
-          <th>Mobilitat</th>
+          <th>{{ $t('llista.columnes.nif') }}</th>
+          <th>{{ $t('llista.columnes.pass') }}</th>
+          <th>{{ $t('llista.columnes.accio') }}</th>
+          <th>{{ $t('llista.columnes.moviment') }}</th>
+          <th>{{ $t('llista.columnes.origen') }}</th>
+          <th>{{ $t('llista.columnes.destino') }}</th>
+          <th>{{ $t('llista.columnes.rega') }}</th>
+          <th>{{ $t('llista.columnes.cat') }}</th>
+          <th>{{ $t('llista.columnes.animals') }}</th>
+          <th>{{ $t('llista.columnes.sortida') }}</th>
+          <th>{{ $t('llista.columnes.arribada') }}</th>
+          <th>{{ $t('llista.columnes.sirentra') }}</th>
+          <th>{{ $t('llista.columnes.transport') }}</th>
+          <th>{{ $t('llista.columnes.matricula') }}</th>
+          <th>{{ $t('llista.columnes.conductor') }}</th>
+          <th>{{ $t('llista.columnes.mobilitat') }}</th>
+          <th>{{ $t('llista.columnes.accions') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -65,11 +66,11 @@ const borrarAlta = function (numAnimals) {
           <td>{{ item.nifConductor }}</td>
           <td>{{item.nombreTransportista}}</td>
           <td>{{ item.mobilitat }}</td>
-          <td><Button clase="btn btn-danger" nombreSpan="Borrar" id="borrarAlta" @click="borrarAlta(item.numAnimals)"></Button></td>
+          <td><Button clase="btn btn-danger" :nombreSpan="$t('llista.boto_borrar')" id="borrarAlta" @click="borrarAlta(item.nif)"></Button></td>
         </tr>
 
         <tr v-if="listado.length === 0">
-          <td colspan="17" class="text-center">No hi ha dades disponibles</td>
+          <td colspan="16" class="text-center">{{ $t('llista.buida') }}</td>
         </tr>
         </tbody>
       </table>
