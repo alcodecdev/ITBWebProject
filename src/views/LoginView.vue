@@ -42,7 +42,7 @@ async function handleLogin() {
       codiCategoria:  "01",
       numAnimals: "200",
       dataSortida: "202601221303",
-      dataArribada: "002601231630",
+      dataArribada: "202601231630",
       codiSirentra: "0123456789ABCD",
       mitjaTransport: "01",
       matricula: "0123456789",
@@ -54,7 +54,7 @@ async function handleLogin() {
     const response = await fetch(`https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia`, {
       method: 'PUT',
       headers: {
-        'Content-q': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(datos)
     });

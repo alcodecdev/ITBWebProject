@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({
   modelValue: { type: [String, Number], default: '' },
+
   label: { type: String, default: ' ' },
   placeholder: { type: String, default: '' },
   id: { type: String, required: true },
@@ -9,12 +10,10 @@ const props = defineProps({
     type: String,
     default: 'form-control form-control-lg bg-light text-dark border-secondary'
   },
-  errorDivID:{
-    type: String
-  },
+  errorDivID: { type: String },
   divClass: { type: String, default: 'mb-3' },
   error: { type: String, default: '' },
-  readonly:{type: Boolean, default: false}
+  readonly: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -22,20 +21,17 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div :class="divClass">
-    <label :for="id" >{{ label }}</label>
-
+    <label :for="id">{{ label }}</label>
     <input
         :type="type"
         :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
         :id="id"
-        :class="[
-          inputClass,
-          { 'is-invalid': error }
-        ]"
-        :readonly="readonly" >
-    <div :id="errorDivID" class="invalid-feedback fw-bold">
+        :class="[inputClass, { 'is-invalid': error }]"
+        :readonly="readonly"
+    >
+    <div v-if="error" :id="errorDivID" class="invalid-feedback fw-bold">
       {{ error }}
     </div>
   </div>
