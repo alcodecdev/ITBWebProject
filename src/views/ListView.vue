@@ -51,7 +51,7 @@ const borrarAlta = function (numAnimals) {
         <tbody>
         <tr v-for="(item, index) in listado" :key="item.nif">
           <td> <router-link :to="`/form/${item.numAnimals}`"><strong>{{item.nif}}</strong></router-link></td>
-          <td class>{{item.tipusEspecie}}</td>
+          <td>{{item.tipusEspecie}}</td>
           <td>{{ item.tipoAccion }}</td>
           <td>{{ item.tipoMovimiento }}</td>
           <td>{{ item.ExplotacionOrigen }}</td>
