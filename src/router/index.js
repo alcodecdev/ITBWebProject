@@ -33,6 +33,7 @@ const router = createRouter({
             path: '/form/:numAnimals?',
             name: 'form',
             component: FormView,
+            props: true,
             meta: { requiresAuth: true }
         }
     ]

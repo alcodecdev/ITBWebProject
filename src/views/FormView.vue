@@ -2,6 +2,7 @@
 
 import TitleAndSubtitle from "@/components/TitleAndSubtitle.vue";
 import CampoFormulario from "@/components/CampoFormulario.vue";
+import Navbar from "@/components/layout/Navbar.vue";
 import Button from "@/components/Button.vue";
 import {inicializarFormEnvioPorc} from "@/App/appForm.js";
 import { estimateSustainability } from "@/App/consumoCO2PorCadaOperacion.js"
@@ -97,7 +98,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="nifError"
-         id="inputNif"></campo-formulario>
+            id="inputNif"></campo-formulario>
 
         <campo-formulario
             type="password"
@@ -108,7 +109,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="passwordError"
-         id="inputPassword"></campo-formulario>
+            id="inputPassword"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -119,7 +120,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="originCodeError"
-         id="inputOrigen"></campo-formulario>
+            id="inputOrigen"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -130,7 +131,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="explotationCodeError"
-         id="inputDestino"></campo-formulario>
+            id="inputDestino"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -141,7 +142,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="specieCodeError"
-         id="inputEspecie"></campo-formulario>
+            id="inputEspecie"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -152,7 +153,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="actionCodeError"
-         id="inputAccio"></campo-formulario>
+            id="inputAccio"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -163,7 +164,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="movementCodeError"
-         id="inputMoviment"></campo-formulario>
+            id="inputMoviment"></campo-formulario>
 
         <div class="col-md-3">
           <label class="form-label small" for="inputCategoria">CODI CATEGORIA:</label>
@@ -188,7 +189,7 @@ onMounted(() => {
             divClass="col-md-6"
             error-div-i-d="exitError"
 
-         id="inputFechaSalida"></campo-formulario>
+            id="inputFechaSalida"></campo-formulario>
 
         <campo-formulario
             type="date"
@@ -198,7 +199,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="comeError"
-         id="inputFechaLlegada"></campo-formulario>
+            id="inputFechaLlegada"></campo-formulario>
 
         <div class="col-md-6">
           <label class="form-label fw-bold text-secondary small d-block">MOBILITAT (SI/NO)</label>
@@ -245,7 +246,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             error-div-i-d="MatriculaError"
-         id="inputMatricula"></campo-formulario>
+            id="inputMatricula"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -256,7 +257,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="NIFError"
-         id="inputNifConductor"></campo-formulario>
+            id="inputNifConductor"></campo-formulario>
 
         <campo-formulario
             type="number"
@@ -267,7 +268,7 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="AnimalNumberError"
-         id="inputAnimals"></campo-formulario>
+            id="inputAnimals"></campo-formulario>
 
         <campo-formulario
             type="text"
@@ -278,20 +279,20 @@ onMounted(() => {
             div-error-class="text-danger small fw-bold"
             divClass="col-md-6"
             errorDivID="SIRCODEError"
-         id="inputsirCode">
+            id="inputsirCode">
         </campo-formulario>
 
 
         <div class="col-12 d-flex flex-column flex-md-row gap-3 py-4 mt-3 border-top border-secondary border-opacity-25">
-            <Button
-                id="enviar"
-                clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
-                nombreSpan="REGISTRAR TRAMESA"
-            >
-              <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
-              </router-link>
-            </Button>
-          </div>
+          <Button
+              id="enviar"
+              clase="btn btn-success btn-lg flex-grow-1 fw-bold bg-primary"
+              nombreSpan="REGISTRAR TRAMESA"
+          >
+            <router-link to="/home" class="text-decoration-none color-inherit" style="color: inherit;">
+            </router-link>
+          </Button>
+        </div>
       </form>
     </div>
   </div>
