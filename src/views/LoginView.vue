@@ -10,11 +10,11 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
 const { t } = useI18n()
-let showError = ref(false);
+const showError = ref(false);
 const nif = ref("");
 const password = ref("");
 const mobilitat = ref("");
-let errorMsg = ref("")
+const errorMsg = ref("")
 
 const errores = ref([]); // array que contendrá todos los errores
 
@@ -54,7 +54,7 @@ async function handleLogin() {
     const response = await fetch(`https://preproduccio.aplicacions.agricultura.gencat.cat/gtr/WSAltaguies/AppJava/WSAltaGuia`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-q': 'application/json'
       },
       body: JSON.stringify(datos)
     });
@@ -167,7 +167,6 @@ async function handleLogin() {
               <CampoFormulario class="text-light"
                                divClass="mb-5"
                                id="mo"
-                               type="password"
                                :label="$t('login.codimo_label')"
                                labelClass="form-label fw-bold text-light small"
                                :placeholder="$t('login.codimo_placeholder')"

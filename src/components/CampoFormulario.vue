@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps({
+  modelValue: { type: [String, Number], default: '' },
   label: { type: String, default: ' ' },
   placeholder: { type: String, default: '' },
   id: { type: String, required: true },
