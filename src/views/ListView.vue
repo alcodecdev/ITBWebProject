@@ -25,32 +25,33 @@ const borrarAlta = function (numAnimals) {
     ></title-and-subtitle>
 
     <div class="table-responsive">
-      <table class="table table-success text-center table-bordered">
+      <table class="table text-center table-bordered border-dark">
         <thead>
         <tr>
-          <th>NIF</th>
-          <th>Especie</th>
-          <th>Acciò</th>
-          <th>Tipus Moviment</th>
-          <th>Explotació Origen</th>
-          <th>Explotació Destinació</th>
-          <th>Codi Rega</th>
-          <th>Categoría</th>
-          <th>Número animals</th>
-          <th>Data sortida</th>
-          <th>Data arribada</th>
-          <th>Codi Sirentra</th>
-          <th>Mitjà transport</th>
-          <th>Matrícula</th>
-          <th>NIF Conductor</th>
-          <th>Nom Conductor</th>
-          <th>Mobilitat</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">NIF</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Especie</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Acciò</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Tipus Moviment</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Explotació Origen</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Explotació Destinació</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Codi Rega</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25" >Categoría</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Número animals</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Data sortida</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Data arribada</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Codi Sirentra</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Mitjà transport</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Matrícula</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">NIF Conductor</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Nom Conductor</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Mobilitat</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, index) in listado" :key="item.nif">
-          <td> <router-link :to="`/form/${item.numAnimals}`">{{item.nif}}</router-link></td>
-          <td>{{item.tipusEspecie}}</td>
+          <td> <router-link :to="`/form/${item.numAnimals}`"> <strong>{{item.nif}} </strong></router-link></td>
+          <td class>{{item.tipusEspecie}}</td>
           <td>{{ item.tipoAccion }}</td>
           <td>{{ item.tipoMovimiento }}</td>
           <td>{{ item.ExplotacionOrigen }}</td>
