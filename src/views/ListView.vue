@@ -25,33 +25,33 @@ const borrarAlta = function (numAnimals) {
     ></title-and-subtitle>
 
     <div class="table-responsive">
-      <table class="table table-success text-center table-bordered">
+      <table class="table text-center table-bordered border-dark">
         <thead>
         <tr>
-          <th>{{ $t('llista.columnes.nif') }}</th>
-          <th>{{ $t('llista.columnes.especie') }}</th>
-          <th>{{ $t('llista.columnes.accions') }}</th>
-          <th>{{ $t('llista.columnes.moviment') }}</th>
-          <th>{{ $t('llista.columnes.origen') }}</th>
-          <th>{{ $t('llista.columnes.destino') }}</th>
-          <th>{{ $t('llista.columnes.rega') }}</th>
-          <th>{{ $t('llista.columnes.cat') }}</th>
-          <th>{{ $t('llista.columnes.animals') }}</th>
-          <th>{{ $t('llista.columnes.sortida') }}</th>
-          <th>{{ $t('llista.columnes.arribada') }}</th>
-          <th>{{ $t('llista.columnes.sirentra') }}</th>
-          <th>{{ $t('llista.columnes.transport') }}</th>
-          <th>{{ $t('llista.columnes.matricula') }}</th>
-          <th>{{ $t('llista.columnes.conductor') }}</th>
-          <th>{{ $t('llista.columnes.nom_conductor') }}</th>
-          <th>{{ $t('llista.columnes.mobilitat') }}</th>
-          <th>{{ $t('llista.columnes.accions') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.nif') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.especie') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.accions') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.moviment') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.origen') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.destino') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.rega') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.cat') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.animals') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.sortida') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.arribada') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.sirentra') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.transport') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.matricula') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.conductor') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.nom_conductor') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.mobilitat') }}</th>
+          <th class="bg-success p-2 text-dark bg-opacity-25">{{ $t('llista.columnes.accions') }}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, index) in listado" :key="item.nif">
-          <td> <router-link :to="`/form/${item.numAnimals}`">{{item.nif}}</router-link></td>
-          <td>{{item.tipusEspecie}}</td>
+          <td> <router-link :to="`/form/${item.numAnimals}`"><strong>{{item.nif}}</strong></router-link></td>
+          <td class>{{item.tipusEspecie}}</td>
           <td>{{ item.tipoAccion }}</td>
           <td>{{ item.tipoMovimiento }}</td>
           <td>{{ item.ExplotacionOrigen }}</td>
