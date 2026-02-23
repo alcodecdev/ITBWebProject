@@ -28,11 +28,10 @@ const emit = defineEmits(['update:modelValue']);
         @input="emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
         :id="id"
-        :class="[inputClass, { 'is-invalid': error }]"
+        :class="inputClass"
         :readonly="readonly"
     >
-    <div v-if="error" :id="errorDivID" class="invalid-feedback fw-bold">
-      {{ error }}
+    <div :id="errorDivID" class="invalid-feedback fw-bold">
     </div>
   </div>
 </template>
